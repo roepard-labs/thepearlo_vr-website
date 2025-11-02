@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="es" data-bs-theme="dark">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="HomeLab AR - Aplicación de Realidad Aumentada Inmersiva">
+    <meta name="author" content="Roepard Labs">
+
+    <title>HomeLab VR - Modern Template (Con Variables)</title>
+
+    <!-- ============================================ -->
+    <!-- NPM LOADER CONFIGURATION -->
+    <!-- ============================================ -->
+    <script src="../js/npm-loader.js"></script>
+
+    <!-- ============================================ -->
+    <!-- CSS DEPENDENCIES (Usando variables) -->
+    <!-- ============================================ -->
+    <script>
+        // Cargar CSS usando las variables configuradas
+        const cssToLoad = [
+            'bootstrap', 'boxicons', 'sweetalert2', 'glightbox', 
+            'aos', 'animate', 'datatables', 'datatablesResponsive',
+            'notyf', 'tippy', 'tippyScale', 'photoswipe', 'videojs',
+            'tomselect', 'flatpickr', 'filepond'
+        ];
+
+        cssToLoad.forEach(name => {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = getCSSPath(name);
+            document.head.appendChild(link);
+        });
+    </script>
+
+    <!-- FontAwesome Kit (CDN) -->
+    <script src="https://kit.fontawesome.com/c5f09bfc31.js" crossorigin="anonymous"></script>
+
+    <!-- Custom CSS - Solo si existen -->
+    <!-- <link href="../css/variables.css" rel="stylesheet"> -->
+    <!-- <link href="../css/main.css" rel="stylesheet"> -->
+
+    <style>
+        /* Demo styles */
+        .demo-section {
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(0, 255, 136, 0.2);
+        }
+
+        .demo-card:hover {
+            border-color: rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .badge-custom {
+            background: linear-gradient(135deg, #00ff88 0%, #008866 100%);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 600;
+        }
+
+        .glow-effect {
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ============================================ -->
+    <!-- HEADER -->
+    <!-- ============================================ -->
+    <header class="bg-dark border-bottom border-success">
+        <nav class="navbar navbar-expand-lg navbar-dark container">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="bx bx-code-alt text-success"></i> HomeLab VR
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#components">Componentes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#examples">Ejemplos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#vr">VR/AR</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- HERO SECTION -->
+    <!-- ============================================ -->
+    <section class="hero py-5 bg-gradient" data-aos="fade-up">
+        <div class="container text-center">
+            <h1 class="display-3 fw-bold mb-4 animate__animated animate__fadeInDown">
+                <i class="bx bx-package text-success"></i>
+                Modern Template con Variables NPM
+            </h1>
+            <p class="lead mb-4 animate__animated animate__fadeInUp">
+                Dependencias centralizadas con <span class="badge-custom">npm-loader.js</span>
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <span class="badge bg-success">Bootstrap 5.3</span>
+                <span class="badge bg-primary">jQuery 3.7</span>
+                <span class="badge bg-info">Chart.js 4.5</span>
+                <span class="badge bg-warning text-dark">A-Frame 1.7</span>
+                <span class="badge bg-danger">DataTables 2.3</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- COMPONENTS SHOWCASE -->
+    <!-- ============================================ -->
+    <section id="components" class="demo-section">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">
+                <i class="bx bx-grid-alt text-success"></i> Componentes Disponibles
+            </h2>
+
+            <div class="row">
+                <!-- SweetAlert2 Demo -->
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="demo-card">
+                        <h4><i class="bx bx-bell text-warning"></i> SweetAlert2</h4>
+                        <p class="text-muted">Alertas elegantes y personalizables</p>
+                        <button class="btn btn-warning btn-sm" onclick="demoSweetAlert()">
+                            Ver Demo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notyf Demo -->
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="demo-card">
+                        <h4><i class="bx bx-notification text-info"></i> Notyf</h4>
+                        <p class="text-muted">Notificaciones toast modernas</p>
+                        <button class="btn btn-info btn-sm" onclick="demoNotyf()">
+                            Ver Demo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chart.js Demo -->
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="demo-card">
+                        <h4><i class="bx bx-bar-chart text-success"></i> Chart.js</h4>
+                        <p class="text-muted">Gráficos interactivos</p>
+                        <div style="position: relative; height: 200px;">
+                            <canvas id="demoChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DataTables Demo -->
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="demo-card">
+                        <h4><i class="bx bx-table text-primary"></i> DataTables</h4>
+                        <p class="text-muted">Tablas con búsqueda y paginación</p>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#datatableModal">
+                            Ver Demo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TomSelect Demo -->
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="demo-card">
+                        <h4><i class="bx bx-select-multiple text-secondary"></i> TomSelect</h4>
+                        <p class="text-muted">Select avanzado con búsqueda</p>
+                        <select id="demo-select" class="form-select" multiple>
+                            <option value="1">Bootstrap</option>
+                            <option value="2">jQuery</option>
+                            <option value="3">Chart.js</option>
+                            <option value="4">A-Frame</option>
+                            <option value="5">DataTables</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Config Info -->
+                <div class="col-md-6 col-lg-4 mb-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="demo-card">
+                        <h4><i class="bx bx-cog text-info"></i> NPM Config</h4>
+                        <p class="text-muted">Configuración centralizada</p>
+                        <button class="btn btn-info btn-sm" onclick="showNPMConfig()">
+                            Ver Config
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- DATATABLES MODAL -->
+    <!-- ============================================ -->
+    <div class="modal fade" id="datatableModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content bg-dark">
+                <div class="modal-header border-success">
+                    <h5 class="modal-title">
+                        <i class="bx bx-table text-success"></i> DataTables Demo
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <table id="demo-datatable" class="table table-dark table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Juan Pérez</td>
+                                <td>juan@example.com</td>
+                                <td><span class="badge bg-danger">Admin</span></td>
+                                <td><span class="badge bg-success">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>María García</td>
+                                <td>maria@example.com</td>
+                                <td><span class="badge bg-primary">Usuario</span></td>
+                                <td><span class="badge bg-success">Activo</span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Carlos López</td>
+                                <td>carlos@example.com</td>
+                                <td><span class="badge bg-info">Moderador</span></td>
+                                <td><span class="badge bg-warning text-dark">Pendiente</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="bg-dark border-top border-success py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0 text-muted">
+                <i class="bx bx-code-alt text-success"></i>
+                HomeLab VR - Template con Variables NPM
+            </p>
+            <small class="text-muted">Roepard Labs © 2025</small>
+        </div>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT DEPENDENCIES (Carga secuencial correcta) -->
+    <!-- ============================================ -->
+    
+    <!-- CORE: jQuery primero (requerido por Bootstrap y DataTables) -->
+    <script>
+        const jqueryScript = document.createElement('script');
+        jqueryScript.src = getJSPath('jquery');
+        jqueryScript.onload = function() {
+            console.log('✅ jQuery cargado');
+            loadCoreLibraries();
+        };
+        document.body.appendChild(jqueryScript);
+
+        // PASO 2: Cargar Bootstrap y Popper (después de jQuery)
+        function loadCoreLibraries() {
+            const popperScript = document.createElement('script');
+            popperScript.src = getJSPath('popper');
+            document.body.appendChild(popperScript);
+
+            const bootstrapScript = document.createElement('script');
+            bootstrapScript.src = getJSPath('bootstrap');
+            bootstrapScript.onload = function() {
+                console.log('✅ Bootstrap cargado');
+                loadDataTables();
+            };
+            document.body.appendChild(bootstrapScript);
+        }
+
+        // PASO 3: Cargar DataTables (después de jQuery)
+        function loadDataTables() {
+            const dtScript = document.createElement('script');
+            dtScript.src = getJSPath('datatables');
+            dtScript.onload = function() {
+                console.log('✅ DataTables core cargado');
+                loadDataTablesBS5();
+            };
+            document.body.appendChild(dtScript);
+        }
+
+        // PASO 3.1: DataTables Bootstrap 5 integration
+        function loadDataTablesBS5() {
+            const dtBS5Script = document.createElement('script');
+            dtBS5Script.src = getJSPath('datatablesBS5');
+            dtBS5Script.onload = function() {
+                console.log('✅ DataTables BS5 cargado');
+                loadDataTablesResponsive();
+            };
+            document.body.appendChild(dtBS5Script);
+        }
+
+        // PASO 3.2: DataTables Responsive
+        function loadDataTablesResponsive() {
+            const dtResponsiveScript = document.createElement('script');
+            dtResponsiveScript.src = getJSPath('datatablesResponsive');
+            dtResponsiveScript.onload = function() {
+                console.log('✅ DataTables Responsive cargado');
+                loadDataTablesResponsiveBS5();
+            };
+            document.body.appendChild(dtResponsiveScript);
+        }
+
+        // PASO 3.3: DataTables Responsive Bootstrap 5
+        function loadDataTablesResponsiveBS5() {
+            const dtResponsiveBS5Script = document.createElement('script');
+            dtResponsiveBS5Script.src = getJSPath('datatablesResponsiveBS5');
+            dtResponsiveBS5Script.onload = function() {
+                console.log('✅ DataTables Responsive BS5 cargado');
+                console.log('✅ DataTables completamente inicializado');
+                loadOtherLibraries();
+            };
+            document.body.appendChild(dtResponsiveBS5Script);
+        }
+
+        // PASO 4: Cargar resto de librerías
+        function loadOtherLibraries() {
+            const otherLibs = [
+                'aos', 'anime', 'sweetalert2', 'chart', 'dayjs',
+                'glightbox', 'notyf', 'tippy', 'tomselect',
+                'flatpickr', 'filepond', 'filepondEncode', 'videojs'
+            ];
+
+            otherLibs.forEach(name => {
+                const script = document.createElement('script');
+                script.src = getJSPath(name);
+                document.body.appendChild(script);
+            });
+            
+            console.log('✅ Todas las librerías están cargándose...');
+        }
+    </script>
+
+    <!-- Color Mode Toggler - Solo si existe -->
+    <!-- <script src="../js/color-mode-toggler.js"></script> -->
+
+    <!-- ============================================ -->
+    <!-- CUSTOM INITIALIZATION SCRIPT -->
+    <!-- ============================================ -->
+    <script>
+        // Esperar a que todas las librerías se carguen
+        window.addEventListener('load', function() {
+            
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true,
+                offset: 100
+            });
+
+            // Initialize Notyf
+            window.notyf = new Notyf({
+                duration: 4000,
+                position: {
+                    x: 'right',
+                    y: 'top'
+                },
+                types: [{
+                        type: 'success',
+                        background: '#00ff88',
+                        icon: {
+                            className: 'bx bx-check-circle',
+                            tagName: 'i',
+                            color: '#fff'
+                        }
+                    },
+                    {
+                        type: 'error',
+                        background: '#ff4444',
+                        icon: {
+                            className: 'bx bx-x-circle',
+                            tagName: 'i',
+                            color: '#fff'
+                        }
+                    },
+                    {
+                        type: 'info',
+                        background: '#0088ff',
+                        icon: {
+                            className: 'bx bx-info-circle',
+                            tagName: 'i',
+                            color: '#fff'
+                        }
+                    }
+                ]
+            });
+
+            // Initialize TomSelect
+            new TomSelect('#demo-select', {
+                plugins: ['remove_button'],
+                maxItems: 3,
+                placeholder: 'Selecciona dependencias...'
+            });
+
+            // Initialize Chart.js con configuración optimizada
+            const ctx = document.getElementById('demoChart');
+            if (ctx) {
+                const chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Bootstrap', 'jQuery', 'Chart.js', 'A-Frame', 'DataTables'],
+                        datasets: [{
+                            data: [30, 20, 15, 20, 15],
+                            backgroundColor: [
+                                '#0d6efd',
+                                '#0dcaf0',
+                                '#00ff88',
+                                '#ffaa00',
+                                '#dc3545'
+                            ],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        aspectRatio: 1,
+                        animation: {
+                            duration: 800
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    color: '#fff',
+                                    font: {
+                                        size: 10
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+                console.log('✅ Chart.js inicializado correctamente');
+            }
+
+            // Initialize DataTables
+            $(document).ready(function() {
+                $('#demo-datatable').DataTable({
+                    responsive: true,
+                    language: {
+                        url: 'https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                    },
+                    pageLength: 5,
+                    lengthMenu: [5, 10, 25, 50]
+                });
+            });
+
+            // Reporte de dependencias cargadas
+            reportLoadedDependencies();
+            
+            notyf.success('¡Todas las dependencias cargadas desde variables NPM!');
+        });
+
+        // ========================================
+        // DEMO FUNCTIONS
+        // ========================================
+
+        function demoSweetAlert() {
+            Swal.fire({
+                title: '¡Genial!',
+                html: `
+                    <p>SweetAlert2 funcionando con:</p>
+                    <code>${getCSSPath('sweetalert2')}</code>
+                    <br><br>
+                    <code>${getJSPath('sweetalert2')}</code>
+                `,
+                icon: 'success',
+                confirmButtonText: 'Perfecto',
+                confirmButtonColor: '#00ff88',
+                background: '#1a1a1a',
+                color: '#fff',
+                iconColor: '#00ff88'
+            });
+        }
+
+        function demoNotyf(type = 'success') {
+            const messages = {
+                success: 'Operación exitosa con Notyf',
+                error: 'Error de demostración',
+                info: 'Información importante'
+            };
+
+            notyf.open({
+                type: type,
+                message: messages[type] || messages.success
+            });
+        }
+
+        function showNPMConfig() {
+            Swal.fire({
+                title: '⚙️ Configuración NPM',
+                html: `
+                    <div class="text-start">
+                        <p><strong>Base Path:</strong></p>
+                        <code>${NPM_CONFIG.basePath}</code>
+                        
+                        <p class="mt-3"><strong>Ejemplo CSS:</strong></p>
+                        <code>${getCSSPath('bootstrap')}</code>
+                        
+                        <p class="mt-3"><strong>Ejemplo JS:</strong></p>
+                        <code>${getJSPath('jquery')}</code>
+                        
+                        <p class="mt-3"><strong>Ventajas:</strong></p>
+                        <ul class="small">
+                            <li>✅ Centralización de rutas</li>
+                            <li>✅ Fácil mantenimiento</li>
+                            <li>✅ Carga dinámica</li>
+                            <li>✅ Verificación de carga</li>
+                        </ul>
+                    </div>
+                `,
+                confirmButtonText: 'Entendido',
+                confirmButtonColor: '#00ff88',
+                background: '#1a1a1a',
+                color: '#fff',
+                width: '600px'
+            });
+        }
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
