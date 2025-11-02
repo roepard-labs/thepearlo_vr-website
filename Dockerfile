@@ -30,18 +30,47 @@ RUN apt-get update && apt-get install -y \
 # Copiar código fuente y configurar permisos
 COPY . /var/www/html
 WORKDIR /var/www/html
+
+# SEGURIDAD: Eliminar archivos sensibles que no deberían estar en la imagen
+RUN rm -f /var/www/html/.env \
+    && rm -f /var/www/html/.env.* \
+    && rm -rf /var/www/html/.git \
+    && rm -f /var/www/html/.gitignore \
+    && rm -f /var/www/html/.dockerignore
+
+# Crear un .env vacío como placeholder (Dokploy lo sobrescribirá)
+RUN touch /var/www/html/.env \
+    && chmod 600 /var/www/html/.env \
+    && chown www-data:www-data /var/www/html/.env
+
+# Configurar permisos base
 RUN chown -R www-data:www-data /var/www/html \
-    && chown -R www-data:www-data /var/www/html/storage
+    && chmod -R 755 /var/www/html
+
+# Proteger directorios críticos del frontend (no accesibles desde web)
+RUN chmod 750 /var/www/html/layout \
+    && chmod 750 /var/www/html/layouts \
+    && chmod 750 /var/www/html/ui \
+    && chmod 750 /var/www/html/utils \
+    && chmod 750 /var/www/html/scripts \
+    && chmod 750 /var/www/html/pages
+
+# Proteger archivos de configuración generados
+RUN if [ -f /var/www/html/js/config.js ]; then chmod 644 /var/www/html/js/config.js; fi
 
 # Configurar Nginx
 COPY ./nginx.conf /etc/nginx/sites-available/default
 RUN ln -sf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default \
-    && rm -f /etc/nginx/sites-enabled/default.conf
+    && rm -f /etc/nginx/sites-enabled/default.conf \
+    && rm -f /etc/nginx/conf.d/default.conf
 
 # Configurar PHP-FPM y Supervisord
 COPY ./php-fpm.conf /usr/local/etc/php-fpm.d/www.conf
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Verificar configuración de Nginx antes de iniciar
+RUN nginx -t
+
 # Exponer puerto y comando de inicio
-EXPOSE 80
+EXPOSE 3000
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

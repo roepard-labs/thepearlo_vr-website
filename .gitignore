@@ -1,2 +1,4 @@
 .env
 node_modules
+# Generated config from .env
+js/config.js
