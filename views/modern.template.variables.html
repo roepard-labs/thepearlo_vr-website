@@ -73,6 +73,87 @@
         .glow-effect {
             box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
         }
+
+        /* VR Demo Styles */
+        #vr-demo-container {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        }
+
+        .clickable {
+            cursor: pointer;
+        }
+
+        /* Animate objects on hover */
+        a-box:hover, a-sphere:hover, a-cylinder:hover {
+            opacity: 0.8;
+        }
+
+        /* Loading animation for VR */
+        @keyframes vrPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .vr-loading {
+            animation: vrPulse 1.5s ease-in-out infinite;
+        }
+
+        /* ============================================ */
+        /* CUSTOM THEME VARIABLES */
+        /* ============================================ */
+        
+        /* Dark Mode (default) */
+        [data-bs-theme="dark"] {
+            --bs-body-color: #dee2e6;
+            --bs-body-bg: #1a1a1a;
+            --bs-border-color: rgba(255, 255, 255, 0.1);
+            --bs-success: #00ff88;
+            --bs-success-rgb: 0, 255, 136;
+        }
+
+        /* Light Mode */
+        [data-bs-theme="light"] {
+            --bs-body-color: #212529;
+            --bs-body-bg: #ffffff;
+            --bs-border-color: rgba(0, 0, 0, 0.1);
+            --bs-success: #008866;
+            --bs-success-rgb: 0, 136, 102;
+        }
+
+        /* Light mode specific adjustments */
+        [data-bs-theme="light"] .demo-card {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 136, 102, 0.2);
+        }
+
+        [data-bs-theme="light"] .demo-card:hover {
+            border-color: rgba(0, 136, 102, 0.5);
+            box-shadow: 0 0 20px rgba(0, 136, 102, 0.2);
+        }
+
+        [data-bs-theme="light"] .badge-custom {
+            background: linear-gradient(135deg, #008866 0%, #00ff88 100%);
+        }
+
+        [data-bs-theme="light"] #vr-demo-container {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        /* Theme toggle styling */
+        .form-check-input:checked {
+            background-color: var(--bs-success);
+            border-color: var(--bs-success);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--bs-success);
+            box-shadow: 0 0 0 0.25rem rgba(0, 255, 136, 0.25);
+        }
+
+        /* Smooth transitions for theme changes */
+        body, .demo-card, .navbar, footer {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
     </style>
 </head>
 
@@ -99,6 +180,14 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#vr">VR/AR</a>
+                        </li>
+                        <li class="nav-item ms-3">
+                            <div class="form-check form-switch mt-2">
+                                <input class="form-check-input" type="checkbox" id="darkModeToggle" role="switch" aria-label="Toggle dark mode">
+                                <label class="form-check-label" for="darkModeToggle">
+                                    <i id="theme-icon" class="bx bx-moon text-warning"></i>
+                                </label>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -264,6 +353,133 @@
     </div>
 
     <!-- ============================================ -->
+    <!-- VR/AR DEMO SECTION -->
+    <!-- ============================================ -->
+    <section id="vr" class="demo-section bg-dark">
+        <div class="container">
+            <h2 class="text-center mb-5" data-aos="fade-up">
+                <i class="bx bx-glasses-alt text-warning"></i> Demo VR/AR
+            </h2>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="demo-card">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4><i class="bx bx-cube text-warning"></i> Escena A-Frame Interactiva</h4>
+                            <button class="btn btn-warning btn-sm" onclick="toggleVRDemo()">
+                                <i class="bx bx-play-circle"></i> <span id="vr-toggle-text">Iniciar Demo</span>
+                            </button>
+                        </div>
+                        
+                        <div id="vr-demo-container" style="display: none; position: relative; height: 500px; border: 2px solid rgba(0, 255, 136, 0.3); border-radius: 1rem; overflow: hidden;">
+                            <!-- A-Frame Scene -->
+                            <a-scene id="vr-scene" embedded vr-mode-ui="enabled: false" renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true; maxCanvasWidth: 1920; maxCanvasHeight: 1920" stats="false" style="width: 100%; height: 100%;">
+                                <!-- Assets -->
+                                <a-assets>
+                                    <img id="sky-texture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg" crossorigin="anonymous">
+                                </a-assets>
+
+                                <!-- Sky -->
+                                <a-sky src="#sky-texture" rotation="0 -130 0"></a-sky>
+
+                                <!-- Ground -->
+                                <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4" shadow></a-plane>
+
+                                <!-- Lights -->
+                                <a-light type="ambient" color="#BBB"></a-light>
+                                <a-light type="directional" color="#FFF" intensity="0.6" position="-0.5 1 1"></a-light>
+
+                                <!-- Interactive Objects (data-raycastable para optimización) -->
+                                <a-box position="-1 0.5 -3" rotation="0 45 0" color="#00ff88" 
+                                       animation="property: rotation; to: 0 405 0; loop: true; dur: 10000"
+                                       shadow
+                                       class="clickable"
+                                       data-raycastable>
+                                    <a-animation begin="click" attribute="scale" to="1.5 1.5 1.5" dur="200" direction="alternate"></a-animation>
+                                </a-box>
+
+                                <a-sphere position="0 1.25 -5" radius="0.5" color="#0088ff" 
+                                          animation="property: position; to: 0 1.75 -5; loop: true; dur: 2000; dir: alternate; easing: easeInOutQuad"
+                                          shadow
+                                          class="clickable"
+                                          data-raycastable>
+                                </a-sphere>
+
+                                <a-cylinder position="1 0.75 -3" radius="0.3" height="1.5" color="#ffaa00" 
+                                            shadow
+                                            class="clickable"
+                                            data-raycastable>
+                                    <a-animation begin="click" attribute="color" to="#ff00aa" dur="500" direction="alternate"></a-animation>
+                                </a-cylinder>
+
+                                <!-- Torus Ring -->
+                                <a-torus position="0 2 -4" color="#dc3545" arc="270" radius="1" radius-tubular="0.05"
+                                         animation="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear"
+                                         shadow>
+                                </a-torus>
+
+                                <!-- Text -->
+                                <a-text value="HomeLab VR\nPowered by npm" color="#00ff88" position="0 2.5 -3" 
+                                        align="center" width="5"
+                                        animation="property: rotation; to: 0 360 0; loop: true; dur: 20000">
+                                </a-text>
+
+                                <!-- Camera with optimized cursor raycaster -->
+                                <a-entity camera look-controls wasd-controls position="0 1.6 0">
+                                    <a-cursor color="#00ff88" 
+                                              fuse="true" 
+                                              fuse-timeout="1500"
+                                              raycaster="objects: [data-raycastable]; far: 20"></a-cursor>
+                                </a-entity>
+                            </a-scene>
+                            
+                            <!-- VR Controls Overlay -->
+                            <div style="position: absolute; bottom: 20px; left: 20px; background: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 0.5rem; color: #fff; font-size: 0.85rem; z-index: 1000;">
+                                <strong>🎮 Controles:</strong><br>
+                                <span class="badge bg-success me-1">Mouse</span> Mirar alrededor<br>
+                                <span class="badge bg-primary me-1">Click</span> Interactuar con objetos<br>
+                                <span class="badge bg-warning text-dark me-1">WASD</span> Mover cámara
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <small class="text-muted">
+                                <i class="bx bx-info-circle"></i> 
+                                Demo usando <strong>A-Frame 1.7.1</strong> cargado desde node_modules
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- VR Stats Card -->
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="demo-card text-center">
+                                <i class="bx bx-package display-4 text-success"></i>
+                                <h5 class="mt-2">A-Frame</h5>
+                                <small class="text-muted">v1.7.1</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="demo-card text-center">
+                                <i class="bx bx-cube display-4 text-info"></i>
+                                <h5 class="mt-2">Three.js</h5>
+                                <small class="text-muted">r181</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="demo-card text-center">
+                                <i class="bx bx-camera display-4 text-warning"></i>
+                                <h5 class="mt-2">AR.js</h5>
+                                <small class="text-muted">v2.2.2</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
     <!-- FOOTER -->
     <!-- ============================================ -->
     <footer class="bg-dark border-top border-success py-4 mt-5">
@@ -366,10 +582,50 @@
             
             console.log('✅ Todas las librerías están cargándose...');
         }
+
+        // PASO 5: Cargar VR/AR cuando se necesite (lazy loading)
+        let vrLibrariesLoaded = false;
+        
+        function loadVRLibraries(callback) {
+            if (vrLibrariesLoaded) {
+                if (callback) callback();
+                return;
+            }
+
+            console.log('🥽 Cargando librerías VR/AR...');
+            
+            // A-Frame primero
+            const aframeScript = document.createElement('script');
+            aframeScript.src = getVRPath('aframe');
+            aframeScript.onload = function() {
+                console.log('✅ A-Frame cargado');
+                vrLibrariesLoaded = true;
+                if (callback) callback();
+            };
+            document.head.appendChild(aframeScript);
+        }
+
+        // Toggle VR Demo
+        window.toggleVRDemo = function() {
+            const container = document.getElementById('vr-demo-container');
+            const toggleText = document.getElementById('vr-toggle-text');
+            
+            if (container.style.display === 'none') {
+                // Cargar VR libraries si no están cargadas
+                loadVRLibraries(function() {
+                    container.style.display = 'block';
+                    toggleText.textContent = 'Detener Demo';
+                    notyf.success('Demo VR iniciado - Usa el mouse para mirar alrededor');
+                });
+            } else {
+                container.style.display = 'none';
+                toggleText.textContent = 'Iniciar Demo';
+            }
+        };
     </script>
 
-    <!-- Color Mode Toggler - Solo si existe -->
-    <!-- <script src="../js/color-mode-toggler.js"></script> -->
+    <!-- Color Mode Toggler para Bootstrap 5.3+ -->
+    <script src="../js/color-mode-toggler.js"></script>
 
     <!-- ============================================ -->
     <!-- CUSTOM INITIALIZATION SCRIPT -->

@@ -59,6 +59,7 @@ const NPM_CONFIG = {
     // VR/AR Dependencies
     vr: {
         aframe: '/aframe/dist/aframe-master.min.js',
+        arjs: '/ar.js/aframe/build/aframe-ar.min.js',
         three: '/three/build/three.module.js',
         webvrPolyfill: '/webvr-polyfill/build/webvr-polyfill.min.js'
     }
