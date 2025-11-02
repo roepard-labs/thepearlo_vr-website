@@ -43,20 +43,32 @@ RUN touch /var/www/html/.env \
     && chmod 600 /var/www/html/.env \
     && chown www-data:www-data /var/www/html/.env
 
+# Instalar Node.js y npm para generar config.js
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
+    && apt-get install -y nodejs \
+    && node --version \
+    && npm --version
+
+# Instalar dependencias npm y generar config.js
+RUN npm install --production \
+    && npm run build:config \
+    && echo "✅ Config.js generado desde .env"
+
 # Configurar permisos base
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
 
-# Proteger directorios críticos del frontend (no accesibles desde web)
-RUN chmod 750 /var/www/html/layout \
-    && chmod 750 /var/www/html/layouts \
-    && chmod 750 /var/www/html/ui \
-    && chmod 750 /var/www/html/utils \
-    && chmod 750 /var/www/html/scripts \
-    && chmod 750 /var/www/html/pages
+# Proteger directorios críticos del frontend (solo si existen)
+RUN if [ -d /var/www/html/layout ]; then chmod 750 /var/www/html/layout; fi \
+    && if [ -d /var/www/html/layouts ]; then chmod 750 /var/www/html/layouts; fi \
+    && if [ -d /var/www/html/utils ]; then chmod 750 /var/www/html/utils; fi \
+    && if [ -d /var/www/html/scripts ]; then chmod 750 /var/www/html/scripts; fi \
+    && if [ -d /var/www/html/pages ]; then chmod 750 /var/www/html/pages; fi \
+    && echo "✅ Directorios críticos protegidos"
 
 # Proteger archivos de configuración generados
-RUN if [ -f /var/www/html/js/config.js ]; then chmod 644 /var/www/html/js/config.js; fi
+RUN if [ -f /var/www/html/js/config.js ]; then chmod 644 /var/www/html/js/config.js; fi \
+    && echo "✅ Archivos de configuración protegidos"
 
 # Configurar Nginx
 COPY ./nginx.conf /etc/nginx/sites-available/default

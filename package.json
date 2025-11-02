@@ -16,10 +16,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install:all": "npm install",
-    "install:system-deps": "sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev",
+    "install:deps": "npm install",
+    "install:system": "sudo apt-get update && sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev",
     "build:config": "node scripts/generate-config.js",
-    "dev": "npm run install:all && npm run build:config"
+    "build": "npm run build:config",
+    "postinstall": "npm run build:config",
+    "dev": "npm run install:deps && npm run build:config",
+    "start": "echo \"Frontend listo en http://localhost:3000\""
   },
   "dependencies": {
     "@loadingio/loading-bar": "^0.1.1",
