@@ -7,7 +7,13 @@
 
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config();
+
+// Intentar cargar .env si existe, pero no fallar si no está
+try {
+    require('dotenv').config();
+} catch (error) {
+    console.log('ℹ️  .env no encontrado, usando variables de entorno del sistema');
+}
 
 // ============================================
 // CONFIGURACIÓN
@@ -15,7 +21,8 @@ require('dotenv').config();
 
 const ENV_VARS_TO_EXPOSE = [
     'API_URL',
-    'APP_NAME'
+    'APP_NAME',
+    'APP_ENV'
 ];
 
 const OUTPUT_FILE = path.join(__dirname, '../js/config.js');
@@ -25,19 +32,25 @@ const OUTPUT_FILE = path.join(__dirname, '../js/config.js');
 // ============================================
 
 function generateConfig() {
-    console.log('🔧 Generando configuración desde .env...');
+    console.log('🔧 Generando configuración desde variables de entorno...');
+    console.log('📍 Entorno:', process.env.APP_ENV || 'development');
 
-    // Leer variables de entorno
+    // Leer variables de entorno (del sistema O del archivo .env)
     const config = {};
+    let foundVars = 0;
+    
     ENV_VARS_TO_EXPOSE.forEach(varName => {
         const value = process.env[varName];
-        if (value !== undefined) {
+        if (value !== undefined && value !== '') {
             config[varName] = value;
             console.log(`✅ ${varName}: ${value}`);
+            foundVars++;
         } else {
-            console.warn(`⚠️  ${varName}: no definida en .env`);
+            console.warn(`⚠️  ${varName}: no definida (usando fallback en router.js)`);
         }
     });
+
+    console.log(`\n📊 Variables encontradas: ${foundVars}/${ENV_VARS_TO_EXPOSE.length}`);
 
     // Generar contenido del archivo
     const fileContent = `/**

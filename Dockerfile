@@ -49,10 +49,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && node --version \
     && npm --version
 
-# Instalar dependencias npm y generar config.js
+# Instalar dependencias npm (sin generar config.js aún)
 RUN npm install --production \
-    && npm run build:config \
-    && echo "✅ Config.js generado desde .env"
+    && echo "✅ Dependencias npm instaladas"
 
 # Configurar permisos base
 RUN chown -R www-data:www-data /var/www/html \
@@ -83,6 +82,10 @@ COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Verificar configuración de Nginx antes de iniciar
 RUN nginx -t
 
+# Copiar entrypoint script
+COPY ./docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 # Exponer puerto y comando de inicio
 EXPOSE 3000
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
