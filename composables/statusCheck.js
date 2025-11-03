@@ -13,7 +13,7 @@
     try {
         // Intentar petición al backend
         const response = await AppRouter.get('/routes/web/status.php');
-
+R
         console.log('✅ Backend conectado correctamente');
         console.log('📦 Respuesta:', response);
 

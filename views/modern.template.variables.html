@@ -38,7 +38,7 @@
 
                 // PASO 3: Cargar statusCheck.js DESPUÉS de router
                 const statusCheckScript = document.createElement('script');
-                statusCheckScript.src = '../utils/statusCheck.js';
+                statusCheckScript.src = '../composables/statusCheck.js';
                 document.head.appendChild(statusCheckScript);
             };
             document.head.appendChild(routerScript);
