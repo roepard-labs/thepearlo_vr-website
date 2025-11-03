@@ -1,0 +1,184 @@
+{
+  "apps": [
+    {
+      "id": "homelab-monitor",
+      "name": "HomeLab Monitor",
+      "description": "Monitor en tiempo real de tu infraestructura HomeLab con visualización AR",
+      "version": "1.0.0",
+      "author": "Roepard Labs",
+      "icon": "bx-server",
+      "category": "monitoring",
+      "tags": ["monitoring", "ar", "homelab", "dashboard"],
+      "thumbnail": "/appstore/apps/homelab-monitor/thumbnail.jpg",
+      "screenshots": [
+        "/appstore/apps/homelab-monitor/screenshot1.jpg",
+        "/appstore/apps/homelab-monitor/screenshot2.jpg"
+      ],
+      "manifest": "/appstore/apps/homelab-monitor/manifest.json",
+      "entry": "/appstore/apps/homelab-monitor/index.html",
+      "size": "2.5 MB",
+      "downloads": 1247,
+      "rating": 4.8,
+      "featured": true,
+      "active": true,
+      "created_at": "2025-01-15",
+      "updated_at": "2025-01-20"
+    },
+    {
+      "id": "ar-server-viewer",
+      "name": "AR Server Viewer",
+      "description": "Visualiza tus servidores en 3D con realidad aumentada",
+      "version": "1.2.0",
+      "author": "Roepard Labs",
+      "icon": "bx-cube",
+      "category": "visualization",
+      "tags": ["ar", "3d", "visualization", "servers"],
+      "thumbnail": "/appstore/apps/ar-server-viewer/thumbnail.jpg",
+      "screenshots": [
+        "/appstore/apps/ar-server-viewer/screenshot1.jpg"
+      ],
+      "manifest": "/appstore/apps/ar-server-viewer/manifest.json",
+      "entry": "/appstore/apps/ar-server-viewer/index.html",
+      "size": "3.1 MB",
+      "downloads": 892,
+      "rating": 4.6,
+      "featured": true,
+      "active": true,
+      "created_at": "2025-01-10",
+      "updated_at": "2025-01-18"
+    },
+    {
+      "id": "network-topology",
+      "name": "Network Topology",
+      "description": "Visualización interactiva de la topología de tu red",
+      "version": "1.0.3",
+      "author": "Roepard Labs",
+      "icon": "bx-network-chart",
+      "category": "networking",
+      "tags": ["network", "topology", "visualization"],
+      "thumbnail": "/appstore/apps/network-topology/thumbnail.jpg",
+      "screenshots": [
+        "/appstore/apps/network-topology/screenshot1.jpg",
+        "/appstore/apps/network-topology/screenshot2.jpg",
+        "/appstore/apps/network-topology/screenshot3.jpg"
+      ],
+      "manifest": "/appstore/apps/network-topology/manifest.json",
+      "entry": "/appstore/apps/network-topology/index.html",
+      "size": "1.8 MB",
+      "downloads": 654,
+      "rating": 4.5,
+      "featured": false,
+      "active": true,
+      "created_at": "2025-01-05",
+      "updated_at": "2025-01-17"
+    },
+    {
+      "id": "container-manager",
+      "name": "Container Manager",
+      "description": "Gestiona tus contenedores Docker con una interfaz AR intuitiva",
+      "version": "2.0.0",
+      "author": "Roepard Labs",
+      "icon": "bxl-docker",
+      "category": "management",
+      "tags": ["docker", "containers", "management", "ar"],
+      "thumbnail": "/appstore/apps/container-manager/thumbnail.jpg",
+      "screenshots": [
+        "/appstore/apps/container-manager/screenshot1.jpg"
+      ],
+      "manifest": "/appstore/apps/container-manager/manifest.json",
+      "entry": "/appstore/apps/container-manager/index.html",
+      "size": "2.9 MB",
+      "downloads": 1089,
+      "rating": 4.9,
+      "featured": true,
+      "active": true,
+      "created_at": "2025-01-12",
+      "updated_at": "2025-01-22"
+    },
+    {
+      "id": "log-viewer-ar",
+      "name": "Log Viewer AR",
+      "description": "Visualiza logs de tus servicios en realidad aumentada",
+      "version": "1.1.0",
+      "author": "Roepard Labs",
+      "icon": "bx-file",
+      "category": "tools",
+      "tags": ["logs", "monitoring", "ar", "debugging"],
+      "thumbnail": "/appstore/apps/log-viewer-ar/thumbnail.jpg",
+      "screenshots": [
+        "/appstore/apps/log-viewer-ar/screenshot1.jpg",
+        "/appstore/apps/log-viewer-ar/screenshot2.jpg"
+      ],
+      "manifest": "/appstore/apps/log-viewer-ar/manifest.json",
+      "entry": "/appstore/apps/log-viewer-ar/index.html",
+      "size": "1.5 MB",
+      "downloads": 523,
+      "rating": 4.3,
+      "featured": false,
+      "active": true,
+      "created_at": "2025-01-08",
+      "updated_at": "2025-01-16"
+    },
+    {
+      "id": "metrics-dashboard",
+      "name": "Metrics Dashboard",
+      "description": "Dashboard de métricas con gráficas en 3D y AR",
+      "version": "1.3.0",
+      "author": "Roepard Labs",
+      "icon": "bx-bar-chart",
+      "category": "monitoring",
+      "tags": ["metrics", "dashboard", "charts", "3d"],
+      "thumbnail": "/appstore/apps/metrics-dashboard/thumbnail.jpg",
+      "screenshots": [
+        "/appstore/apps/metrics-dashboard/screenshot1.jpg"
+      ],
+      "manifest": "/appstore/apps/metrics-dashboard/manifest.json",
+      "entry": "/appstore/apps/metrics-dashboard/index.html",
+      "size": "2.2 MB",
+      "downloads": 876,
+      "rating": 4.7,
+      "featured": false,
+      "active": true,
+      "created_at": "2025-01-11",
+      "updated_at": "2025-01-19"
+    }
+  ],
+  "categories": [
+    {
+      "id": "monitoring",
+      "name": "Monitoreo",
+      "icon": "bx-pulse",
+      "description": "Aplicaciones para monitoreo de sistemas"
+    },
+    {
+      "id": "visualization",
+      "name": "Visualización",
+      "icon": "bx-show",
+      "description": "Herramientas de visualización AR/VR"
+    },
+    {
+      "id": "networking",
+      "name": "Redes",
+      "icon": "bx-network-chart",
+      "description": "Gestión y visualización de redes"
+    },
+    {
+      "id": "management",
+      "name": "Gestión",
+      "icon": "bx-cog",
+      "description": "Herramientas de gestión de infraestructura"
+    },
+    {
+      "id": "tools",
+      "name": "Herramientas",
+      "icon": "bx-wrench",
+      "description": "Utilidades y herramientas diversas"
+    }
+  ],
+  "meta": {
+    "version": "1.0.0",
+    "last_updated": "2025-01-22T10:30:00Z",
+    "total_apps": 6,
+    "total_downloads": 5281
+  }
+}

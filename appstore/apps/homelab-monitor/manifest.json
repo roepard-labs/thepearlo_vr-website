@@ -1,0 +1,56 @@
+{
+  "id": "homelab-monitor",
+  "name": "HomeLab Monitor",
+  "version": "1.0.0",
+  "description": "Monitor en tiempo real de tu infraestructura HomeLab con visualización AR",
+  "author": "Roepard Labs",
+  "author_url": "https://roepardlabs.com",
+  "icon": "bx-server",
+  "category": "monitoring",
+  "tags": ["monitoring", "ar", "homelab", "dashboard"],
+  
+  "entry": "index.html",
+  "thumbnail": "thumbnail.jpg",
+  "screenshots": [
+    "screenshot1.jpg",
+    "screenshot2.jpg"
+  ],
+  
+  "permissions": [
+    "network",
+    "storage",
+    "webxr"
+  ],
+  
+  "dependencies": {
+    "bootstrap": "5.3.0",
+    "axios": "latest",
+    "chart.js": "4.4.0"
+  },
+  
+  "webxr": {
+    "required": false,
+    "features": ["ar", "vr"],
+    "fallback": true
+  },
+  
+  "size": "2.5 MB",
+  "license": "MIT",
+  "repository": "https://github.com/roepard-labs/homelab-monitor",
+  "homepage": "https://thepearlodyssey.com/apps/homelab-monitor",
+  
+  "created_at": "2025-01-15T10:00:00Z",
+  "updated_at": "2025-01-20T15:30:00Z",
+  
+  "changelog": [
+    {
+      "version": "1.0.0",
+      "date": "2025-01-20",
+      "changes": [
+        "Lanzamiento inicial",
+        "Soporte para AR básico",
+        "Dashboard de monitoreo en tiempo real"
+      ]
+    }
+  ]
+}

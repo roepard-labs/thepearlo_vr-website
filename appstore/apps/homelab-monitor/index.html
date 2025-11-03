@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomeLab Monitor - AR</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Boxicons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <style>
+        :root {
+            --primary: #0088ff;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .monitor-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .monitor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-online {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-offline {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .server-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .progress-animated {
+            animation: progressAnimation 2s ease-in-out infinite;
+        }
+
+        @keyframes progressAnimation {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .ar-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .ar-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <div class="monitor-card text-center">
+            <h1 class="mb-3">
+                <i class='bx bx-server me-2' style="color: var(--primary);"></i>
+                HomeLab Monitor
+            </h1>
+            <p class="text-muted mb-3">Monitoreo en tiempo real de tu infraestructura</p>
+            <button class="ar-button" onclick="launchAR()">
+                <i class='bx bx-cube me-2'></i>
+                Activar Vista AR
+            </button>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class='bx bx-server' style="color: var(--primary);"></i>
+                    <div class="stat-number" id="serverCount">12</div>
+                    <div class="stat-label">Servidores</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class='bx bxl-docker' style="color: var(--primary);"></i>
+                    <div class="stat-number" id="containerCount">87</div>
+                    <div class="stat-label">Contenedores</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class='bx bx-chip' style="color: var(--warning);"></i>
+                    <div class="stat-number" id="cpuUsage">42%</div>
+                    <div class="stat-label">CPU Promedio</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <i class='bx bx-memory-card' style="color: var(--success);"></i>
+                    <div class="stat-number" id="memoryUsage">68%</div>
+                    <div class="stat-label">Memoria</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Servers List -->
+        <div class="monitor-card">
+            <h4 class="mb-4">
+                <i class='bx bx-list-ul me-2'></i>
+                Estado de Servidores
+            </h4>
+
+            <div id="serversList">
+                <!-- Servers populated by JS -->
+            </div>
+        </div>
+
+        <!-- Activity Monitor -->
+        <div class="monitor-card">
+            <h4 class="mb-4">
+                <i class='bx bx-pulse me-2'></i>
+                Monitor de Actividad
+            </h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="mb-2">CPU Global</label>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                            role="progressbar" style="width: 42%" id="cpuBar">42%</div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="mb-2">Memoria Global</label>
+                    <div class="progress" style="height: 25px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                            role="progressbar" style="width: 68%" id="memoryBar">68%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // ===================================
+        // DATOS DE EJEMPLO
+        // ===================================
+        const servers = [
+            { name: 'ProxmoxVE-01', status: 'online', cpu: 35, memory: 72, uptime: '15d 4h' },
+            { name: 'ProxmoxVE-02', status: 'online', cpu: 48, memory: 65, uptime: '15d 4h' },
+            { name: 'TrueNAS', status: 'online', cpu: 15, memory: 45, uptime: '30d 2h' },
+            { name: 'Docker-Host-01', status: 'warning', cpu: 78, memory: 82, uptime: '7d 12h' },
+            { name: 'K3s-Master', status: 'online', cpu: 42, memory: 68, uptime: '20d 8h' },
+            { name: 'K3s-Worker-01', status: 'online', cpu: 55, memory: 71, uptime: '20d 8h' }
+        ];
+
+        // ===================================
+        // RENDERIZAR SERVIDORES
+        // ===================================
+        function renderServers() {
+            const container = document.getElementById('serversList');
+            container.innerHTML = '';
+
+            servers.forEach(server => {
+                const statusClass = server.status === 'online' ? 'status-online' :
+                    server.status === 'warning' ? 'status-warning' : 'status-offline';
+
+                const statusText = server.status === 'online' ? 'En línea' :
+                    server.status === 'warning' ? 'Advertencia' : 'Fuera de línea';
+
+                const item = document.createElement('div');
+                item.className = 'server-item';
+                item.innerHTML = `
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class='bx bx-server me-2'></i>
+                            <strong>${server.name}</strong>
+                            <span class="status-badge ${statusClass} ms-2">${statusText}</span>
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <small class="text-muted">CPU: ${server.cpu}%</small>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-primary" style="width: ${server.cpu}%"></div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">RAM: ${server.memory}%</small>
+                                <div class="progress" style="height: 6px;">
+                                    <div class="progress-bar bg-success" style="width: ${server.memory}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-end ms-3">
+                        <small class="text-muted">Uptime</small><br>
+                        <strong>${server.uptime}</strong>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // ===================================
+        // ACTUALIZAR STATS
+        // ===================================
+        function updateStats() {
+            // Simular cambios aleatorios
+            const cpuChange = Math.floor(Math.random() * 10) - 5;
+            const memoryChange = Math.floor(Math.random() * 6) - 3;
+
+            let currentCpu = parseInt(document.getElementById('cpuUsage').textContent);
+            let currentMemory = parseInt(document.getElementById('memoryUsage').textContent);
+
+            currentCpu = Math.max(10, Math.min(90, currentCpu + cpuChange));
+            currentMemory = Math.max(30, Math.min(85, currentMemory + memoryChange));
+
+            document.getElementById('cpuUsage').textContent = currentCpu + '%';
+            document.getElementById('memoryUsage').textContent = currentMemory + '%';
+
+            document.getElementById('cpuBar').style.width = currentCpu + '%';
+            document.getElementById('cpuBar').textContent = currentCpu + '%';
+
+            document.getElementById('memoryBar').style.width = currentMemory + '%';
+            document.getElementById('memoryBar').textContent = currentMemory + '%';
+        }
+
+        // ===================================
+        // LANZAR AR
+        // ===================================
+        function launchAR() {
+            alert('🚀 Funcionalidad AR en desarrollo\n\nPronto podrás visualizar tus servidores en Realidad Aumentada usando WebXR!');
+        }
+
+        // ===================================
+        // INICIALIZAR
+        // ===================================
+        renderServers();
+
+        // Actualizar cada 3 segundos
+        setInterval(updateStats, 3000);
+
+        console.log('✅ HomeLab Monitor iniciado');
+        console.log('📊 Monitoreando', servers.length, 'servidores');
+    </script>
+
+</body>
+
+</html>

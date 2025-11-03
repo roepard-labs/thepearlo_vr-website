@@ -17,12 +17,57 @@
 - [Features](#-features)
 - [VR/AR Capabilities](#-vrar-capabilities)
 - [Tech Stack](#-tech-stack)
+- [🏗️ Architecture](#-architecture) ⭐ **NUEVO**
 - [Screenshots](#-screenshots)
 - [Installation](#-installation)
 - [Usage](#-usage)
 - [Documentation](#-documentation)
 - [Contributing](#-contributing)
 - [License](#-license)
+
+---
+
+## 🏗️ Architecture
+
+**¡IMPORTANTE!** Antes de desarrollar, consulta la documentación de arquitectura:
+
+### 📚 Documentación Esencial
+
+| Documento                                                       | Descripción                            | Ubicación |
+| --------------------------------------------------------------- | -------------------------------------- | --------- |
+| **[Arquitectura Funcional](../docs/ARQUITECTURA-FUNCIONAL.md)** | 📖 Documentación completa del proyecto | `/docs/`  |
+| **[Quick Start](../docs/QUICK-START-ARQUITECTURA.md)**          | 🚀 Guía rápida de 5 minutos            | `/docs/`  |
+| **[Mapa Visual](../docs/MAPA-VISUAL-ARQUITECTURA.md)**          | 🗺️ Diagramas y flujos                  | `/docs/`  |
+| **[Resumen](../docs/RESUMEN-ARQUITECTURA-FUNCIONAL.md)**        | 🎉 Resumen ejecutivo                   | `/docs/`  |
+
+### 🎯 Principios Clave
+
+```
+✅ PHP para estructura, JavaScript para interactividad
+✅ Dependencias centralizadas en npm-loader.js
+✅ CSS modular: Solo 3 archivos base (variables, base, main)
+✅ Sistema AppStore para aplicaciones AR/VR
+✅ Bootstrap 5 + AOS para animaciones
+```
+
+### 📂 Estructura del Proyecto
+
+```
+thepearlo_vr-website/
+├── composables/        # npm-loader.js (dependencias)
+├── css/                # variables.css, base.css, main.css
+├── views/              # Vistas PHP
+├── sections/           # Secciones reutilizables
+├── ui/                 # Componentes UI (header, footer)
+├── layout/             # AppLayout.php (layout principal)
+├── js/                 # JavaScript modular
+├── appstore/           # Sistema de aplicaciones AR/VR
+└── docs/               # Documentación completa
+```
+
+**📖 [Ver documentación completa](../docs/)**
+
+---
 
 ## 🌟 Overview
 

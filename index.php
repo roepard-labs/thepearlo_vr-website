@@ -1,121 +1,102 @@
-<!DOCTYPE html>
-<html lang="es">
+<?php
+/**
+ * Index.php - Punto de entrada principal
+ * HomeLab AR - Roepard Labs
+ * 
+ * Este archivo usa la arquitectura funcional con AppLayout
+ * para renderizar la vista home con todas las secciones.
+ */
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>roepard labs</title>
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-    <link rel="manifest" href="./site.webmanifest">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="roepard-login">
-    <meta name="apple-mobile-web-app-title" content="roepard-login">
-    <meta name="theme-color" content="#efdbbf">
-    <meta name="msapplication-navbutton-color" content="#efdbbf">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="msapplication-starturl" content="./index.html">
+// Activar reporte de errores para debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    <!-- Halfmoon.css and Themes -->
-    <link rel="stylesheet" href="./dist/halfmoon/css/halfmoon.min.css">
-    <link rel="stylesheet" href="./dist/halfmoon/css/cores/halfmoon.cores.css">
-    <!-- Boxicons.css -->
-    <link href="./dist/boxicons/fonts/basic/boxicons.min.css" rel="stylesheet">
-    <link href="./dist/boxicons/fonts/animations.min.css" rel="stylesheet">
-    <link href="./dist/boxicons/fonts/brands/boxicons-brands.min.css" rel="stylesheet">
-    <link href="./dist/boxicons/fonts/transformations.min.css" rel="stylesheet">
-    <!-- FontAwesome Kit -->
-    <script src="https://kit.fontawesome.com/c5f09bfc31.js" crossorigin="anonymous"></script>
-    <!-- SweetAlert2.css -->
-    <link href="./dist/sweetalert2/sweetalert2.min.css" rel="stylesheet">
-    <!-- LoadingBar.css -->
-    <link rel="stylesheet" type="text/css" href="./dist/loading-bar/loading-bar.min.css" />
-    <!-- Glightbox.css -->
-    <link rel="stylesheet" href="./dist/glightbox/dist/css/glightbox.min.css">
-    <!-- AOS.css -->
-    <link href="./dist/aos/aos.css" rel="stylesheet">
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="./dist/animate/css/animate.min.css">
-    <!-- DataTables.css -->
-    <link href="./dist/datatables/datatables.min.css" rel="stylesheet" />
-    <!-- Notyf.css -->
-    <link href="./dist/notyf/notyf.min.css" rel="stylesheet">
-    <!-- Tippy.css -->
-    <link href="./dist/tippy/animations/scale.css" rel="stylesheet">
-    <!-- PhotoSwipe.css -->
-    <link rel="stylesheet" href="./dist/photoswipe/dist/photoswipe.css">
-    <!-- Video.css -->
-    <link rel="stylesheet" href="./dist/video/video-js.css">
-    <!-- TomSelect.css -->
-    <link href="./dist/tom-select/tom-select.css" rel="stylesheet">
-    <!-- Flatpickr.css -->
-    <link href="./dist/flatpickr/flatpickr.min.css" rel="stylesheet">
-</head>
+// Iniciar sesión
+session_start();
 
-<body>
-    <!-- Spinner de carga -->
-    <main class="d-flex justify-content-center align-items-center vh-100">
-        <button class="btn btn-primary" type="button" disabled>
-            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            Loading...
-        </button>
-    </main>
+// Incluir el layout principal
+require_once __DIR__ . '/layout/AppLayout.php';
 
-    <!-- Popper.js -->
-    <script src="./dist/popper/popper.min.js"></script>
-    <!-- Bootstrap.js -->
-    <script src="./dist/bootstrap/js/bootstrap.min.js"></script>
-    <!-- AOS.js -->
-    <script src="./dist/aos/aos.js"></script>
-    <!-- Anime.js -->
-    <script src="./dist/anime/anime.iife.min.js"></script>
-    <!-- SweetAlert2.js -->
-    <script src="./dist/sweetalert2/sweetalert2.all.min.js"></script>
-    <!-- Chart.js -->
-    <script src="./dist/chart/chart.min.js"></script>
-    <!-- LoadingBar.js -->
-    <script type="text/javascript" src="./dist/loading-bar/loading-bar.min.js"></script>
-    <!-- Day.js -->
-    <script src="./dist/day/dayjs.min.js"></script>
-    <!-- Glightbox.js -->
-    <script src="./dist/glightbox/dist/js/glightbox.min.js"></script>
-    <!-- jQuery.js & Inputmask.js -->
-    <script src="./dist/jquery/jquery.min.js"></script>
-    <script src="./dist/inputmask/dist/jquery.inputmask.min.js"></script>
-    <!-- DataTables.js -->
-    <script src="./dist/datatables/datatables.min.js"></script>
-    <!-- Notyf.js -->
-    <script src="./dist/notyf/notyf.min.js"></script>
-    <!-- Tippy.js -->
-    <script src="./dist/tippy/tippy-bundle.umd.min.js"></script>
-    <!-- PhotoSwipe.js -->
-    <script type="module">
-        import PhotoSwipeLightbox from './dist/photoswipe/dist/photoswipe-lightbox.esm.min.js';
-        const lightbox = new PhotoSwipeLightbox({
-            gallery: '#my-gallery',
-            children: 'a',
-            pswpModule: () => import('./dist/photoswipe/dist/photoswipe.esm.min.js')
-        });
-        lightbox.init();
-    </script>
-    <!-- Video.js -->
-    <script src="./dist/video/video.min.js"></script>
-    <!-- TomSelect.js -->
-    <script src="./dist/tom-select/tom-select.complete.min.js"></script>
-    <!-- Flatpickr.js -->
-    <script src="./dist/flatpickr/flatpickr.min.js"></script>
-    <!-- Filepond.js -->
-    <script src="./dist/filepond/filepond.min.js"></script>
-    <script src="./dist/filepond/filepond.jquery.js"></script>
-    <script src="./dist/filepond/filepond-plugin-file-encode.js"></script>
+// ===================================
+// CONFIGURACIÓN DE LA PÁGINA
+// ===================================
+$pageConfig = [
+    'title' => 'HomeLab AR - Realidad Aumentada para tu HomeLab | Roepard Labs',
+    'description' => 'Visualiza y controla tu infraestructura HomeLab en realidad aumentada con tecnología WebXR. Monitoreo en tiempo real, gestión de servidores y contenedores.',
+    'keywords' => 'homelab, realidad aumentada, ar, webxr, infraestructura, dashboard, monitoreo, servidores, docker, kubernetes',
+    'author' => 'Roepard Labs',
+    'og_image' => '/assets/images/og-homelab-ar.jpg',
+    'og_type' => 'website',
+    'canonical' => 'https://thepearlodyssey.com/',
+    
+    // CSS adicionales específicos para home
+    'css' => [],
+    
+    // JavaScript adicionales
+    'js' => [
+        'js/main.js',      // Inicialización principal (AOS, theme toggle, etc)
+        'js/auth.js',      // Sistema de autenticación
+        'js/utils.js'      // Funciones utilitarias
+    ]
+];
 
-    <!-- Color Mode Toggler.js -->
-    <script src="./js/color-mode-toggler.js"></script>
+// ===================================
+// DATOS PARA LA VISTA
+// ===================================
+$pageData = [
+    // Usuario actual (si está autenticado)
+    'user' => $_SESSION['user'] ?? null,
+    
+    // Estadísticas para la sección stats
+    'stats' => [
+        [
+            'icon' => 'bx-server',
+            'number' => '12',
+            'label' => 'Servidores Activos'
+        ],
+        [
+            'icon' => 'bxl-docker',
+            'number' => '87',
+            'label' => 'Contenedores'
+        ],
+        [
+            'icon' => 'bx-data',
+            'number' => '45',
+            'label' => 'Servicios'
+        ],
+        [
+            'icon' => 'bx-trending-up',
+            'number' => '99.9%',
+            'label' => 'Uptime'
+        ]
+    ],
+    
+    // Características para la sección features
+    'features' => [
+        [
+            'icon' => 'bx-cube-alt',
+            'title' => 'Visualización AR',
+            'description' => 'Visualiza tu infraestructura en realidad aumentada con WebXR'
+        ],
+        [
+            'icon' => 'bx-time-five',
+            'title' => 'Tiempo Real',
+            'description' => 'Monitoreo en tiempo real de tus servicios y recursos'
+        ],
+        [
+            'icon' => 'bx-shield-alt-2',
+            'title' => 'Seguro',
+            'description' => 'Autenticación robusta y cifrado de extremo a extremo'
+        ],
+        [
+            'icon' => 'bx-mobile',
+            'title' => 'Multiplataforma',
+            'description' => 'Funciona en desktop, móvil y dispositivos AR/VR'
+        ]
+    ]
+];
 
-    <!-- Index.js -->
-    <script src="./js/index.js"></script>
-</body>
-
-</html>
+// ===================================
+// RENDERIZAR LA VISTA HOME
+// ===================================
+AppLayout::render('home', $pageData, $pageConfig);
