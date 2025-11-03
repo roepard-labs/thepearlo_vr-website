@@ -79,7 +79,9 @@ class Router {
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            withCredentials: true // Para enviar cookies de sesión
+            // ⚠️ withCredentials debe ser false cuando CORS usa wildcard (*)
+            // Si necesitas cookies, el backend debe especificar el origen exacto
+            withCredentials: false
         });
 
         // Interceptor de request (para logging y modificaciones)

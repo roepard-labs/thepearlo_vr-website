@@ -25,8 +25,7 @@ R
         if (error.code === 'ERR_NETWORK') {
             console.warn('💡 Soluciones posibles:');
             console.warn('   1. Verifica que el backend esté corriendo en:', AppRouter.baseURL);
-            console.warn('   2. Ejecuta: cd ../thepearlo_vr-backend && php -S localhost:3000');
-            console.warn('   3. Verifica que la ruta /routes/web/status.php exista');
+            console.warn('   2. Verifica que la ruta /routes/web/status.php exista');
         }
 
         // No lanzar el error para no detener la carga de la página
