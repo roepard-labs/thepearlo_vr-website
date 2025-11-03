@@ -1,16 +1,65 @@
 <?php
 /**
- * Página de Error 404 - No Encontrado
+ * Página de Errores 40x - Errores del Cliente
  * HomeLab AR - Roepard Labs
  * 
- * Esta página se muestra cuando un recurso no se encuentra
+ * Esta página maneja todos los errores 40x (errores del cliente)
  */
 
 require_once __DIR__ . '/layout/AppLayout.php';
 
-// Obtener la URL solicitada
+// Obtener información del error
+$error_code = $_SERVER['REDIRECT_STATUS'] ?? '404';
 $requested_url = $_SERVER['REQUEST_URI'] ?? '/';
 $referer = $_SERVER['HTTP_REFERER'] ?? '/';
+
+// Definir tipos de errores 40x
+$error_types = [
+    '400' => [
+        'title' => 'Solicitud Incorrecta',
+        'description' => 'La solicitud no pudo ser entendida por el servidor debido a una sintaxis incorrecta.',
+        'icon' => 'bx-error-alt',
+        'color' => 'warning'
+    ],
+    '401' => [
+        'title' => 'No Autorizado',
+        'description' => 'Necesitas autenticarte para acceder a este recurso.',
+        'icon' => 'bx-lock-alt',
+        'color' => 'warning'
+    ],
+    '403' => [
+        'title' => 'Acceso Prohibido',
+        'description' => 'No tienes permisos para acceder a este recurso.',
+        'icon' => 'bx-block',
+        'color' => 'danger'
+    ],
+    '404' => [
+        'title' => 'Página No Encontrada',
+        'description' => 'La página que estás buscando no existe o ha sido movida.',
+        'icon' => 'bx-error-circle',
+        'color' => 'primary'
+    ],
+    '405' => [
+        'title' => 'Método No Permitido',
+        'description' => 'El método de solicitud no está permitido para este recurso.',
+        'icon' => 'bx-block',
+        'color' => 'warning'
+    ],
+    '408' => [
+        'title' => 'Tiempo de Espera Agotado',
+        'description' => 'El servidor agotó el tiempo de espera para tu solicitud.',
+        'icon' => 'bx-time',
+        'color' => 'warning'
+    ],
+    '429' => [
+        'title' => 'Demasiadas Solicitudes',
+        'description' => 'Has realizado demasiadas solicitudes en poco tiempo. Por favor, espera un momento.',
+        'icon' => 'bx-traffic-cone',
+        'color' => 'warning'
+    ]
+];
+
+$error_info = $error_types[$error_code] ?? $error_types['404'];
 
 ob_start();
 ?>
@@ -39,11 +88,11 @@ ob_start();
                 <!-- Error Icon -->
                 <div class="mb-4" data-aos="zoom-in" data-aos-duration="800">
                     <div class="d-inline-block position-relative">
-                        <i class="bx bx-error-circle"
-                            style="font-size: 120px; color: var(--bs-primary); opacity: 0.9;"></i>
+                        <i class="bx <?php echo $error_info['icon']; ?>"
+                            style="font-size: 120px; color: var(--bs-<?php echo $error_info['color']; ?>); opacity: 0.9;"></i>
                         <div class="position-absolute top-50 start-50 translate-middle">
-                            <span class="badge bg-primary"
-                                style="font-size: 2rem; font-weight: 800; padding: 1rem 1.5rem;">404</span>
+                            <span class="badge bg-<?php echo $error_info['color']; ?>"
+                                style="font-size: 2rem; font-weight: 800; padding: 1rem 1.5rem;"><?php echo $error_code; ?></span>
                         </div>
                     </div>
                 </div>
@@ -51,23 +100,52 @@ ob_start();
                 <!-- Error Title -->
                 <h1 class="display-3 fw-bold mb-3" data-aos="fade-up" data-aos-delay="100"
                     style="color: var(--bs-heading-color);">
-                    Página No Encontrada
+                    <?php echo $error_info['title']; ?>
                 </h1>
 
                 <!-- Error Description -->
                 <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200" style="color: var(--bs-body-color);">
-                    Lo sentimos, la página que estás buscando no existe o ha sido movida.
+                    <?php echo $error_info['description']; ?>
                 </p>
 
-                <!-- Requested URL Info -->
-                <?php if ($requested_url !== '/'): ?>
-                    <div class="custom-alert custom-alert-info mb-4" data-aos="fade-up" data-aos-delay="300">
-                        <i class="bx bx-info-circle me-2"></i>
-                        <div>
-                            <strong>URL solicitada:</strong>
-                            <code class="ms-2"
-                                style="color: var(--bs-body-color);"><?php echo htmlspecialchars($requested_url); ?></code>
+                <!-- Error Details -->
+                <div class="custom-alert custom-alert-info mb-4" data-aos="fade-up" data-aos-delay="300">
+                    <i class="bx bx-info-circle me-2"></i>
+                    <div class="text-start">
+                        <strong class="d-block mb-2">Detalles del Error:</strong>
+                        <div class="d-flex flex-column gap-1">
+                            <small>
+                                <strong>Código:</strong>
+                                <code class="ms-2"><?php echo $error_code; ?></code>
+                            </small>
+                            <small>
+                                <strong>URL:</strong>
+                                <code class="ms-2"><?php echo htmlspecialchars($requested_url); ?></code>
+                            </small>
+                            <small>
+                                <strong>Método:</strong>
+                                <code class="ms-2"><?php echo $_SERVER['REQUEST_METHOD'] ?? 'GET'; ?></code>
+                            </small>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Action Suggestions based on error type -->
+                <?php if ($error_code === '401'): ?>
+                    <div class="alert alert-warning mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
+                        <i class="bx bx-info-circle me-2"></i>
+                        <strong>Sugerencia:</strong> Intenta iniciar sesión para acceder a este contenido.
+                    </div>
+                <?php elseif ($error_code === '403'): ?>
+                    <div class="alert alert-danger mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
+                        <i class="bx bx-shield-x me-2"></i>
+                        <strong>Acceso Denegado:</strong> No tienes los permisos necesarios. Contacta al administrador si
+                        crees que deberías tener acceso.
+                    </div>
+                <?php elseif ($error_code === '429'): ?>
+                    <div class="alert alert-warning mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
+                        <i class="bx bx-time me-2"></i>
+                        <strong>Límite de Solicitudes:</strong> Por favor, espera unos minutos antes de intentar nuevamente.
                     </div>
                 <?php endif; ?>
 
@@ -205,8 +283,8 @@ $content = ob_get_clean();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="La página que buscas no existe">
-    <title>404 - Página No Encontrada | HomeLab AR</title>
+    <meta name="description" content="<?php echo $error_info['description']; ?>">
+    <title><?php echo $error_code; ?> - <?php echo $error_info['title']; ?> | HomeLab AR</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="/assets/favicon.png">

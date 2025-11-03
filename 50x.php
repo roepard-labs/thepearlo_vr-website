@@ -12,12 +12,62 @@ require_once __DIR__ . '/layout/AppLayout.php';
 $error_code = $_SERVER['REDIRECT_STATUS'] ?? '500';
 $requested_url = $_SERVER['REQUEST_URI'] ?? '/';
 
-// Determinar tipo de error
+// Determinar tipo de error con descripciones completas
 $error_types = [
-    '500' => ['title' => 'Error Interno del Servidor', 'icon' => 'bx-error', 'color' => 'danger'],
-    '502' => ['title' => 'Bad Gateway', 'icon' => 'bx-cloud-off', 'color' => 'warning'],
-    '503' => ['title' => 'Servicio No Disponible', 'icon' => 'bx-time', 'color' => 'warning'],
-    '504' => ['title' => 'Gateway Timeout', 'icon' => 'bx-hourglass', 'color' => 'warning']
+    '500' => [
+        'title' => 'Error Interno del Servidor',
+        'description' => 'Algo salió mal en nuestros servidores. Ya estamos trabajando en resolverlo.',
+        'icon' => 'bx-error',
+        'color' => 'danger'
+    ],
+    '501' => [
+        'title' => 'No Implementado',
+        'description' => 'El servidor no soporta la funcionalidad requerida para completar la solicitud.',
+        'icon' => 'bx-wrench',
+        'color' => 'warning'
+    ],
+    '502' => [
+        'title' => 'Bad Gateway',
+        'description' => 'El servidor actuando como gateway recibió una respuesta inválida del servidor upstream.',
+        'icon' => 'bx-cloud-off',
+        'color' => 'warning'
+    ],
+    '503' => [
+        'title' => 'Servicio No Disponible',
+        'description' => 'El servicio está temporalmente fuera de línea por mantenimiento. Por favor, inténtalo de nuevo en unos minutos.',
+        'icon' => 'bx-time',
+        'color' => 'warning'
+    ],
+    '504' => [
+        'title' => 'Gateway Timeout',
+        'description' => 'El servidor no recibió una respuesta a tiempo del servidor upstream.',
+        'icon' => 'bx-hourglass',
+        'color' => 'warning'
+    ],
+    '505' => [
+        'title' => 'Versión HTTP No Soportada',
+        'description' => 'El servidor no soporta la versión del protocolo HTTP usada en la solicitud.',
+        'icon' => 'bx-no-entry',
+        'color' => 'danger'
+    ],
+    '507' => [
+        'title' => 'Almacenamiento Insuficiente',
+        'description' => 'El servidor no tiene suficiente espacio de almacenamiento para completar la solicitud.',
+        'icon' => 'bx-hdd',
+        'color' => 'danger'
+    ],
+    '508' => [
+        'title' => 'Bucle Detectado',
+        'description' => 'El servidor detectó un bucle infinito al procesar la solicitud.',
+        'icon' => 'bx-infinite',
+        'color' => 'danger'
+    ],
+    '511' => [
+        'title' => 'Autenticación de Red Requerida',
+        'description' => 'El cliente necesita autenticarse para obtener acceso a la red.',
+        'icon' => 'bx-wifi-off',
+        'color' => 'warning'
+    ]
 ];
 
 $error_info = $error_types[$error_code] ?? $error_types['500'];
@@ -66,14 +116,7 @@ ob_start();
 
                 <!-- Error Description -->
                 <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200" style="color: var(--bs-body-color);">
-                    <?php if ($error_code === '503'): ?>
-                        El servicio está temporalmente fuera de línea por mantenimiento. Por favor, inténtalo de nuevo en
-                        unos minutos.
-                    <?php elseif ($error_code === '502' || $error_code === '504'): ?>
-                        No pudimos conectar con el servidor backend. Por favor, inténtalo de nuevo más tarde.
-                    <?php else: ?>
-                        Algo salió mal en nuestros servidores. Ya estamos trabajando en resolverlo.
-                    <?php endif; ?>
+                    <?php echo $error_info['description']; ?>
                 </p>
 
                 <!-- Error Details -->
