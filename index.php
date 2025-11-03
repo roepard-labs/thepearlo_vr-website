@@ -22,12 +22,12 @@ require_once __DIR__ . '/layout/AppLayout.php';
 // ===================================
 $pageConfig = [
     'title' => 'HomeLab AR - Realidad Aumentada para tu HomeLab | Roepard Labs',
-    'description' => 'Visualiza y controla tu infraestructura HomeLab en realidad aumentada con tecnología WebXR. Monitoreo en tiempo real, gestión de servidores y contenedores.',
-    'keywords' => 'homelab, realidad aumentada, ar, webxr, infraestructura, dashboard, monitoreo, servidores, docker, kubernetes',
+    'description' => 'Visualiza y controla tu infraestructura HomeLab en realidad aumentada con tecnología WebXR. Monitoreo en tiempo real, gestión de apps y servicios.',
+    'keywords' => 'homelab, realidad aumentada, ar, webxr, infraestructura, dashboard, monitoreo, servidores',
     'author' => 'Roepard Labs',
-    'og_image' => '/assets/images/og-homelab-ar.jpg',
+    'og_image' => '/assets/images/og-homelab-ar.jpeg',
     'og_type' => 'website',
-    'canonical' => 'https://thepearlodyssey.com/',
+    'canonical' => 'https://website.roepard.online/',
     
     // CSS adicionales específicos para home
     'css' => [],
