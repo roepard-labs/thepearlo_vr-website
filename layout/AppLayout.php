@@ -6,29 +6,30 @@
  * Este layout maneja la estructura HTML base y la carga de dependencias
  */
 
-class AppLayout {
-    
+class AppLayout
+{
+
     // ===================================
     // CONFIGURACIÓN DE DEPENDENCIAS
     // ===================================
-    
+
     /**
      * CSS Core (siempre se cargan)
      */
     private static $cssCore = ['bootstrap', 'boxicons', 'aos', 'animate'];
-    
+
     /**
      * JS Core (siempre se cargan)
      */
     private static $jsCore = ['axios', 'jquery', 'bootstrap', 'aos'];
-    
+
     /**
      * Mapeo de vistas a sus dependencias
      */
     private static $viewDependencies = [
         'home' => [
-            'css' => ['glightbox'],
-            'js' => ['glightbox', 'chart', 'anime']
+            'css' => ['glightbox', 'sweetalert2'],
+            'js' => ['glightbox', 'chart', 'anime', 'sweetalert2']
         ],
         'homelab' => [
             'css' => [],
@@ -43,11 +44,11 @@ class AppLayout {
             'js' => ['sweetalert2']
         ]
     ];
-    
+
     // ===================================
     // MÉTODOS PRINCIPALES
     // ===================================
-    
+
     /**
      * Renderiza el layout completo
      * 
@@ -55,7 +56,8 @@ class AppLayout {
      * @param array $data Datos para la vista
      * @param array $config Configuración adicional
      */
-    public static function render($view, $data = [], $config = []) {
+    public static function render($view, $data = [], $config = [])
+    {
         // Configuración por defecto
         $config = array_merge([
             'title' => 'HomeLab AR',
@@ -66,95 +68,98 @@ class AppLayout {
             'additionalCss' => [],
             'additionalJs' => []
         ], $config);
-        
+
         // Obtener dependencias de la vista
         $viewDeps = self::$viewDependencies[$view] ?? ['css' => [], 'js' => []];
-        
+
         // Combinar dependencias
         $allCss = array_merge(
             self::$cssCore,
             $viewDeps['css'],
             $config['additionalCss']
         );
-        
+
         $allJs = array_merge(
             self::$jsCore,
             $viewDeps['js'],
             $config['additionalJs']
         );
-        
+
         // Extraer datos para usar en la vista
         extract($data);
-        
+
         // Renderizar directamente sin buffer
         ?>
-<!DOCTYPE html>
-<html lang="es" data-bs-theme="light">
+        <!DOCTYPE html>
+        <html lang="es" data-bs-theme="light">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo htmlspecialchars($config['description']); ?>">
-    <title><?php echo htmlspecialchars($config['title']); ?></title>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta name="description" content="<?php echo htmlspecialchars($config['description']); ?>">
+            <title><?php echo htmlspecialchars($config['title']); ?></title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/favicon.png">
+            <!-- Favicon -->
+            <link rel="icon" type="image/png" href="/assets/favicon.png">
 
-    <!-- CSS Base del Proyecto -->
-    <link rel="stylesheet" href="/css/variables.css">
-    <link rel="stylesheet" href="/css/base.css">
-    <link rel="stylesheet" href="/css/main.css">
+            <!-- CSS Base del Proyecto -->
+            <link rel="stylesheet" href="/css/variables.css">
+            <link rel="stylesheet" href="/css/base.css">
+            <link rel="stylesheet" href="/css/main.css">
 
-    <!-- CSS Dependencies -->
-    <?php self::renderCssLinks($allCss); ?>
+            <!-- CSS Dependencies -->
+            <?php self::renderCssLinks($allCss); ?>
 
-    <!-- CSS Específico de la Vista -->
-    <?php if (file_exists(__DIR__ . "/../css/{$view}.css")): ?>
-    <link rel="stylesheet" href="/css/<?php echo $view; ?>.css">
-    <?php endif; ?>
-</head>
+            <!-- CSS Específico de la Vista -->
+            <?php if (file_exists(__DIR__ . "/../css/{$view}.css")): ?>
+                <link rel="stylesheet" href="/css/<?php echo $view; ?>.css">
+            <?php endif; ?>
+        </head>
 
-<body class="<?php echo htmlspecialchars($config['bodyClass']); ?>">
+        <body class="<?php echo htmlspecialchars($config['bodyClass']); ?>">
 
-    <?php if ($config['includeHeader']): ?>
-    <?php self::includeComponent('ui/header.ui.php', $data); ?>
-    <?php endif; ?>
+            <?php if ($config['includeHeader']): ?>
+                <?php self::includeComponent('ui/header.ui.php', $data); ?>
+            <?php endif; ?>
 
-    <main id="main-content">
-        <?php self::includeView($view, $data); ?>
-    </main>
+            <main id="main-content">
+                <?php self::includeView($view, $data); ?>
+            </main>
 
-    <?php if ($config['includeFooter']): ?>
-    <?php self::includeComponent('ui/footer.ui.php', $data); ?>
-    <?php endif; ?>
+            <?php if ($config['includeFooter']): ?>
+                <?php self::includeComponent('ui/footer.ui.php', $data); ?>
+            <?php endif; ?>
 
-    <!-- NPM Loader (SIEMPRE primero) -->
-    <script src="/composables/npm-loader.js"></script>
+            <!-- NPM Loader (SIEMPRE primero) -->
+            <script src="/composables/npm-loader.js"></script>
 
-    <!-- Config & Router -->
-    <script src="/composables/config.js"></script>
-    <script src="/composables/router.js"></script>
+            <!-- Config & Router -->
+            <script src="/composables/config.js"></script>
+            <script src="/composables/router.js"></script>
 
-    <!-- JavaScript Dependencies -->
-    <?php self::renderJsScripts($allJs); ?>
+            <!-- Backend Status Check -->
+            <script src="/composables/statusCheck.js"></script>
 
-    <!-- JavaScript Específico de la Vista -->
-    <?php if (file_exists(__DIR__ . "/../js/{$view}.js")): ?>
-    <script src="/js/<?php echo $view; ?>.js"></script>
-    <?php endif; ?>
+            <!-- JavaScript Dependencies -->
+            <?php self::renderJsScripts($allJs); ?>
 
-    <!-- Main App JS -->
-    <script src="/js/main.js"></script>
-</body>
+            <!-- JavaScript Específico de la Vista -->
+            <?php if (file_exists(__DIR__ . "/../js/{$view}.js")): ?>
+                <script src="/js/<?php echo $view; ?>.js"></script>
+            <?php endif; ?>
 
-</html>
-<?php
+            <!-- Main App JS -->
+            <script src="/js/main.js"></script>
+        </body>
+
+        </html>
+        <?php
     }
-    
+
     // ===================================
     // MÉTODOS AUXILIARES
     // ===================================
-    
+
     /**
      * Mapeo de nombres a rutas CSS en node_modules
      */
@@ -169,7 +174,7 @@ class AppLayout {
         'datatables' => '/node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css',
         'datatablesResponsive' => '/node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css'
     ];
-    
+
     /**
      * Mapeo de nombres a rutas JS en node_modules
      */
@@ -188,49 +193,53 @@ class AppLayout {
         'datatablesBS5' => '/node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js',
         'datatablesResponsive' => '/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js'
     ];
-    
+
     /**
      * Renderiza links CSS
      */
-    private static function renderCssLinks($cssArray) {
+    private static function renderCssLinks($cssArray)
+    {
         foreach ($cssArray as $cssName) {
             $path = self::$cssMap[$cssName] ?? "/css/{$cssName}.css";
             echo "    <link rel=\"stylesheet\" href=\"{$path}\">\n";
         }
     }
-    
+
     /**
      * Renderiza scripts JS
      */
-    private static function renderJsScripts($jsArray) {
+    private static function renderJsScripts($jsArray)
+    {
         foreach ($jsArray as $jsName) {
             $path = self::$jsMap[$jsName] ?? "/js/{$jsName}.js";
             echo "    <script src=\"{$path}\"></script>\n";
         }
     }
 
-/**
-* Incluye una vista
-*/
-private static function includeView($view, $data) {
-$viewPath = __DIR__ . "/../views/{$view}.view.php";
-if (file_exists($viewPath)) {
-extract($data);
-include $viewPath;
-} else {
-echo "
-<!-- Vista no encontrada: {$view} -->";
-}
-}
+    /**
+     * Incluye una vista
+     */
+    private static function includeView($view, $data)
+    {
+        $viewPath = __DIR__ . "/../views/{$view}.view.php";
+        if (file_exists($viewPath)) {
+            extract($data);
+            include $viewPath;
+        } else {
+            echo "
+    <!-- Vista no encontrada: {$view} -->";
+        }
+    }
 
-/**
-* Incluye un componente
-*/
-private static function includeComponent($component, $data = []) {
-$componentPath = __DIR__ . "/../{$component}";
-if (file_exists($componentPath)) {
-extract($data);
-include $componentPath;
-}
-}
+    /**
+     * Incluye un componente
+     */
+    private static function includeComponent($component, $data = [])
+    {
+        $componentPath = __DIR__ . "/../{$component}";
+        if (file_exists($componentPath)) {
+            extract($data);
+            include $componentPath;
+        }
+    }
 }
