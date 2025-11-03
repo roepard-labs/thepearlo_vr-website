@@ -38,7 +38,7 @@ function generateConfig() {
     // Leer variables de entorno (del sistema O del archivo .env)
     const config = {};
     let foundVars = 0;
-    
+
     ENV_VARS_TO_EXPOSE.forEach(varName => {
         const value = process.env[varName];
         if (value !== undefined && value !== '') {
@@ -73,9 +73,10 @@ console.log('🏷️  App Name:', window.ENV_CONFIG.APP_NAME);
         fs.writeFileSync(OUTPUT_FILE, fileContent, 'utf8');
         console.log(`✅ Archivo generado: ${OUTPUT_FILE}`);
         console.log('');
-        console.log('📝 Recuerda incluir en tu HTML:');
-        console.log('   <script src="../js/config.js"></script>');
-        console.log('   <script src="../js/router.js"></script>');
+        console.log('📝 Incluir en HTML antes de router.js:');
+        console.log('   <script src="../composables/npm-loader.js"></script>');
+        console.log('   <script src="../composables/config.js"></script>');
+        console.log('   <!-- Luego cargar Axios y router.js -->');
     } catch (error) {
         console.error('❌ Error al escribir archivo:', error);
         process.exit(1);
