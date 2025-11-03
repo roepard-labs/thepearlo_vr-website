@@ -61,14 +61,14 @@ ob_start();
 
                 <!-- Requested URL Info -->
                 <?php if ($requested_url !== '/'): ?>
-                <div class="custom-alert custom-alert-info mb-4" data-aos="fade-up" data-aos-delay="300">
-                    <i class="bx bx-info-circle me-2"></i>
-                    <div>
-                        <strong>URL solicitada:</strong>
-                        <code class="ms-2"
-                            style="color: var(--bs-body-color);"><?php echo htmlspecialchars($requested_url); ?></code>
+                    <div class="custom-alert custom-alert-info mb-4" data-aos="fade-up" data-aos-delay="300">
+                        <i class="bx bx-info-circle me-2"></i>
+                        <div>
+                            <strong>URL solicitada:</strong>
+                            <code class="ms-2"
+                                style="color: var(--bs-body-color);"><?php echo htmlspecialchars($requested_url); ?></code>
+                        </div>
                     </div>
-                </div>
                 <?php endif; ?>
 
                 <!-- Action Buttons -->
@@ -80,10 +80,10 @@ ob_start();
                     </a>
 
                     <?php if ($referer && strpos($referer, $_SERVER['HTTP_HOST']) !== false): ?>
-                    <button onclick="window.history.back()" class="btn btn-outline-primary btn-lg px-4">
-                        <i class="bx bx-arrow-back me-2"></i>
-                        Página Anterior
-                    </button>
+                        <button onclick="window.history.back()" class="btn btn-outline-primary btn-lg px-4">
+                            <i class="bx bx-arrow-back me-2"></i>
+                            Página Anterior
+                        </button>
                     <?php endif; ?>
                 </div>
 
@@ -165,58 +165,108 @@ ob_start();
 </section>
 
 <style>
-.hover-card {
-    transition: all var(--transition-base);
-}
+    .hover-card {
+        transition: all var(--transition-base);
+    }
 
-.hover-card:hover {
-    background: var(--bs-tertiary-bg);
-    transform: translateX(5px);
-}
+    .hover-card:hover {
+        background: var(--bs-tertiary-bg);
+        transform: translateX(5px);
+    }
 
-.custom-alert {
-    display: flex;
-    align-items: flex-start;
-    padding: 1rem 1.5rem;
-    border-radius: var(--radius-md);
-    border-left: 4px solid var(--color-info);
-    background: rgba(23, 162, 184, 0.1);
-}
+    .custom-alert {
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        border-left: 4px solid var(--color-info);
+        background: rgba(23, 162, 184, 0.1);
+    }
 
-.custom-alert i {
-    font-size: 1.5rem;
-    color: var(--color-info);
-}
+    .custom-alert i {
+        font-size: 1.5rem;
+        color: var(--color-info);
+    }
 
-code {
-    padding: 0.25rem 0.5rem;
-    background: var(--bs-tertiary-bg);
-    border-radius: var(--radius-sm);
-    font-size: 0.875rem;
-}
+    code {
+        padding: 0.25rem 0.5rem;
+        background: var(--bs-tertiary-bg);
+        border-radius: var(--radius-sm);
+        font-size: 0.875rem;
+    }
 </style>
 
 <?php
 $content = ob_get_clean();
-
-// Crear vista temporal inline
-$viewFile = __DIR__ . '/views/error404.temp.php';
-file_put_contents($viewFile, $content);
-
-try {
-    AppLayout::render('error404.temp', [], [
-        'title' => '404 - Página No Encontrada | HomeLab AR',
-        'description' => 'La página que buscas no existe',
-        'includeHeader' => true,
-        'includeFooter' => true,
-        'bodyClass' => 'error-page-body',
-        'additionalCss' => ['aos'],
-        'additionalJs' => ['aos']
-    ]);
-} finally {
-    // Limpiar archivo temporal
-    if (file_exists($viewFile)) {
-        @unlink($viewFile);
-    }
-}
 ?>
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="auto">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="La página que buscas no existe">
+    <title>404 - Página No Encontrada | HomeLab AR</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+
+    <!-- CSS Base del Proyecto -->
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- Bootstrap 5 -->
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Boxicons -->
+    <link href="/node_modules/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- AOS -->
+    <link href="/node_modules/aos/dist/aos.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link href="/node_modules/animate.css/animate.min.css" rel="stylesheet">
+</head>
+
+<body class="error-page-body">
+
+    <?php
+    // Incluir header
+    if (file_exists(__DIR__ . '/ui/header.ui.php')) {
+        include __DIR__ . '/ui/header.ui.php';
+    }
+    ?>
+
+    <main id="main-content">
+        <?php echo $content; ?>
+    </main>
+
+    <?php
+    // Incluir footer
+    if (file_exists(__DIR__ . '/ui/footer.ui.php')) {
+        include __DIR__ . '/ui/footer.ui.php';
+    }
+    ?>
+
+    <!-- JavaScript Core -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- AOS -->
+    <script src="/node_modules/aos/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
+
+    <!-- Color Mode Toggler -->
+    <script src="/js/color-mode-toggler.js"></script>
+</body>
+
+</html>

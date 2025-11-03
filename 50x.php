@@ -321,25 +321,81 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-
-// Crear vista temporal inline
-$viewFile = __DIR__ . '/views/error50x.temp.php';
-file_put_contents($viewFile, $content);
-
-try {
-    AppLayout::render('error50x.temp', [], [
-        'title' => $error_code . ' - Error del Servidor | HomeLab AR',
-        'description' => 'Error interno del servidor',
-        'includeHeader' => true,
-        'includeFooter' => true,
-        'bodyClass' => 'error-page-body',
-        'additionalCss' => ['aos', 'notyf'],
-        'additionalJs' => ['aos', 'notyf']
-    ]);
-} finally {
-    // Limpiar archivo temporal
-    if (file_exists($viewFile)) {
-        @unlink($viewFile);
-    }
-}
 ?>
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="auto">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Error interno del servidor">
+    <title><?php echo $error_code; ?> - Error del Servidor | HomeLab AR</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
+
+    <!-- CSS Base del Proyecto -->
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- Bootstrap 5 -->
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Boxicons -->
+    <link href="/node_modules/boxicons/css/boxicons.min.css" rel="stylesheet">
+
+    <!-- AOS -->
+    <link href="/node_modules/aos/dist/aos.css" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link href="/node_modules/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Notyf -->
+    <link href="/node_modules/notyf/notyf.min.css" rel="stylesheet">
+</head>
+
+<body class="error-page-body">
+
+    <?php
+    // Incluir header
+    if (file_exists(__DIR__ . '/ui/header.ui.php')) {
+        include __DIR__ . '/ui/header.ui.php';
+    }
+    ?>
+
+    <main id="main-content">
+        <?php echo $content; ?>
+    </main>
+
+    <?php
+    // Incluir footer
+    if (file_exists(__DIR__ . '/ui/footer.ui.php')) {
+        include __DIR__ . '/ui/footer.ui.php';
+    }
+    ?>
+
+    <!-- JavaScript Core -->
+    <script src="/node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- AOS -->
+    <script src="/node_modules/aos/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            mirror: false
+        });
+    </script>
+
+    <!-- Notyf -->
+    <script src="/node_modules/notyf/notyf.min.js"></script>
+
+    <!-- Color Mode Toggler -->
+    <script src="/js/color-mode-toggler.js"></script>
+</body>
+
+</html>
