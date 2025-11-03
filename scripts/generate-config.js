@@ -25,7 +25,7 @@ const ENV_VARS_TO_EXPOSE = [
     'APP_ENV'
 ];
 
-const OUTPUT_FILE = path.join(__dirname, '../js/config.js');
+const OUTPUT_FILE = path.join(__dirname, '../composables/config.js');
 
 // ============================================
 // GENERAR CONFIG.JS

@@ -13,19 +13,38 @@
     <!-- ============================================ -->
     <!-- NPM LOADER CONFIGURATION -->
     <!-- ============================================ -->
-    <script src="../js/npm-loader.js"></script>
+    <script src="../composables/npm-loader.js"></script>
 
     <!-- ============================================ -->
     <!-- ENV CONFIG (Generated from .env) -->
     <!-- ============================================ -->
-    <script src="../js/config.js"></script>
+    <script src="../composables/config.js"></script>
 
     <!-- ============================================ -->
-    <!-- API ROUTER CONFIGURATION -->
+    <!-- ⚠️ IMPORTANTE: Cargar Axios → Router → StatusCheck -->
     <!-- ============================================ -->
-    <script src="../js/router.js"></script>
+    <script>
+        // PASO 1: Cargar Axios
+        const axiosScript = document.createElement('script');
+        axiosScript.src = getJSPath('axios');
+        axiosScript.onload = function () {
+            console.log('✅ Axios cargado correctamente');
 
-    <script src="../js/statusCheck.js"></script>
+            // PASO 2: Cargar router.js DESPUÉS de Axios
+            const routerScript = document.createElement('script');
+            routerScript.src = '../composables/router.js';
+            routerScript.onload = function () {
+                console.log('✅ Router.js cargado correctamente');
+
+                // PASO 3: Cargar statusCheck.js DESPUÉS de router
+                const statusCheckScript = document.createElement('script');
+                statusCheckScript.src = '../utils/statusCheck.js';
+                document.head.appendChild(statusCheckScript);
+            };
+            document.head.appendChild(routerScript);
+        };
+        document.head.appendChild(axiosScript);
+    </script>
 
     <!-- ============================================ -->
     <!-- CSS DEPENDENCIES (Usando variables) -->
@@ -33,7 +52,7 @@
     <script>
         // Cargar CSS usando las variables configuradas
         const cssToLoad = [
-            'bootstrap', 'boxicons', 'sweetalert2', 'glightbox', 
+            'bootstrap', 'boxicons', 'sweetalert2', 'glightbox',
             'aos', 'animate', 'datatables', 'datatablesResponsive',
             'notyf', 'tippy', 'tippyScale', 'photoswipe', 'videojs',
             'tomselect', 'flatpickr', 'filepond'
@@ -96,14 +115,23 @@
         }
 
         /* Animate objects on hover */
-        a-box:hover, a-sphere:hover, a-cylinder:hover {
+        a-box:hover,
+        a-sphere:hover,
+        a-cylinder:hover {
             opacity: 0.8;
         }
 
         /* Loading animation for VR */
         @keyframes vrPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
         }
 
         .vr-loading {
@@ -113,7 +141,7 @@
         /* ============================================ */
         /* CUSTOM THEME VARIABLES */
         /* ============================================ */
-        
+
         /* Dark Mode (default) */
         [data-bs-theme="dark"] {
             --bs-body-color: #dee2e6;
@@ -163,7 +191,10 @@
         }
 
         /* Smooth transitions for theme changes */
-        body, .demo-card, .navbar, footer {
+        body,
+        .demo-card,
+        .navbar,
+        footer {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
     </style>
@@ -195,7 +226,8 @@
                         </li>
                         <li class="nav-item ms-3">
                             <div class="form-check form-switch mt-2">
-                                <input class="form-check-input" type="checkbox" id="darkModeToggle" role="switch" aria-label="Toggle dark mode">
+                                <input class="form-check-input" type="checkbox" id="darkModeToggle" role="switch"
+                                    aria-label="Toggle dark mode">
                                 <label class="form-check-label" for="darkModeToggle">
                                     <i id="theme-icon" class="bx bx-moon text-warning"></i>
                                 </label>
@@ -382,71 +414,72 @@
                                 <i class="bx bx-play-circle"></i> <span id="vr-toggle-text">Iniciar Demo</span>
                             </button>
                         </div>
-                        
-                        <div id="vr-demo-container" style="display: none; position: relative; height: 500px; border: 2px solid rgba(0, 255, 136, 0.3); border-radius: 1rem; overflow: hidden;">
+
+                        <div id="vr-demo-container"
+                            style="display: none; position: relative; height: 500px; border: 2px solid rgba(0, 255, 136, 0.3); border-radius: 1rem; overflow: hidden;">
                             <!-- A-Frame Scene -->
-                            <a-scene id="vr-scene" embedded vr-mode-ui="enabled: false" renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true; maxCanvasWidth: 1920; maxCanvasHeight: 1920" stats="false" style="width: 100%; height: 100%;">
+                            <a-scene id="vr-scene" embedded vr-mode-ui="enabled: false"
+                                renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true; maxCanvasWidth: 1920; maxCanvasHeight: 1920"
+                                stats="false" style="width: 100%; height: 100%;">
                                 <!-- Assets -->
                                 <a-assets>
-                                    <img id="sky-texture" src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg" crossorigin="anonymous">
+                                    <img id="sky-texture"
+                                        src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg"
+                                        crossorigin="anonymous">
                                 </a-assets>
 
                                 <!-- Sky -->
                                 <a-sky src="#sky-texture" rotation="0 -130 0"></a-sky>
 
                                 <!-- Ground -->
-                                <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4" shadow></a-plane>
+                                <a-plane position="0 0 -4" rotation="-90 0 0" width="10" height="10" color="#7BC8A4"
+                                    shadow></a-plane>
 
                                 <!-- Lights -->
                                 <a-light type="ambient" color="#BBB"></a-light>
                                 <a-light type="directional" color="#FFF" intensity="0.6" position="-0.5 1 1"></a-light>
 
                                 <!-- Interactive Objects (data-raycastable para optimización) -->
-                                <a-box position="-1 0.5 -3" rotation="0 45 0" color="#00ff88" 
-                                       animation="property: rotation; to: 0 405 0; loop: true; dur: 10000"
-                                       shadow
-                                       class="clickable"
-                                       data-raycastable>
-                                    <a-animation begin="click" attribute="scale" to="1.5 1.5 1.5" dur="200" direction="alternate"></a-animation>
+                                <a-box position="-1 0.5 -3" rotation="0 45 0" color="#00ff88"
+                                    animation="property: rotation; to: 0 405 0; loop: true; dur: 10000" shadow
+                                    class="clickable" data-raycastable>
+                                    <a-animation begin="click" attribute="scale" to="1.5 1.5 1.5" dur="200"
+                                        direction="alternate"></a-animation>
                                 </a-box>
 
-                                <a-sphere position="0 1.25 -5" radius="0.5" color="#0088ff" 
-                                          animation="property: position; to: 0 1.75 -5; loop: true; dur: 2000; dir: alternate; easing: easeInOutQuad"
-                                          shadow
-                                          class="clickable"
-                                          data-raycastable>
+                                <a-sphere position="0 1.25 -5" radius="0.5" color="#0088ff"
+                                    animation="property: position; to: 0 1.75 -5; loop: true; dur: 2000; dir: alternate; easing: easeInOutQuad"
+                                    shadow class="clickable" data-raycastable>
                                 </a-sphere>
 
-                                <a-cylinder position="1 0.75 -3" radius="0.3" height="1.5" color="#ffaa00" 
-                                            shadow
-                                            class="clickable"
-                                            data-raycastable>
-                                    <a-animation begin="click" attribute="color" to="#ff00aa" dur="500" direction="alternate"></a-animation>
+                                <a-cylinder position="1 0.75 -3" radius="0.3" height="1.5" color="#ffaa00" shadow
+                                    class="clickable" data-raycastable>
+                                    <a-animation begin="click" attribute="color" to="#ff00aa" dur="500"
+                                        direction="alternate"></a-animation>
                                 </a-cylinder>
 
                                 <!-- Torus Ring -->
                                 <a-torus position="0 2 -4" color="#dc3545" arc="270" radius="1" radius-tubular="0.05"
-                                         animation="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear"
-                                         shadow>
+                                    animation="property: rotation; to: 0 360 0; loop: true; dur: 5000; easing: linear"
+                                    shadow>
                                 </a-torus>
 
                                 <!-- Text -->
-                                <a-text value="HomeLab VR\nPowered by npm" color="#00ff88" position="0 2.5 -3" 
-                                        align="center" width="5"
-                                        animation="property: rotation; to: 0 360 0; loop: true; dur: 20000">
+                                <a-text value="HomeLab VR\nPowered by npm" color="#00ff88" position="0 2.5 -3"
+                                    align="center" width="5"
+                                    animation="property: rotation; to: 0 360 0; loop: true; dur: 20000">
                                 </a-text>
 
                                 <!-- Camera with optimized cursor raycaster -->
                                 <a-entity camera look-controls wasd-controls position="0 1.6 0">
-                                    <a-cursor color="#00ff88" 
-                                              fuse="true" 
-                                              fuse-timeout="1500"
-                                              raycaster="objects: [data-raycastable]; far: 20"></a-cursor>
+                                    <a-cursor color="#00ff88" fuse="true" fuse-timeout="1500"
+                                        raycaster="objects: [data-raycastable]; far: 20"></a-cursor>
                                 </a-entity>
                             </a-scene>
-                            
+
                             <!-- VR Controls Overlay -->
-                            <div style="position: absolute; bottom: 20px; left: 20px; background: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 0.5rem; color: #fff; font-size: 0.85rem; z-index: 1000;">
+                            <div
+                                style="position: absolute; bottom: 20px; left: 20px; background: rgba(0, 0, 0, 0.7); padding: 15px; border-radius: 0.5rem; color: #fff; font-size: 0.85rem; z-index: 1000;">
                                 <strong>🎮 Controles:</strong><br>
                                 <span class="badge bg-success me-1">Mouse</span> Mirar alrededor<br>
                                 <span class="badge bg-primary me-1">Click</span> Interactuar con objetos<br>
@@ -456,7 +489,7 @@
 
                         <div class="mt-3">
                             <small class="text-muted">
-                                <i class="bx bx-info-circle"></i> 
+                                <i class="bx bx-info-circle"></i>
                                 Demo usando <strong>A-Frame 1.7.1</strong> cargado desde node_modules
                             </small>
                         </div>
@@ -507,12 +540,12 @@
     <!-- ============================================ -->
     <!-- JAVASCRIPT DEPENDENCIES (Carga secuencial correcta) -->
     <!-- ============================================ -->
-    
+
     <!-- CORE: jQuery primero (requerido por Bootstrap y DataTables) -->
     <script>
         const jqueryScript = document.createElement('script');
         jqueryScript.src = getJSPath('jquery');
-        jqueryScript.onload = function() {
+        jqueryScript.onload = function () {
             console.log('✅ jQuery cargado');
             loadCoreLibraries();
         };
@@ -526,7 +559,7 @@
 
             const bootstrapScript = document.createElement('script');
             bootstrapScript.src = getJSPath('bootstrap');
-            bootstrapScript.onload = function() {
+            bootstrapScript.onload = function () {
                 console.log('✅ Bootstrap cargado');
                 loadDataTables();
             };
@@ -537,7 +570,7 @@
         function loadDataTables() {
             const dtScript = document.createElement('script');
             dtScript.src = getJSPath('datatables');
-            dtScript.onload = function() {
+            dtScript.onload = function () {
                 console.log('✅ DataTables core cargado');
                 loadDataTablesBS5();
             };
@@ -548,7 +581,7 @@
         function loadDataTablesBS5() {
             const dtBS5Script = document.createElement('script');
             dtBS5Script.src = getJSPath('datatablesBS5');
-            dtBS5Script.onload = function() {
+            dtBS5Script.onload = function () {
                 console.log('✅ DataTables BS5 cargado');
                 loadDataTablesResponsive();
             };
@@ -559,7 +592,7 @@
         function loadDataTablesResponsive() {
             const dtResponsiveScript = document.createElement('script');
             dtResponsiveScript.src = getJSPath('datatablesResponsive');
-            dtResponsiveScript.onload = function() {
+            dtResponsiveScript.onload = function () {
                 console.log('✅ DataTables Responsive cargado');
                 loadDataTablesResponsiveBS5();
             };
@@ -570,7 +603,7 @@
         function loadDataTablesResponsiveBS5() {
             const dtResponsiveBS5Script = document.createElement('script');
             dtResponsiveBS5Script.src = getJSPath('datatablesResponsiveBS5');
-            dtResponsiveBS5Script.onload = function() {
+            dtResponsiveBS5Script.onload = function () {
                 console.log('✅ DataTables Responsive BS5 cargado');
                 console.log('✅ DataTables completamente inicializado');
                 loadOtherLibraries();
@@ -581,6 +614,7 @@
         // PASO 4: Cargar resto de librerías
         function loadOtherLibraries() {
             const otherLibs = [
+                // Nota: Axios ya fue cargado en el <head>
                 'aos', 'anime', 'sweetalert2', 'chart', 'dayjs',
                 'glightbox', 'notyf', 'tippy', 'tomselect',
                 'flatpickr', 'filepond', 'filepondEncode', 'videojs'
@@ -591,13 +625,13 @@
                 script.src = getJSPath(name);
                 document.body.appendChild(script);
             });
-            
+
             console.log('✅ Todas las librerías están cargándose...');
         }
 
         // PASO 5: Cargar VR/AR cuando se necesite (lazy loading)
         let vrLibrariesLoaded = false;
-        
+
         function loadVRLibraries(callback) {
             if (vrLibrariesLoaded) {
                 if (callback) callback();
@@ -605,11 +639,11 @@
             }
 
             console.log('🥽 Cargando librerías VR/AR...');
-            
+
             // A-Frame primero
             const aframeScript = document.createElement('script');
             aframeScript.src = getVRPath('aframe');
-            aframeScript.onload = function() {
+            aframeScript.onload = function () {
                 console.log('✅ A-Frame cargado');
                 vrLibrariesLoaded = true;
                 if (callback) callback();
@@ -618,13 +652,13 @@
         }
 
         // Toggle VR Demo
-        window.toggleVRDemo = function() {
+        window.toggleVRDemo = function () {
             const container = document.getElementById('vr-demo-container');
             const toggleText = document.getElementById('vr-toggle-text');
-            
+
             if (container.style.display === 'none') {
                 // Cargar VR libraries si no están cargadas
-                loadVRLibraries(function() {
+                loadVRLibraries(function () {
                     container.style.display = 'block';
                     toggleText.textContent = 'Detener Demo';
                     notyf.success('Demo VR iniciado - Usa el mouse para mirar alrededor');
@@ -637,15 +671,15 @@
     </script>
 
     <!-- Color Mode Toggler para Bootstrap 5.3+ -->
-    <script src="../js/color-mode-toggler.js"></script>
+    <script src="../composables/color-mode-toggler.js"></script>
 
     <!-- ============================================ -->
     <!-- CUSTOM INITIALIZATION SCRIPT -->
     <!-- ============================================ -->
     <script>
         // Esperar a que todas las librerías se carguen
-        window.addEventListener('load', function() {
-            
+        window.addEventListener('load', function () {
+
             // Initialize AOS
             AOS.init({
                 duration: 800,
@@ -662,32 +696,32 @@
                     y: 'top'
                 },
                 types: [{
-                        type: 'success',
-                        background: '#00ff88',
-                        icon: {
-                            className: 'bx bx-check-circle',
-                            tagName: 'i',
-                            color: '#fff'
-                        }
-                    },
-                    {
-                        type: 'error',
-                        background: '#ff4444',
-                        icon: {
-                            className: 'bx bx-x-circle',
-                            tagName: 'i',
-                            color: '#fff'
-                        }
-                    },
-                    {
-                        type: 'info',
-                        background: '#0088ff',
-                        icon: {
-                            className: 'bx bx-info-circle',
-                            tagName: 'i',
-                            color: '#fff'
-                        }
+                    type: 'success',
+                    background: '#00ff88',
+                    icon: {
+                        className: 'bx bx-check-circle',
+                        tagName: 'i',
+                        color: '#fff'
                     }
+                },
+                {
+                    type: 'error',
+                    background: '#ff4444',
+                    icon: {
+                        className: 'bx bx-x-circle',
+                        tagName: 'i',
+                        color: '#fff'
+                    }
+                },
+                {
+                    type: 'info',
+                    background: '#0088ff',
+                    icon: {
+                        className: 'bx bx-info-circle',
+                        tagName: 'i',
+                        color: '#fff'
+                    }
+                }
                 ]
             });
 
@@ -742,7 +776,7 @@
             }
 
             // Initialize DataTables
-            $(document).ready(function() {
+            $(document).ready(function () {
                 $('#demo-datatable').DataTable({
                     responsive: true,
                     language: {
@@ -755,7 +789,7 @@
 
             // Reporte de dependencias cargadas
             reportLoadedDependencies();
-            
+
             notyf.success('¡Todas las dependencias cargadas desde variables NPM!');
         });
 
@@ -827,7 +861,7 @@
 
         // Smooth Scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {

@@ -1,4 +1,13 @@
 .env
 node_modules
 # Generated config from .env
-js/config.js
+composables/config.js
+.github
+.DS_Store
+obsolete-css
+obsolete-js
+.vscode/
+.idea/
+obsolete-php
+.github
+logs/

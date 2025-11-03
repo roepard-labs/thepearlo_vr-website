@@ -22,7 +22,7 @@
     "build": "npm run build:config",
     "postinstall": "npm run build:config",
     "dev": "npm run install:deps && npm run build:config",
-    "start": "echo \"Frontend listo en http://localhost:3000\""
+    "start": "echo \"Frontend listo en http://localhost:9000\""
   },
   "dependencies": {
     "@loadingio/loading-bar": "^0.1.1",
@@ -32,6 +32,7 @@
     "animejs": "^4.2.2",
     "aos": "^2.3.4",
     "ar.js": "^2.2.2",
+    "axios": "^1.13.1",
     "bootstrap": "^5.3.8",
     "boxicons": "^2.1.4",
     "chart.js": "^4.5.1",

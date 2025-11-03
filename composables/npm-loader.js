@@ -11,7 +11,7 @@
 const NPM_CONFIG = {
     // Ruta base de node_modules (relativa desde /views/)
     basePath: '../node_modules',
-    
+
     // CSS Dependencies
     css: {
         bootstrap: '/bootstrap/dist/css/bootstrap.min.css',
@@ -31,31 +31,45 @@ const NPM_CONFIG = {
         flatpickr: '/flatpickr/dist/flatpickr.min.css',
         filepond: '/filepond/dist/filepond.min.css'
     },
-    
+
     // JavaScript Dependencies
     js: {
+        // ✨ HTTP Client (NUEVO - Principal)
+        axios: '/axios/dist/axios.min.js',
+
+        // Core libraries
         popper: '/@popperjs/core/dist/umd/popper.min.js',
         bootstrap: '/bootstrap/dist/js/bootstrap.bundle.min.js',
         jquery: '/jquery/dist/jquery.min.js',
+
+        // UI Components
         aos: '/aos/dist/aos.js',
         anime: '/animejs/dist/bundles/anime.umd.min.js',
         sweetalert2: '/sweetalert2/dist/sweetalert2.all.min.js',
         chart: '/chart.js/dist/chart.umd.js',
         dayjs: '/dayjs/dayjs.min.js',
         glightbox: '/glightbox/dist/js/glightbox.min.js',
+
+        // DataTables
         datatables: '/datatables.net/js/dataTables.min.js',
         datatablesBS5: '/datatables.net-bs5/js/dataTables.bootstrap5.min.js',
         datatablesResponsive: '/datatables.net-responsive/js/dataTables.responsive.min.js',
         datatablesResponsiveBS5: '/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js',
+
+        // Notifications & UI
         notyf: '/notyf/notyf.min.js',
         tippy: '/tippy.js/dist/tippy-bundle.umd.min.js',
+
+        // Form components
         tomselect: '/tom-select/dist/js/tom-select.complete.min.js',
         flatpickr: '/flatpickr/dist/flatpickr.min.js',
         filepond: '/filepond/dist/filepond.min.js',
         filepondEncode: '/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js',
+
+        // Video
         videojs: '/video.js/dist/video.min.js'
     },
-    
+
     // VR/AR Dependencies
     vr: {
         aframe: '/aframe/dist/aframe-master.min.js',
@@ -145,6 +159,7 @@ async function loadJSSequential(names) {
  */
 function isLoaded(name) {
     const checks = {
+        axios: typeof axios !== 'undefined',
         jquery: typeof $ !== 'undefined',
         bootstrap: typeof bootstrap !== 'undefined',
         sweetalert2: typeof Swal !== 'undefined',
@@ -160,7 +175,7 @@ function isLoaded(name) {
         aframe: typeof AFRAME !== 'undefined',
         three: typeof THREE !== 'undefined'
     };
-    
+
     return checks[name] || false;
 }
 
@@ -169,6 +184,7 @@ function isLoaded(name) {
  */
 function reportLoadedDependencies() {
     const report = {
+        Axios: isLoaded('axios'),
         jQuery: isLoaded('jquery'),
         Bootstrap: isLoaded('bootstrap'),
         SweetAlert2: isLoaded('sweetalert2'),
@@ -184,14 +200,14 @@ function reportLoadedDependencies() {
         'A-Frame': isLoaded('aframe'),
         'Three.js': isLoaded('three')
     };
-    
+
     console.log('%c📦 Estado de Dependencias NPM', 'color: #00ff88; font-size: 16px; font-weight: bold;');
     console.table(report);
-    
+
     const loaded = Object.values(report).filter(v => v).length;
     const total = Object.keys(report).length;
     console.log(`%c✅ ${loaded}/${total} dependencias cargadas correctamente`, 'color: #00ff88; font-weight: bold;');
-    
+
     return report;
 }
 
