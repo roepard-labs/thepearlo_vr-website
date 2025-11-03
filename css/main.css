@@ -1,0 +1,639 @@
+/**
+ * Main CSS - HomeLab AR
+ * Utilidades y componentes comunes reutilizables
+ * Carga después de base.css
+ * 
+ * @package HomeLab AR
+ * @version 1.0.0
+ */
+
+/* ========================================
+   UTILIDADES DE ESPACIADO
+   ======================================== */
+.mt-auto {
+  margin-top: auto !important;
+}
+.mb-auto {
+  margin-bottom: auto !important;
+}
+.ms-auto {
+  margin-left: auto !important;
+}
+.me-auto {
+  margin-right: auto !important;
+}
+
+/* ========================================
+   UTILIDADES DE DISPLAY
+   ======================================== */
+.d-flex {
+  display: flex !important;
+}
+.d-grid {
+  display: grid !important;
+}
+.d-block {
+  display: block !important;
+}
+.d-inline {
+  display: inline !important;
+}
+.d-inline-block {
+  display: inline-block !important;
+}
+.d-none {
+  display: none !important;
+}
+
+/* ========================================
+   UTILIDADES DE FLEX
+   ======================================== */
+.flex-row {
+  flex-direction: row !important;
+}
+.flex-column {
+  flex-direction: column !important;
+}
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+.flex-nowrap {
+  flex-wrap: nowrap !important;
+}
+.justify-content-start {
+  justify-content: flex-start !important;
+}
+.justify-content-end {
+  justify-content: flex-end !important;
+}
+.justify-content-center {
+  justify-content: center !important;
+}
+.justify-content-between {
+  justify-content: space-between !important;
+}
+.justify-content-around {
+  justify-content: space-around !important;
+}
+.align-items-start {
+  align-items: flex-start !important;
+}
+.align-items-end {
+  align-items: flex-end !important;
+}
+.align-items-center {
+  align-items: center !important;
+}
+.align-items-baseline {
+  align-items: baseline !important;
+}
+.align-items-stretch {
+  align-items: stretch !important;
+}
+.gap-1 {
+  gap: var(--spacing-xs) !important;
+}
+.gap-2 {
+  gap: var(--spacing-sm) !important;
+}
+.gap-3 {
+  gap: var(--spacing-md) !important;
+}
+.gap-4 {
+  gap: var(--spacing-lg) !important;
+}
+.gap-5 {
+  gap: var(--spacing-xl) !important;
+}
+
+/* ========================================
+   UTILIDADES DE TEXTO
+   ======================================== */
+.text-start {
+  text-align: left !important;
+}
+.text-end {
+  text-align: right !important;
+}
+.text-center {
+  text-align: center !important;
+}
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+.fw-light {
+  font-weight: var(--font-weight-light) !important;
+}
+.fw-normal {
+  font-weight: var(--font-weight-normal) !important;
+}
+.fw-medium {
+  font-weight: var(--font-weight-medium) !important;
+}
+.fw-semibold {
+  font-weight: var(--font-weight-semibold) !important;
+}
+.fw-bold {
+  font-weight: var(--font-weight-bold) !important;
+}
+.lh-1 {
+  line-height: 1 !important;
+}
+.lh-sm {
+  line-height: var(--line-height-tight) !important;
+}
+.lh-base {
+  line-height: var(--line-height-normal) !important;
+}
+.lh-lg {
+  line-height: var(--line-height-relaxed) !important;
+}
+
+/* ========================================
+   UTILIDADES DE POSICIONAMIENTO
+   ======================================== */
+.position-static {
+  position: static !important;
+}
+.position-relative {
+  position: relative !important;
+}
+.position-absolute {
+  position: absolute !important;
+}
+.position-fixed {
+  position: fixed !important;
+}
+.position-sticky {
+  position: sticky !important;
+}
+
+/* ========================================
+   COMPONENTE: CARD PERSONALIZADA
+   ======================================== */
+.custom-card {
+  background: var(--bs-body-bg);
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  transition: transform var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.custom-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.custom-card-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-md);
+  color: var(--bs-heading-color);
+}
+
+.custom-card-body {
+  color: var(--bs-body-color);
+}
+
+/* ========================================
+   COMPONENTE: BADGE PERSONALIZADO
+   ======================================== */
+.custom-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  border-radius: var(--radius-full);
+  background: rgba(var(--color-primary-rgb), 0.1);
+  color: var(--bs-primary);
+}
+
+.custom-badge-success {
+  background: rgba(0, 255, 136, 0.1);
+  color: var(--color-success);
+}
+
+.custom-badge-danger {
+  background: rgba(255, 68, 68, 0.1);
+  color: var(--color-danger);
+}
+
+.custom-badge-warning {
+  background: rgba(255, 170, 0, 0.1);
+  color: var(--color-warning);
+}
+
+/* ========================================
+   COMPONENTE: BOTÓN GHOST
+   ======================================== */
+.btn-ghost {
+  background: transparent;
+  border: 2px solid var(--bs-border-color);
+  color: var(--bs-body-color);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-base);
+}
+
+.btn-ghost:hover {
+  background: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ========================================
+   COMPONENTE: INPUT DE BÚSQUEDA
+   ======================================== */
+.search-input {
+  position: relative;
+  width: 100%;
+}
+
+.search-input input {
+  width: 100%;
+  padding: var(--spacing-md) var(--spacing-md) var(--spacing-md)
+    calc(var(--spacing-xl) + var(--spacing-md));
+  border: 1px solid var(--bs-border-color);
+  border-radius: var(--radius-lg);
+  background: var(--bs-body-bg);
+  color: var(--bs-body-color);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.search-input input:focus {
+  outline: none;
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 3px rgba(var(--color-primary-rgb), 0.1);
+}
+
+.search-input i {
+  position: absolute;
+  left: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--bs-secondary-color);
+  pointer-events: none;
+}
+
+/* ========================================
+   COMPONENTE: ALERTA PERSONALIZADA
+   ======================================== */
+.custom-alert {
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+}
+
+.custom-alert-info {
+  background: rgba(23, 162, 184, 0.1);
+  border-color: var(--color-info);
+  color: var(--bs-body-color);
+}
+
+.custom-alert-success {
+  background: rgba(0, 255, 136, 0.1);
+  border-color: var(--color-success);
+  color: var(--bs-body-color);
+}
+
+.custom-alert-warning {
+  background: rgba(255, 170, 0, 0.1);
+  border-color: var(--color-warning);
+  color: var(--bs-body-color);
+}
+
+.custom-alert-danger {
+  background: rgba(255, 68, 68, 0.1);
+  border-color: var(--color-danger);
+  color: var(--bs-body-color);
+}
+
+/* ========================================
+   COMPONENTE: LOADER SPINNER
+   ======================================== */
+.spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--bs-border-color);
+  border-top-color: var(--bs-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner-sm {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.spinner-lg {
+  width: 60px;
+  height: 60px;
+  border-width: 6px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   COMPONENTE: TOOLTIP PERSONALIZADO
+   ======================================== */
+.custom-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.custom-tooltip .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bs-heading-color);
+  color: var(--bs-body-bg);
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  z-index: var(--z-tooltip);
+  transition: opacity var(--transition-fast);
+}
+
+.custom-tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--bs-heading-color);
+}
+
+.custom-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ========================================
+   COMPONENTE: DIVIDER
+   ======================================== */
+.divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--bs-border-color),
+    transparent
+  );
+  margin: var(--spacing-xl) 0;
+}
+
+.divider-vertical {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--bs-border-color),
+    transparent
+  );
+  margin: 0 var(--spacing-xl);
+}
+
+/* ========================================
+   UTILIDADES DE SOMBRA
+   ======================================== */
+.shadow-xs {
+  box-shadow: var(--shadow-xs) !important;
+}
+.shadow-sm {
+  box-shadow: var(--shadow-sm) !important;
+}
+.shadow-md {
+  box-shadow: var(--shadow-md) !important;
+}
+.shadow-lg {
+  box-shadow: var(--shadow-lg) !important;
+}
+.shadow-xl {
+  box-shadow: var(--shadow-xl) !important;
+}
+.shadow-2xl {
+  box-shadow: var(--shadow-2xl) !important;
+}
+.shadow-primary {
+  box-shadow: var(--shadow-primary) !important;
+}
+.shadow-none {
+  box-shadow: none !important;
+}
+
+/* ========================================
+   UTILIDADES DE BORDER RADIUS
+   ======================================== */
+.rounded-sm {
+  border-radius: var(--radius-sm) !important;
+}
+.rounded-md {
+  border-radius: var(--radius-md) !important;
+}
+.rounded-lg {
+  border-radius: var(--radius-lg) !important;
+}
+.rounded-xl {
+  border-radius: var(--radius-xl) !important;
+}
+.rounded-2xl {
+  border-radius: var(--radius-2xl) !important;
+}
+.rounded-full {
+  border-radius: var(--radius-full) !important;
+}
+
+/* ========================================
+   UTILIDADES DE OVERFLOW
+   ======================================== */
+.overflow-hidden {
+  overflow: hidden !important;
+}
+.overflow-auto {
+  overflow: auto !important;
+}
+.overflow-scroll {
+  overflow: scroll !important;
+}
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+.overflow-y-hidden {
+  overflow-y: hidden !important;
+}
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+/* ========================================
+   UTILIDADES DE CURSOR
+   ======================================== */
+.cursor-pointer {
+  cursor: pointer !important;
+}
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+.cursor-default {
+  cursor: default !important;
+}
+
+/* ========================================
+   UTILIDADES DE OPACIDAD
+   ======================================== */
+.opacity-0 {
+  opacity: 0 !important;
+}
+.opacity-25 {
+  opacity: 0.25 !important;
+}
+.opacity-50 {
+  opacity: 0.5 !important;
+}
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+.opacity-100 {
+  opacity: 1 !important;
+}
+
+/* ========================================
+   ANIMACIONES DE ENTRADA
+   ======================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-slow) ease-out;
+}
+
+.animate-slide-up {
+  animation: slideInUp var(--transition-slow) ease-out;
+}
+
+.animate-slide-down {
+  animation: slideInDown var(--transition-slow) ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--transition-slow) ease-out;
+}
+
+/* ========================================
+   RESPONSIVE HELPERS
+   ======================================== */
+@media (max-width: 767.98px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* ========================================
+   SMOOTH TRANSITIONS
+   ======================================== */
+.transition-all {
+  transition: all var(--transition-base);
+}
+
+.transition-fast {
+  transition: all var(--transition-fast);
+}
+
+.transition-slow {
+  transition: all var(--transition-slow);
+}
+
+/* ========================================
+   UTILIDAD: CONTENEDOR CENTRADO
+   ======================================== */
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* ========================================
+   UTILIDAD: GRADIENT TEXT
+   ======================================== */
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
