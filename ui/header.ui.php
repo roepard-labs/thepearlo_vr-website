@@ -10,7 +10,7 @@ $isAuthenticated = isset($_SESSION['user']) && !empty($_SESSION['user']);
 $userName = $isAuthenticated ? $_SESSION['user']['name'] : '';
 ?>
 
-<header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+<header class="navbar navbar-expand-lg shadow-sm sticky-top" data-bs-theme="auto">
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
@@ -18,12 +18,12 @@ $userName = $isAuthenticated ? $_SESSION['user']['name'] : '';
             <span class="text-primary">HomeLab</span>
             <span class="text-secondary">AR</span>
         </a>
-        
+
         <!-- Toggler para móvil -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <!-- Navegación -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto">
@@ -43,26 +43,31 @@ $userName = $isAuthenticated ? $_SESSION['user']['name'] : '';
                     <a class="nav-link" href="#contact">Contacto</a>
                 </li>
             </ul>
-            
+
             <!-- Acciones del usuario -->
             <div class="d-flex align-items-center gap-2">
                 <!-- Theme Toggle -->
                 <button class="btn btn-outline-secondary btn-sm" id="themeToggle" title="Cambiar tema">
                     <i class="bx bx-moon"></i>
                 </button>
-                
+
                 <?php if ($isAuthenticated): ?>
                     <!-- Usuario autenticado -->
                     <div class="dropdown">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown"
+                            data-bs-toggle="dropdown">
                             <i class="bx bx-user-circle me-1"></i>
                             <?php echo htmlspecialchars($userName); ?>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="/dashboard"><i class="bx bx-dashboard me-2"></i>Dashboard</a></li>
+                            <li><a class="dropdown-item" href="/dashboard"><i class="bx bx-dashboard me-2"></i>Dashboard</a>
+                            </li>
                             <li><a class="dropdown-item" href="/profile"><i class="bx bx-user me-2"></i>Perfil</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i class="bx bx-log-out me-2"></i>Cerrar Sesión</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="#" id="logoutBtn"><i
+                                        class="bx bx-log-out me-2"></i>Cerrar Sesión</a></li>
                         </ul>
                     </div>
                 <?php else: ?>
@@ -80,20 +85,51 @@ $userName = $isAuthenticated ? $_SESSION['user']['name'] : '';
 </header>
 
 <style>
-.navbar {
-    transition: all 0.3s ease;
-}
+    .navbar {
+        transition: all 0.3s ease;
+        background-color: var(--bs-body-bg) !important;
+        border-bottom: 1px solid var(--bs-border-color);
+    }
 
-.navbar-brand {
-    font-size: 1.5rem;
-}
+    .navbar-brand {
+        font-size: 1.5rem;
+    }
 
-.nav-link {
-    font-weight: 500;
-    transition: color 0.3s ease;
-}
+    .nav-link {
+        font-weight: 500;
+        transition: color 0.3s ease;
+        color: var(--bs-body-color) !important;
+    }
 
-.nav-link:hover {
-    color: var(--color-primary) !important;
-}
+    .nav-link:hover {
+        color: var(--bs-primary) !important;
+    }
+
+    /* Asegurar visibilidad del toggler en ambos temas */
+    .navbar-toggler {
+        border-color: var(--bs-border-color);
+    }
+
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 0, 0, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    [data-bs-theme="dark"] .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    /* Dropdown menu adaptable al tema */
+    .dropdown-menu {
+        background-color: var(--bs-body-bg);
+        border-color: var(--bs-border-color);
+    }
+
+    .dropdown-item {
+        color: var(--bs-body-color);
+    }
+
+    .dropdown-item:hover {
+        background-color: var(--bs-tertiary-bg);
+        color: var(--bs-body-color);
+    }
 </style>

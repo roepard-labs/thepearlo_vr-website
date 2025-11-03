@@ -16,20 +16,12 @@
                 </h5>
                 <p class="text-white-50">
                     Plataforma de realidad aumentada para gestión de infraestructura homelab.
-                    Proyecto piloto para la UAM Cuajimalpa.
+                    Proyecto piloto para la UAM Manizales.
                 </p>
                 <div class="d-flex gap-2 mt-3">
-                    <a href="#" class="btn btn-outline-light btn-sm">
+                    <a href="https://github.com/roepard-labs" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-outline-light btn-sm" title="GitHub">
                         <i class="bx bxl-github"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-light btn-sm">
-                        <i class="bx bxl-twitter"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-light btn-sm">
-                        <i class="bx bxl-linkedin"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-light btn-sm">
-                        <i class="bx bxl-discord"></i>
                     </a>
                 </div>
             </div>
@@ -58,16 +50,16 @@
                 <h6 class="fw-bold mb-3">Recursos</h6>
                 <ul class="list-unstyled">
                     <li class="mb-2">
-                        <a href="/docs" class="text-white-50 text-decoration-none">Documentación</a>
+                        <a href="https://docs.roepard.online" target="_blank" rel="noopener noreferrer"
+                            class="text-white-50 text-decoration-none">Documentación</a>
                     </li>
                     <li class="mb-2">
-                        <a href="/api" class="text-white-50 text-decoration-none">API</a>
+                        <a href="https://api.roepard.online" target="_blank" rel="noopener noreferrer"
+                            class="text-white-50 text-decoration-none">API</a>
                     </li>
                     <li class="mb-2">
-                        <a href="/appstore" class="text-white-50 text-decoration-none">AppStore</a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="#contact" class="text-white-50 text-decoration-none">Soporte</a>
+                        <a href="https://appstore.roepard.online" target="_blank" rel="noopener noreferrer"
+                            class="text-white-50 text-decoration-none">AppStore</a>
                     </li>
                 </ul>
             </div>
@@ -82,24 +74,7 @@
                     <li class="mb-2">
                         <a href="/terms" class="text-white-50 text-decoration-none">Términos</a>
                     </li>
-                    <li class="mb-2">
-                        <a href="/license" class="text-white-50 text-decoration-none">Licencia</a>
-                    </li>
                 </ul>
-            </div>
-
-            <!-- Columna 5: Newsletter -->
-            <div class="col-lg-2">
-                <h6 class="fw-bold mb-3">Newsletter</h6>
-                <p class="text-white-50 small">Recibe actualizaciones</p>
-                <form id="newsletterForm">
-                    <div class="input-group input-group-sm">
-                        <input type="email" class="form-control" placeholder="Tu email" required>
-                        <button class="btn btn-primary" type="submit">
-                            <i class="bx bx-send"></i>
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
 
