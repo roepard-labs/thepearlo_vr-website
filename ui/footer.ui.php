@@ -34,7 +34,7 @@
                         <a href="/" class="text-white-50 text-decoration-none">Inicio</a>
                     </li>
                     <li class="mb-2">
-                        <a href="#features" class="text-white-50 text-decoration-none">Características</a>
+                        <a href="/features" class="text-white-50 text-decoration-none">Características</a>
                     </li>
                     <li class="mb-2">
                         <a href="#about" class="text-white-50 text-decoration-none">Acerca de</a>

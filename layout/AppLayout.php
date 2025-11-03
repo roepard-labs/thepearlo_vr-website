@@ -123,7 +123,15 @@ class AppLayout
             <?php endif; ?>
 
             <main id="main-content">
-                <?php self::includeView($view, $data); ?>
+                <?php
+                // Si se proporciona contenido directamente, usarlo
+                // Si no, intentar incluir el archivo de vista
+                if (isset($data['content']) && !empty($data['content'])) {
+                    echo $data['content'];
+                } else {
+                    self::includeView($view, $data);
+                }
+                ?>
             </main>
 
             <?php if ($config['includeFooter']): ?>

@@ -31,7 +31,7 @@ $userName = $isAuthenticated ? $_SESSION['user']['name'] : '';
                     <a class="nav-link" href="/">Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#features">Características</a>
+                    <a class="nav-link" href="/features">Características</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#about">Acerca de</a>
