@@ -12,8 +12,17 @@ $pageConfig = [
     'title' => 'HomeLab AR - Realidad Aumentada para tu HomeLab | Roepard Labs',
     'description' => 'Visualiza y controla tu infraestructura HomeLab en realidad aumentada con tecnología WebXR. Monitoreo en tiempo real, gestión de apps y servicios.',
     'keywords' => 'homelab, realidad aumentada, ar, webxr, infraestructura, dashboard, monitoreo, servidores',
-    'css' => [],
-    'js' => ['js/main.js', 'js/auth.js', 'js/utils.js']
+    'css' => [
+        'node_modules/tippy.js/dist/tippy.css',
+        'node_modules/tippy.js/animations/scale.css'
+    ],
+    'js' => [
+        'js/main.js',
+        'js/auth.js',
+        'js/utils.js',
+        'node_modules/@popperjs/core/dist/umd/popper.min.js',
+        'node_modules/tippy.js/dist/tippy-bundle.umd.min.js'
+    ]
 ];
 
 // Capturar todo el contenido de las secciones

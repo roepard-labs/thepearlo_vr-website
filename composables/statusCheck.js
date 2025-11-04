@@ -129,4 +129,4 @@ setInterval(async function () {
 
         window.BackendStatus.lastCheck = new Date();
     }
-}, 30000); // 30 segundos
+}, 120000); // 2 minutos

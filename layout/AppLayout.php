@@ -64,6 +64,7 @@ class AppLayout
             'description' => 'Realidad Aumentada para Homelab',
             'includeHeader' => true,
             'includeFooter' => true,
+            'includeAuthModal' => true,
             'bodyClass' => '',
             'additionalCss' => [],
             'additionalJs' => []
@@ -90,40 +91,40 @@ class AppLayout
 
         // Renderizar directamente sin buffer
         ?>
-        <!DOCTYPE html>
-        <html lang="es" data-bs-theme="light">
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta name="description" content="<?php echo htmlspecialchars($config['description']); ?>">
-            <title><?php echo htmlspecialchars($config['title']); ?></title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<?php echo htmlspecialchars($config['description']); ?>">
+    <title><?php echo htmlspecialchars($config['title']); ?></title>
 
-            <!-- Favicon -->
-            <link rel="icon" type="image/png" href="/assets/favicon.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
 
-            <!-- CSS Base del Proyecto -->
-            <link rel="stylesheet" href="/css/variables.css">
-            <link rel="stylesheet" href="/css/base.css">
-            <link rel="stylesheet" href="/css/main.css">
+    <!-- CSS Base del Proyecto -->
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/main.css">
 
-            <!-- CSS Dependencies -->
-            <?php self::renderCssLinks($allCss); ?>
+    <!-- CSS Dependencies -->
+    <?php self::renderCssLinks($allCss); ?>
 
-            <!-- CSS Específico de la Vista -->
-            <?php if (file_exists(__DIR__ . "/../css/{$view}.css")): ?>
-                <link rel="stylesheet" href="/css/<?php echo $view; ?>.css">
-            <?php endif; ?>
-        </head>
+    <!-- CSS Específico de la Vista -->
+    <?php if (file_exists(__DIR__ . "/../css/{$view}.css")): ?>
+    <link rel="stylesheet" href="/css/<?php echo $view; ?>.css">
+    <?php endif; ?>
+</head>
 
-        <body class="<?php echo htmlspecialchars($config['bodyClass']); ?>">
+<body class="<?php echo htmlspecialchars($config['bodyClass']); ?>">
 
-            <?php if ($config['includeHeader']): ?>
-                <?php self::includeComponent('ui/header.ui.php', $data); ?>
-            <?php endif; ?>
+    <?php if ($config['includeHeader']): ?>
+    <?php self::includeComponent('ui/header.ui.php', $data); ?>
+    <?php endif; ?>
 
-            <main id="main-content">
-                <?php
+    <main id="main-content">
+        <?php
                 // Si se proporciona contenido directamente, usarlo
                 // Si no, intentar incluir el archivo de vista
                 if (isset($data['content']) && !empty($data['content'])) {
@@ -132,36 +133,51 @@ class AppLayout
                     self::includeView($view, $data);
                 }
                 ?>
-            </main>
+    </main>
 
-            <?php if ($config['includeFooter']): ?>
-                <?php self::includeComponent('ui/footer.ui.php', $data); ?>
-            <?php endif; ?>
+    <?php if ($config['includeFooter']): ?>
+    <?php self::includeComponent('ui/footer.ui.php', $data); ?>
+    <?php endif; ?>
 
-            <!-- NPM Loader (SIEMPRE primero) -->
-            <script src="/composables/npm-loader.js"></script>
+    <!-- Auth Modal -->
+    <?php if ($config['includeAuthModal']): ?>
+    <?php self::includeComponent('modals/auth.modal.php', $data); ?>
+    <?php endif; ?>
 
-            <!-- Config & Router -->
-            <script src="/composables/config.js"></script>
-            <script src="/composables/router.js"></script>
+    <!-- NPM Loader (SIEMPRE primero) -->
+    <script src="/composables/npm-loader.js"></script>
 
-            <!-- Backend Status Check -->
-            <script src="/composables/statusCheck.js"></script>
+    <!-- Config & Router -->
+    <script src="/composables/config.js"></script>
+    <script src="/composables/router.js"></script>
 
-            <!-- JavaScript Dependencies -->
-            <?php self::renderJsScripts($allJs); ?>
+    <!-- Backend Status Check -->
+    <script src="/composables/statusCheck.js"></script>
 
-            <!-- JavaScript Específico de la Vista -->
-            <?php if (file_exists(__DIR__ . "/../js/{$view}.js")): ?>
-                <script src="/js/<?php echo $view; ?>.js"></script>
-            <?php endif; ?>
+    <!-- Session & Role Services -->
+    <script src="/composables/sessionCheck.js"></script>
+    <script src="/composables/roleCheck.js"></script>
+    <script src="/services/logoutService.js"></script>
 
-            <!-- Main App JS -->
-            <script src="/js/main.js"></script>
-        </body>
+    <!-- JavaScript Dependencies -->
+    <?php self::renderJsScripts($allJs); ?>
 
-        </html>
-        <?php
+    <!-- JavaScript Específico de la Vista -->
+    <?php if (file_exists(__DIR__ . "/../js/{$view}.js")): ?>
+    <script src="/js/<?php echo $view; ?>.js"></script>
+    <?php endif; ?>
+
+    <!-- Main App JS -->
+    <script src="/js/main.js"></script>
+
+    <!-- Auth Modal Handler (después de jQuery) -->
+    <?php if ($config['includeAuthModal']): ?>
+    <script src="/js/auth-modal.js"></script>
+    <?php endif; ?>
+</body>
+
+</html>
+<?php
     }
 
     // ===================================
