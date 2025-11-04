@@ -25,7 +25,6 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                 <div class="sidebar-text">
                     <span class="fs-5 fw-bold" style="color: var(--bs-primary);">HomeLab</span>
                     <span class="fs-5 fw-bold" style="color: var(--bs-secondary);">AR</span>
-                    <small class="d-block text-muted" style="font-size: 0.75rem;">Admin Panel</small>
                 </div>
             </a>
             <button class="btn btn-sm btn-outline-secondary sidebar-toggle" id="sidebarToggle" title="Colapsar sidebar">
@@ -82,10 +81,10 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     <i class="bx bx-user text-white fs-4"></i>
                 </div>
                 <div class="user-info mt-2 sidebar-text">
-                    <div class="fw-semibold" style="font-size: 0.9rem;">
+                    <div class="fw-semibold" style="font-size: 0.9rem;" id="sidebarUserName">
                         <?php echo htmlspecialchars($userFirstName ?? 'Usuario'); ?>
                     </div>
-                    <small class="text-muted" style="font-size: 0.75rem;">
+                    <small class="text-muted" style="font-size: 0.75rem;" id="sidebarUserRole">
                         <?php echo htmlspecialchars($roleName); ?>
                     </small>
                 </div>
@@ -353,11 +352,14 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             if (!window.RoleService) {
                 updateSidebarRetries++;
                 if (updateSidebarRetries >= MAX_SIDEBAR_RETRIES) {
-                    console.error('❌ Sidebar: RoleService no disponible después de', MAX_SIDEBAR_RETRIES, 'intentos');
-                    console.warn('⚠️ Sidebar: Cargando sin verificación de rol (elementos admin ocultos por defecto)');
+                    console.error('❌ Sidebar: RoleService no disponible después de', MAX_SIDEBAR_RETRIES,
+                        'intentos');
+                    console.warn(
+                        '⚠️ Sidebar: Cargando sin verificación de rol (elementos admin ocultos por defecto)');
                     return;
                 }
-                console.warn('⏳ Sidebar: Esperando a RoleService... Intento', updateSidebarRetries, 'de', MAX_SIDEBAR_RETRIES);
+                console.warn('⏳ Sidebar: Esperando a RoleService... Intento', updateSidebarRetries, 'de',
+                    MAX_SIDEBAR_RETRIES);
                 setTimeout(updateSidebarByRole, 300);
                 return;
             }
@@ -375,10 +377,10 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 
                 adminOnlyItems.forEach(item => {
                     if (isAdmin) {
-                        item.style.display = '';  // Mostrar para admins
+                        item.style.display = ''; // Mostrar para admins
                         console.log('✅ Sidebar: Mostrando elemento admin-only');
                     } else {
-                        item.style.display = 'none';  // Ocultar para usuarios regulares
+                        item.style.display = 'none'; // Ocultar para usuarios regulares
                         console.log('❌ Sidebar: Ocultando elemento admin-only');
                     }
                 });
@@ -470,7 +472,9 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
         if (logoutBtnSidebar) {
             logoutBtnSidebar.addEventListener('click', function () {
                 if (window.LogoutService) {
-                    window.LogoutService.logout({ redirectUrl: '/' });
+                    window.LogoutService.logout({
+                        redirectUrl: '/'
+                    });
                 } else {
                     console.log('🔄 LogoutService no disponible, usando logout básico');
                     window.location.href = '/';
@@ -479,12 +483,109 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
         }
 
         // ===================================
+        // ACTUALIZAR INFORMACIÓN DEL USUARIO (UNA SOLA VEZ AL CARGAR)
+        // ===================================
+        let sidebarUserUpdated = false; // Flag para evitar actualizaciones múltiples
+
+        async function updateSidebarUserInfo() {
+            // Evitar actualizaciones duplicadas
+            if (sidebarUserUpdated) {
+                console.log('⏭️ Sidebar: Info de usuario ya actualizada');
+                return;
+            }
+
+            console.log('👤 Sidebar: Actualizando información del usuario desde backend...');
+
+            // Esperar a que SessionService y RoleService estén disponibles
+            if (!window.SessionService || !window.RoleService) {
+                console.warn('⏳ Sidebar: Esperando a SessionService y RoleService...');
+                setTimeout(updateSidebarUserInfo, 300);
+                return;
+            }
+
+            try {
+                sidebarUserUpdated = true; // Marcar como actualizado ANTES de la llamada
+
+                // Obtener datos de sesión y rol del backend
+                const sessionStatus = await window.SessionService.check();
+                const roleStatus = await window.RoleService.check();
+
+                if (!sessionStatus.isAuthenticated) {
+                    console.log('⚠️ Sidebar: Usuario no autenticado');
+                    return;
+                }
+
+                const userData = sessionStatus.userData || {};
+                const isAdmin = roleStatus.isAdmin;
+
+                // DEBUG: Ver qué datos llegan realmente del backend
+                console.log('🔍 Sidebar: userData completo:', userData);
+                console.log('🔍 Sidebar: roleStatus completo:', roleStatus);
+
+                // Obtener nombre para mostrar (solo primer nombre)
+                let displayName = userData.user_name || userData.first_name || 'Usuario';
+                if (userData.user_name && userData.user_name.includes(' ')) {
+                    displayName = userData.user_name.split(' ')[0];
+                }
+
+                // CRÍTICO: roleStatus usa camelCase (roleId), no snake_case (role_id)
+                // roleStatus.roleId viene de RoleService que consulta check_role.php
+                // Intentar en orden: roleStatus.roleId > roleStatus.role_id > userData.role_id
+                const roleId = parseInt(roleStatus.roleId || roleStatus.role_id || userData.role_id);
+
+                // Mapear role_id a nombre en español
+                let roleName = 'Usuario'; // Default
+                if (roleId === 2) {
+                    roleName = 'Administrador';
+                } else if (roleId === 3) {
+                    roleName = 'Supervisor';
+                }
+                // Si role_id === 1 o cualquier otro valor, queda "Usuario"
+
+                console.log('👤 Sidebar: Datos del backend:', {
+                    displayName,
+                    roleId,
+                    roleName,
+                    isAdmin,
+                    'roleStatus.roleId (camelCase)': roleStatus.roleId,
+                    'roleStatus.role_id (snake_case)': roleStatus.role_id,
+                    'userData.role_id': userData.role_id
+                });
+
+                // Actualizar elementos del DOM
+                const userNameElement = document.getElementById('sidebarUserName');
+                const userRoleElement = document.getElementById('sidebarUserRole');
+
+                if (userNameElement) {
+                    userNameElement.textContent = displayName;
+                    console.log('✅ Sidebar: Nombre actualizado:', displayName);
+                }
+
+                if (userRoleElement) {
+                    userRoleElement.textContent = roleName;
+                    console.log('✅ Sidebar: Rol actualizado:', roleName);
+                }
+
+                console.log('✅ Sidebar: Información del usuario actualizada correctamente');
+
+            } catch (error) {
+                console.error('❌ Sidebar: Error al actualizar información del usuario:', error);
+                sidebarUserUpdated = false; // Permitir reintento en caso de error
+            }
+        }
+
+        // ===================================
         // INICIALIZAR AL CARGAR (UNA SOLA VEZ)
         // ===================================
         document.addEventListener('DOMContentLoaded', function () {
             console.log('🚀 Sidebar: DOM cargado');
+
             // CRÍTICO: Verificar rol SOLO AL CARGAR (NO EN SEGUNDO PLANO)
             updateSidebarByRole();
+
+            // CRÍTICO: Actualizar información del usuario desde backend (UNA SOLA VEZ)
+            updateSidebarUserInfo();
+
             console.log('✅ Sidebar: Verificación única completada (sin polling en segundo plano)');
         });
 
