@@ -31,7 +31,16 @@ window.SessionService = {
         // Esperar a que AppRouter esté listo
         if (!window.AppRouter || !window.AppRouter.axiosInstance) {
             console.warn('⚠️ SessionService: AppRouter no disponible, esperando...');
-            await this._waitForRouter();
+            try {
+                await this._waitForRouter();
+            } catch (error) {
+                console.error('❌ SessionService: Error esperando AppRouter:', error);
+                window.SessionStatus.isAuthenticated = false;
+                window.SessionStatus.checking = false;
+                window.SessionStatus.error = error.message;
+                this._dispatchChange();
+                return window.SessionStatus;
+            }
         }
 
         try {
@@ -89,12 +98,21 @@ window.SessionService = {
      * @private
      */
     _waitForRouter() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const MAX_ATTEMPTS = 50; // 5 segundos máximo (50 * 100ms)
+
             const checkInterval = setInterval(() => {
+                attempts++;
+
                 if (window.AppRouter && window.AppRouter.axiosInstance) {
                     clearInterval(checkInterval);
                     console.log('✅ SessionService: AppRouter disponible');
                     resolve();
+                } else if (attempts >= MAX_ATTEMPTS) {
+                    clearInterval(checkInterval);
+                    console.error('❌ SessionService: Timeout esperando AppRouter después de', attempts, 'intentos');
+                    reject(new Error('AppRouter no disponible después de ' + (MAX_ATTEMPTS * 100) + 'ms'));
                 }
             }, 100);
         });
@@ -111,7 +129,9 @@ window.SessionService = {
     }
 };
 
-// Auto-ejecutar verificación al cargar
+// DESACTIVADO: Auto-ejecución causa bucles infinitos cuando se carga múltiples veces
+// Las vistas deben llamar explícitamente a SessionService.check() cuando estén listas
+/*
 (async function autoCheckSession() {
     // Disparar evento inicial con estado "checking"
     window.SessionService._dispatchChange();
@@ -119,12 +139,13 @@ window.SessionService = {
     // Ejecutar verificación
     await window.SessionService.check();
 })();
+*/
 
-// Verificación periódica (cada 5 minutos)
+// Verificación periódica (cada 5 minutos) - Solo si AppRouter está disponible
 setInterval(async function () {
     if (window.AppRouter && window.AppRouter.axiosInstance) {
         await window.SessionService.check();
     }
 }, 300000); // 5 minutos
 
-console.log('✅ SessionService inicializado y disponible globalmente');
+console.log('✅ SessionService inicializado y disponible globalmente (sin auto-ejecución)');

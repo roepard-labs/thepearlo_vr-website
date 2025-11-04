@@ -66,7 +66,17 @@ class Router {
     initAxios() {
         // Esperar a que Axios esté disponible
         if (typeof axios === 'undefined') {
-            console.warn('⚠️ Axios no está cargado aún. Esperando...');
+            // Contar intentos para evitar bucle infinito
+            if (!this.axiosLoadAttempts) this.axiosLoadAttempts = 0;
+            this.axiosLoadAttempts++;
+
+            if (this.axiosLoadAttempts >= 50) { // 5 segundos máximo
+                console.error('❌ Router: Axios no se cargó después de', this.axiosLoadAttempts, 'intentos (5 segundos)');
+                console.error('❌ Verifica que axios.min.js esté correctamente cargado en AppLayout.php');
+                return;
+            }
+
+            console.warn('⚠️ Axios no está cargado aún. Esperando... Intento', this.axiosLoadAttempts, 'de 50');
             setTimeout(() => this.initAxios(), 100);
             return;
         }

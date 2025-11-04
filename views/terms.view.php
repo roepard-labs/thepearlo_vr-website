@@ -155,8 +155,8 @@ ob_start();
                     <div class="mb-5" data-aos="fade-up" data-aos-delay="900">
                         <h2 class="h3 mb-3">10. Ley Aplicable</h2>
                         <p class="text-muted">
-                            Estos términos se rigen por las leyes de México. Cualquier disputa será resuelta en los
-                            tribunales competentes de Ciudad de México.
+                            Estos términos se rigen por las leyes de Colombia. Cualquier disputa será resuelta en los
+                            tribunales competentes de Colombia.
                         </p>
                     </div>
 
@@ -204,6 +204,6 @@ ob_start();
 <?php
 $content = ob_get_clean();
 
-// Renderizar con AppLayout
-AppLayout::render('terms', ['content' => $content], $pageConfig);
+// CRÍTICO: Pasar NULL como vista para evitar bucle infinito
+AppLayout::render(null, ['content' => $content], $pageConfig);
 ?>

@@ -36,7 +36,15 @@ window.RoleService = {
         // Esperar a que AppRouter esté listo
         if (!window.AppRouter || !window.AppRouter.axiosInstance) {
             console.warn('⚠️ RoleService: AppRouter no disponible, esperando...');
-            await this._waitForRouter();
+            try {
+                await this._waitForRouter();
+            } catch (error) {
+                console.error('❌ RoleService: Error esperando AppRouter:', error);
+                window.RoleStatus.checking = false;
+                window.RoleStatus.error = error.message;
+                this._dispatchChange();
+                return window.RoleStatus;
+            }
         }
 
         try {
@@ -170,12 +178,21 @@ window.RoleService = {
      * @private
      */
     _waitForRouter() {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const MAX_ATTEMPTS = 50; // 5 segundos máximo (50 * 100ms)
+
             const checkInterval = setInterval(() => {
+                attempts++;
+
                 if (window.AppRouter && window.AppRouter.axiosInstance) {
                     clearInterval(checkInterval);
                     console.log('✅ RoleService: AppRouter disponible');
                     resolve();
+                } else if (attempts >= MAX_ATTEMPTS) {
+                    clearInterval(checkInterval);
+                    console.error('❌ RoleService: Timeout esperando AppRouter después de', attempts, 'intentos');
+                    reject(new Error('AppRouter no disponible después de ' + (MAX_ATTEMPTS * 100) + 'ms'));
                 }
             }, 100);
         });
@@ -192,7 +209,9 @@ window.RoleService = {
     }
 };
 
-// Auto-ejecutar verificación si hay sesión activa
+// DESACTIVADO: Auto-ejecución causa bucles infinitos cuando se carga múltiples veces
+// Las vistas deben llamar explícitamente a RoleService.check() cuando estén listas
+/*
 (async function autoCheckRole() {
     // Disparar evento inicial con estado "checking"
     window.RoleService._dispatchChange();
@@ -213,5 +232,6 @@ window.RoleService = {
         }, 500); // Dar tiempo para que cargue SessionService
     }
 })();
+*/
 
-console.log('✅ RoleService inicializado y disponible globalmente');
+console.log('✅ RoleService inicializado y disponible globalmente (sin auto-ejecución)');

@@ -34,13 +34,13 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
                 <li class="nav-item">
                     <a class="nav-link" href="/features">Características</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" data-home-only>
                     <a class="nav-link" href="#about">Acerca de</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/homelab">VR/AR</a>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" data-home-only>
                     <a class="nav-link" href="#contact">Contacto</a>
                 </li>
             </ul>
@@ -76,21 +76,17 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
                             </div>
                         </li>
 
-                        <!-- Opciones del menú -->
+                        <!-- Opciones del menú según rol -->
                         <?php if ($userRole == 2): ?>
-                        <li><a class="dropdown-item py-2" href="/admin"><i
-                                    class="bx bx-dashboard me-2 text-primary"></i>Dashboard Admin</a></li>
+                        <!-- Administrador: Admin Dashboard + Configuración -->
+                        <li><a class="dropdown-item py-2" href="/dashboard">
+                                <d class="bx bx-dashboard me-2 text-primary"></d>Admin Dashboard
+                            </a></li>
                         <?php else: ?>
-                        <li><a class="dropdown-item py-2" href="/user"><i
-                                    class="bx bx-dashboard me-2 text-primary"></i>Mi Dashboard</a></li>
+                        <!-- Usuario/Supervisor: User Dashboard + Configuración -->
+                        <li><a class="dropdown-item py-2" href="/dashboard"><i
+                                    class="bx bx-dashboard me-2 text-primary"></i>User Dashboard</a></li>
                         <?php endif; ?>
-
-                        <li><a class="dropdown-item py-2" href="/homelab"><i
-                                    class="bx bx-cube me-2 text-primary"></i>HomeLab VR</a></li>
-                        <li><a class="dropdown-item py-2" href="/profile"><i class="bx bx-user me-2 text-primary"></i>Mi
-                                Perfil</a></li>
-                        <li><a class="dropdown-item py-2" href="/settings"><i
-                                    class="bx bx-cog me-2 text-primary"></i>Configuración</a></li>
 
                         <li>
                             <hr class="dropdown-divider my-2">
@@ -204,6 +200,38 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
 <script>
 (function() {
     'use strict';
+
+    console.log('🎬 Script de header cargado');
+
+    // ==========================================
+    // OCULTAR ENLACES DE ANCHORS EN PÁGINAS NO-HOME
+    // ==========================================
+    function handleHomeOnlyLinks() {
+        const currentPath = window.location.pathname;
+        const isHomePage = currentPath === '/' || currentPath === '/home';
+
+        console.log('📍 Ruta actual:', currentPath, '| Es home:', isHomePage);
+
+        // Obtener todos los elementos con data-home-only
+        const homeOnlyItems = document.querySelectorAll('[data-home-only]');
+
+        homeOnlyItems.forEach(item => {
+            if (isHomePage) {
+                item.style.display = ''; // Mostrar en home
+                console.log('✅ Mostrando:', item.querySelector('a').textContent);
+            } else {
+                item.style.display = 'none'; // Ocultar en otras páginas
+                console.log('🚫 Ocultando:', item.querySelector('a').textContent);
+            }
+        });
+    }
+
+    // Ejecutar al cargar
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', handleHomeOnlyLinks);
+    } else {
+        handleHomeOnlyLinks();
+    }
 
     console.log('🎬 Script de modal trigger cargado');
 
@@ -364,8 +392,13 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
     // Función global para actualizar header después de login exitoso
     window.updateHeaderAfterLogin = function(userData) {
         console.log('🔄 Actualizando header después de login:', userData);
+        console.log('📊 Origen de datos:', {
+            tiene_role_id: !!userData.role_id,
+            role_id_valor: userData.role_id,
+            role_id_tipo: typeof userData.role_id
+        });
 
-        if (!userData || !userData.first_name) {
+        if (!userData) {
             console.error('❌ Datos de usuario inválidos');
             return;
         }
@@ -376,14 +409,43 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
             return;
         }
 
+        // Determinar rol del usuario desde la respuesta del backend
+        const roleId = parseInt(userData.role_id);
+        const isAdmin = roleId === 2;
+        const isUser = roleId === 1 || roleId === 3; // User o Supervisor
+
+        // Obtener nombre para mostrar
+        let displayName = userData.user_name || userData.first_name || 'Usuario';
+
+        // Si tenemos user_name completo, usar solo el primer nombre
+        if (userData.user_name && userData.user_name.includes(' ')) {
+            displayName = userData.user_name.split(' ')[0];
+        }
+
+        console.log('👤 Usuario:', displayName, '| Role ID:', roleId, '| Es Admin:', isAdmin);
+        console.log('🎯 Menú a mostrar:', isAdmin ? 'ADMIN DASHBOARD' : 'USER DASHBOARD');
+
+        // Construir opciones del menú según el rol
+        let menuOptions = '';
+        if (isAdmin) {
+            // Administrador: Dashboard (con contenido admin) + Configuración
+            menuOptions = `
+                <li><a class="dropdown-item py-2" href="/dashboard"><i class="bx bx-home me-2 text-primary"></i>Dashboard</a></li>   
+            `;
+        } else {
+            // Usuario/Supervisor: Dashboard (con contenido user) + Configuración
+            menuOptions = `
+                <li><a class="dropdown-item py-2" href="/dashboard"><i class="bx bx-home me-2 text-primary"></i>Dashboard</a></li>
+            `;
+        }
+
         // Construir HTML del dropdown de usuario
-        const isAdmin = userData.role_id == 2;
         const userHTML = `
                 <div class="dropdown">
                     <button class="btn btn-primary dropdown-toggle" type="button" id="userDropdown"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bx bx-user-circle me-1"></i>
-                        ${userData.first_name}
+                        ${displayName}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
                         <!-- Header del dropdown con info del usuario -->
@@ -394,21 +456,14 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
                                     <i class="bx bx-user text-white"></i>
                                 </div>
                                 <div>
-                                    <div class="fw-semibold small">${userData.first_name}</div>
+                                    <div class="fw-semibold small">${displayName}</div>
                                     <small class="text-muted">${isAdmin ? 'Administrador' : 'Usuario'}</small>
                                 </div>
                             </div>
                         </li>
 
-                        <!-- Opciones del menú -->
-                        ${isAdmin ?
-                    '<li><a class="dropdown-item py-2" href="/admin"><i class="bx bx-dashboard me-2 text-primary"></i>Dashboard Admin</a></li>' :
-                    '<li><a class="dropdown-item py-2" href="/user"><i class="bx bx-dashboard me-2 text-primary"></i>Mi Dashboard</a></li>'
-                }
-
-                        <li><a class="dropdown-item py-2" href="/homelab"><i class="bx bx-cube me-2 text-primary"></i>HomeLab VR</a></li>
-                        <li><a class="dropdown-item py-2" href="/profile"><i class="bx bx-user me-2 text-primary"></i>Mi Perfil</a></li>
-                        <li><a class="dropdown-item py-2" href="/settings"><i class="bx bx-cog me-2 text-primary"></i>Configuración</a></li>
+                        <!-- Opciones del menú según rol -->
+                        ${menuOptions}
 
                         <li><hr class="dropdown-divider my-2"></li>
 
@@ -454,6 +509,39 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
         console.log('🔔 Header: Evento userLoggedIn recibido', event.detail);
         if (event.detail && event.detail.userData) {
             window.updateHeaderAfterLogin(event.detail.userData);
+        }
+    });
+
+    // CRÍTICO: Escuchar cambios de rol desde RoleService
+    // Esto corrige el rol si check_session.php retorna role_id incorrecto
+    window.addEventListener('roleChanged', function(event) {
+        console.log('🔔 Header: Evento roleChanged recibido', event.detail);
+
+        if (event.detail.checking) {
+            console.log('⏳ Header: Verificación de rol en progreso...');
+            return;
+        }
+
+        // Si hay sesión activa y el rol cambió, actualizar header
+        if (window.SessionService && window.SessionService.isAuthenticated()) {
+            console.log('🔄 Header: Actualizando con rol correcto del backend');
+
+            // Obtener datos de usuario de SessionService
+            window.SessionService.check().then(sessionData => {
+                if (sessionData.isAuthenticated && sessionData.userData) {
+                    // Sobrescribir role_id con el valor correcto de RoleService
+                    const correctedUserData = {
+                        ...sessionData.userData,
+                        role_id: event.detail.roleId // ✅ Usar role_id correcto de RoleService
+                    };
+
+                    console.log('🔧 Header: Datos corregidos con role_id del RoleService:',
+                        correctedUserData);
+                    window.updateHeaderAfterLogin(correctedUserData);
+                }
+            }).catch(error => {
+                console.error('❌ Header: Error al obtener datos de sesión:', error);
+            });
         }
     });
 

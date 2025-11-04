@@ -171,6 +171,6 @@ ob_start();
 <?php
 $content = ob_get_clean();
 
-// Renderizar con AppLayout
-AppLayout::render('privacy', ['content' => $content], $pageConfig);
+// CRÍTICO: Pasar NULL como vista para evitar bucle infinito
+AppLayout::render(null, ['content' => $content], $pageConfig);
 ?>

@@ -39,9 +39,12 @@ $routes = [
     '/features' => 'features.view.php',
     '/privacy' => 'privacy.view.php',
     '/terms' => 'terms.view.php',
-    '/admin' => 'admin.dashboard.view.php',
-    '/user' => 'user.dashboard.view.php'
+    '/dashboard' => 'dashboard.view.php'
 ];
+
+// NOTA: No verificamos autenticación aquí porque frontend PHP no puede leer
+// las sesiones del backend (puertos diferentes: 9000 vs 3000)
+// La autenticación se verifica con JavaScript en cada vista protegida
 
 // Buscar la ruta exacta
 if (isset($routes[$uri])) {

@@ -37,5 +37,5 @@ include __DIR__ . '/../sections/contact.section.php';
 
 $content = ob_get_clean();
 
-// Renderizar con AppLayout
-AppLayout::render('home', ['content' => $content], $pageConfig);
+// CRÍTICO: Pasar NULL como vista para evitar bucle infinito
+AppLayout::render(null, ['content' => $content], $pageConfig);
