@@ -71,9 +71,6 @@ class Router {
             return;
         }
 
-        // Detectar entorno (localhost vs producción)
-        const isLocalhost = this.baseURL.includes('localhost') || this.baseURL.includes('127.0.0.1');
-
         this.axiosInstance = axios.create({
             baseURL: this.baseURL,
             timeout: 30000, // 30 segundos
@@ -82,17 +79,15 @@ class Router {
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            // ⚠️ TEMPORAL: withCredentials desactivado en producción
-            // Problema: Backend no responde con headers CORS correctos
-            // TODO: Activar cuando nginx responda con:
-            //   - Access-Control-Allow-Origin: https://website.roepard.online
-            //   - Access-Control-Allow-Credentials: true
-            withCredentials: isLocalhost // Solo en localhost por ahora
+            // ✅ withCredentials: true para enviar cookies de sesión
+            // El backend PHP maneja CORS correctamente:
+            // - Access-Control-Allow-Origin: origen específico (desde HTTP_ORIGIN o HTTP_REFERER)
+            // - Access-Control-Allow-Credentials: true
+            // - SESSION_COOKIE_DOMAIN=.roepard.online para compartir entre subdominios
+            withCredentials: true
         });
 
-        console.log(`🔐 withCredentials: ${isLocalhost} (${isLocalhost ? 'localhost' : 'producción - DESACTIVADO temporalmente'})`);
-
-        // Interceptor de request (para logging y modificaciones)
+        console.log('🔐 withCredentials: true (CORS configurado en PHP)');        // Interceptor de request (para logging y modificaciones)
         this.axiosInstance.interceptors.request.use(
             (config) => {
                 console.log(`📤 ${config.method.toUpperCase()}: ${config.url}`);
