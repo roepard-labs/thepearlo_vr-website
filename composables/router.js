@@ -79,9 +79,10 @@ class Router {
                 'Accept': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest'
             },
-            // ⚠️ withCredentials debe ser false cuando CORS usa wildcard (*)
-            // Si necesitas cookies, el backend debe especificar el origen exacto
-            withCredentials: false
+            // ✅ CRÍTICO: withCredentials: true para enviar cookies de sesión
+            // El backend DEBE tener Access-Control-Allow-Credentials: true
+            // y especificar el origen exacto (NO usar wildcard *)
+            withCredentials: true
         });
 
         // Interceptor de request (para logging y modificaciones)
