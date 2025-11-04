@@ -15,21 +15,41 @@ class AppLayout
 
     /**
      * CSS Core (siempre se cargan)
+     * Incluye librerías esenciales usadas en todo el proyecto
      */
-    private static $cssCore = ['bootstrap', 'boxicons', 'aos', 'animate'];
+    private static $cssCore = [
+        'bootstrap',   // Framework CSS principal
+        'boxicons',    // Iconos
+        'aos',         // Animate on Scroll
+        'animate',     // Animaciones CSS
+        'sweetalert2', // Alertas bonitas
+        'notyf',       // Notificaciones toast
+        'tippy'        // Tooltips avanzados
+    ];
 
     /**
      * JS Core (siempre se cargan)
+     * Incluye librerías esenciales usadas en todo el proyecto
      */
-    private static $jsCore = ['axios', 'jquery', 'bootstrap', 'aos'];
+    private static $jsCore = [
+        'axios',       // HTTP Client (para API)
+        'jquery',      // DOM manipulation (legacy)
+        'popper',      // Requerido por Bootstrap tooltips
+        'bootstrap',   // Framework JS principal
+        'aos',         // Animate on Scroll
+        'sweetalert2', // Alertas bonitas
+        'notyf',       // Notificaciones toast
+        'tippy'        // Tooltips avanzados
+    ];
 
     /**
-     * Mapeo de vistas a sus dependencias
+     * Mapeo de vistas a sus dependencias ADICIONALES
+     * (las dependencias core ya están cargadas globalmente)
      */
     private static $viewDependencies = [
         'home' => [
-            'css' => ['glightbox', 'sweetalert2'],
-            'js' => ['glightbox', 'chart', 'anime', 'sweetalert2']
+            'css' => ['glightbox'],
+            'js' => ['glightbox', 'chart', 'anime']
         ],
         'homelab' => [
             'css' => [],
@@ -39,9 +59,17 @@ class AppLayout
             'css' => ['datatables', 'datatablesResponsive'],
             'js' => ['datatables', 'datatablesBS5', 'datatablesResponsive']
         ],
-        'auth' => [
-            'css' => ['sweetalert2'],
-            'js' => ['sweetalert2']
+        'features' => [
+            'css' => [],
+            'js' => [] // Solo usa dependencias core
+        ],
+        'privacy' => [
+            'css' => [],
+            'js' => [] // Solo usa dependencias core
+        ],
+        'terms' => [
+            'css' => [],
+            'js' => [] // Solo usa dependencias core
         ]
     ];
 
@@ -195,6 +223,7 @@ class AppLayout
         'glightbox' => '/node_modules/glightbox/dist/css/glightbox.min.css',
         'sweetalert2' => '/node_modules/sweetalert2/dist/sweetalert2.min.css',
         'notyf' => '/node_modules/notyf/notyf.min.css',
+        'tippy' => '/node_modules/tippy.js/dist/tippy.css',
         'datatables' => '/node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css',
         'datatablesResponsive' => '/node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css'
     ];
@@ -213,6 +242,7 @@ class AppLayout
         'chart' => '/node_modules/chart.js/dist/chart.umd.js',
         'sweetalert2' => '/node_modules/sweetalert2/dist/sweetalert2.all.min.js',
         'notyf' => '/node_modules/notyf/notyf.min.js',
+        'tippy' => '/node_modules/tippy.js/dist/tippy-bundle.umd.min.js',
         'datatables' => '/node_modules/datatables.net/js/dataTables.min.js',
         'datatablesBS5' => '/node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js',
         'datatablesResponsive' => '/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js'

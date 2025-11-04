@@ -261,8 +261,6 @@
     NOTA: El script de autenticación se ha movido a /js/auth-modal.js
     Este archivo se carga en AppLayout.php después de jQuery para evitar errores de dependencias
 -->
-console.log('🔐 Inicializando Auth Modal con jQuery...');
-
 
 <style>
     #authModal .modal-content {
