@@ -80,10 +80,15 @@ class Router {
                 'X-Requested-With': 'XMLHttpRequest'
             },
             // ✅ CRÍTICO: withCredentials: true para enviar cookies de sesión
-            // El backend DEBE tener Access-Control-Allow-Credentials: true
-            // y especificar el origen exacto (NO usar wildcard *)
+            // El backend DEBE tener:
+            // - Nginx configurado para OPTIONS (preflight)
+            // - Access-Control-Allow-Credentials: true
+            // - Access-Control-Allow-Origin: origen específico (NO *)
+            // - SESSION_COOKIE_DOMAIN=.roepard.online para compartir entre subdominios
             withCredentials: true
         });
+
+        console.log('🔐 withCredentials: true (CORS configurado)');
 
         // Interceptor de request (para logging y modificaciones)
         this.axiosInstance.interceptors.request.use(
