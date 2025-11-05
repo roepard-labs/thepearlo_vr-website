@@ -29,7 +29,12 @@ const NPM_CONFIG = {
         videojs: '/video.js/dist/video-js.min.css',
         tomselect: '/tom-select/dist/css/tom-select.bootstrap5.min.css',
         flatpickr: '/flatpickr/dist/flatpickr.min.css',
-        filepond: '/filepond/dist/filepond.min.css'
+
+        // FilePond CSS
+        filepond: '/filepond/dist/filepond.min.css',
+        filepondImagePreview: '/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css',
+        filepondImageEdit: '/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.min.css',
+        filepondPoster: '/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css'
     },
 
     // JavaScript Dependencies
@@ -63,8 +68,27 @@ const NPM_CONFIG = {
         // Form components
         tomselect: '/tom-select/dist/js/tom-select.complete.min.js',
         flatpickr: '/flatpickr/dist/flatpickr.min.js',
+
+        // FilePond Core
         filepond: '/filepond/dist/filepond.min.js',
+
+        // FilePond Plugins
         filepondEncode: '/filepond-plugin-file-encode/dist/filepond-plugin-file-encode.min.js',
+        filepondMetadata: '/filepond-plugin-file-metadata/dist/filepond-plugin-file-metadata.min.js',
+        filepondPoster: '/filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.js',
+        filepondRename: '/filepond-plugin-file-rename/dist/filepond-plugin-file-rename.min.js',
+        filepondValidateSize: '/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js',
+        filepondValidateType: '/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js',
+        filepondImageCrop: '/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js',
+        filepondImageEdit: '/filepond-plugin-image-edit/dist/filepond-plugin-image-edit.min.js',
+        filepondImageExif: '/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js',
+        filepondImageFilter: '/filepond-plugin-image-filter/dist/filepond-plugin-image-filter.min.js',
+        filepondImagePreview: '/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js',
+        filepondImageResize: '/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js',
+        filepondImageTransform: '/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js',
+        filepondImageValidateSize: '/filepond-plugin-image-validate-size/dist/filepond-plugin-image-validate-size.min.js',
+        filepondMediaPreview: '/filepond-plugin-media-preview/dist/filepond-plugin-media-preview.min.js',
+        filepondPdfPreview: '/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js',
 
         // Video
         videojs: '/video.js/dist/video.min.js'

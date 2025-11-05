@@ -59,6 +59,19 @@ class AppLayout
             'css' => ['datatables', 'datatablesResponsive', 'chart'],
             'js' => ['datatables', 'datatablesBS5', 'datatablesResponsive', 'chart', 'dayjs', 'anime'] // Dashboard unificado con estadísticas
         ],
+        // Páginas del dashboard usan las mismas dependencias
+        'users' => [
+            'css' => ['datatables', 'datatablesResponsive'],
+            'js' => ['datatables', 'datatablesBS5', 'datatablesResponsive']
+        ],
+        'settings' => [
+            'css' => [],
+            'js' => []
+        ],
+        'profile' => [
+            'css' => [],
+            'js' => []
+        ],
         'features' => [
             'css' => [],
             'js' => [] // Solo usa dependencias core

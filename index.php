@@ -39,7 +39,12 @@ $routes = [
     '/features' => 'features.view.php',
     '/privacy' => 'privacy.view.php',
     '/terms' => 'terms.view.php',
-    '/dashboard' => 'dashboard.view.php'
+    '/dashboard' => 'dashboard.view.php',
+    // Dashboard pages - renderizadas dentro de dashboard.view.php
+    '/dashboard/users' => 'dashboard.view.php',
+    '/dashboard/settings' => 'dashboard.view.php',
+    '/dashboard/profile' => 'dashboard.view.php',
+    '/dashboard/files' => 'dashboard.view.php'
 ];
 
 // NOTA: No verificamos autenticación aquí porque frontend PHP no puede leer
