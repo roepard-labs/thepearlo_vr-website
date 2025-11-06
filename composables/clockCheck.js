@@ -28,14 +28,17 @@ const CLOCK_CONFIG = {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false       // Formato 24 horas
+        hour12: false       // Formato 24 horas (por defecto)
     },
 
     // Idioma
     LOCALE: 'es-ES',
 
     // Intervalo de actualización (ms)
-    UPDATE_INTERVAL: 1000  // 1 segundo
+    UPDATE_INTERVAL: 1000,  // 1 segundo
+
+    // Formato de hora preferido (12 o 24)
+    HOUR_FORMAT: 24         // 24 horas por defecto
 };
 
 // ============================================
@@ -72,14 +75,21 @@ class ClockService {
         // Formatear fecha: Lun, 3 Nov 2025
         const dateStr = now.toLocaleDateString(this.config.LOCALE, this.config.DATE_OPTIONS);
 
-        // Formatear hora: 14:30:45
-        const timeStr = now.toLocaleTimeString(this.config.LOCALE, this.config.TIME_OPTIONS);
+        // Configurar formato de hora según preferencia
+        const timeOptions = {
+            ...this.config.TIME_OPTIONS,
+            hour12: this.config.HOUR_FORMAT === 12
+        };
+
+        // Formatear hora: 14:30:45 (24h) o 02:30:45 PM (12h)
+        const timeStr = now.toLocaleTimeString(this.config.LOCALE, timeOptions);
 
         // Actualizar estado
         this.currentDateTime = {
             date: dateStr,
             time: timeStr,
-            timestamp: now.getTime()
+            timestamp: now.getTime(),
+            hour12: this.config.HOUR_FORMAT === 12
         };
 
         // Disparar evento personalizado para que los componentes lo escuchen
@@ -148,11 +158,37 @@ class ClockService {
     formatDate(date) {
         const dateObj = new Date(date);
 
+        // Configurar formato de hora según preferencia
+        const timeOptions = {
+            ...this.config.TIME_OPTIONS,
+            hour12: this.config.HOUR_FORMAT === 12
+        };
+
         return {
             date: dateObj.toLocaleDateString(this.config.LOCALE, this.config.DATE_OPTIONS),
-            time: dateObj.toLocaleTimeString(this.config.LOCALE, this.config.TIME_OPTIONS),
-            timestamp: dateObj.getTime()
+            time: dateObj.toLocaleTimeString(this.config.LOCALE, timeOptions),
+            timestamp: dateObj.getTime(),
+            hour12: this.config.HOUR_FORMAT === 12
         };
+    }
+
+    /**
+     * Cambiar formato de hora entre 12 y 24 horas
+     * @param {number} format - 12 o 24
+     */
+    setHourFormat(format) {
+        if (format !== 12 && format !== 24) {
+            console.error('❌ Formato inválido. Use 12 o 24');
+            return;
+        }
+
+        this.config.HOUR_FORMAT = format;
+        console.log(`🕐 Formato de hora cambiado a ${format}h`);
+
+        // Actualizar inmediatamente si está corriendo
+        if (this.isRunning) {
+            this.updateDateTime();
+        }
     }
 
     /**
@@ -225,9 +261,13 @@ console.log('✅ ClockService configurado y listo para usar');
 console.log('📚 Ejemplos de uso:');
 console.log('  - ClockService.start() // Iniciar actualización automática');
 console.log('  - ClockService.stop() // Detener actualización');
+console.log('  - ClockService.setHourFormat(12) // Cambiar a formato 12 horas');
+console.log('  - ClockService.setHourFormat(24) // Cambiar a formato 24 horas');
 console.log('  - getCurrentDateTime() // Obtener fecha/hora actual');
 console.log('  - formatDateTime(new Date()) // Formatear fecha específica');
 console.log('');
 console.log('📡 Eventos disponibles:');
 console.log('  - "clockUpdated" // Se dispara cada segundo con nueva fecha/hora');
 console.log('    Ejemplo: window.addEventListener("clockUpdated", (e) => console.log(e.detail))');
+console.log('');
+console.log('⚙️ Configuración actual: Formato de hora ' + CLOCK_CONFIG.HOUR_FORMAT + 'h');

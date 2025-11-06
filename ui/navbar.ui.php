@@ -100,7 +100,7 @@ $pageIcon = $currentPageInfo['icon'];
             <div class="col-12 col-md-5 d-flex align-items-center justify-content-md-end gap-3 mt-3 mt-md-0">
 
                 <!-- Weather Widget -->
-                <div class="weather-widget-mini d-flex align-items-center gap-2 px-3 py-2 rounded"
+                <div class="weather-widget-mini widget-card d-flex align-items-center gap-2 px-3 py-2 rounded"
                     style="background-color: var(--bs-tertiary-bg); border: 1px solid var(--bs-border-color);">
 
                     <!-- Weather Icon -->
@@ -128,13 +128,13 @@ $pageIcon = $currentPageInfo['icon'];
                 </div>
 
                 <!-- Date & Time Card -->
-                <div class="datetime-card d-flex align-items-center gap-3 px-3 py-2 rounded"
+                <div class="datetime-card widget-card d-flex align-items-center gap-3 px-3 py-2 rounded"
                     style="background-color: var(--bs-tertiary-bg); border: 1px solid var(--bs-border-color);">
 
                     <!-- Calendar Icon -->
-                    <div class="datetime-icon bg-primary bg-opacity-10 rounded d-flex align-items-center justify-content-center"
+                    <div class="datetime-icon bg-info bg-opacity-25 rounded d-flex align-items-center justify-content-center"
                         style="width: 40px; height: 40px;">
-                        <i class="bx bx-calendar text-primary fs-5"></i>
+                        <i class="bx bx-time-five text-info fs-4"></i>
                     </div>
 
                     <!-- Date & Time -->
@@ -143,7 +143,7 @@ $pageIcon = $currentPageInfo['icon'];
                             Cargando...
                         </div>
                         <small class="text-muted d-flex align-items-center gap-1" style="font-size: 0.75rem;">
-                            <i class="bx bx-time"></i>
+                            <i class="bx bx-calendar-alt"></i>
                             <span id="currentTime">--:--:--</span>
                         </small>
                     </div>
@@ -205,6 +205,13 @@ $pageIcon = $currentPageInfo['icon'];
         font-size: 1.5rem;
     }
 
+    /* Widget Cards - Ancho uniforme */
+    .widget-card {
+        min-width: 180px;
+        max-width: 200px;
+        flex: 1;
+    }
+
     .datetime-card {
         transition: all 0.2s ease;
     }
@@ -218,7 +225,7 @@ $pageIcon = $currentPageInfo['icon'];
     }
 
     .datetime-card:hover .datetime-icon {
-        transform: scale(1.05);
+        transform: scale(1.05) rotate(10deg);
     }
 
     /* Weather Widget Styles */
@@ -261,7 +268,13 @@ $pageIcon = $currentPageInfo['icon'];
     }
 
     @media (max-width: 575.98px) {
-        .weather-widget-mini {
+        .widget-card {
+            min-width: 150px;
+            max-width: 170px;
+        }
+
+        .weather-widget-mini,
+        .datetime-card {
             padding: 0.5rem 0.75rem;
         }
 
