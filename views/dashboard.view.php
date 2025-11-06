@@ -46,13 +46,13 @@ if ($currentPath === '/dashboard/users') {
     $additionalCss = ['filepond', 'filepondImagePreview'];
     $additionalJs = [
         'filepond',
-        'filepondValidateType',
-        'filepondValidateSize',
         'filepondImagePreview',
+        'filepondImageExif',
+        'filepondImageTransform',
         'filepondImageCrop',
         'filepondImageResize',
-        'filepondImageTransform',
-        'filepondImageExif'
+        'filepondImageValidateSize',
+        'filepondImageEdit'
     ];
 } elseif ($currentPath === '/dashboard/files') {
     $dashboardPage = 'files.page.php';
@@ -60,14 +60,19 @@ if ($currentPath === '/dashboard/users') {
     $additionalCss = ['filepond', 'filepondImagePreview'];
     $additionalJs = [
         'filepond',
-        'filepondValidateType',
-        'filepondValidateSize',
         'filepondImagePreview',
+        'filepondImageExif',
+        'filepondImageTransform',
         'filepondImageCrop',
         'filepondImageResize',
-        'filepondImageTransform',
-        'filepondImageExif'
+        'filepondImageValidateSize',
+        'filepondImageEdit'
     ];
+} elseif ($currentPath === '/dashboard/changes') {
+    $dashboardPage = 'changes.page.php';
+    // Dependencias específicas para la página de cambios
+    $additionalCss = ['datatables', 'datatablesResponsive'];
+    $additionalJs = ['datatables', 'datatablesBS5', 'datatablesResponsive'];
 }
 
 // Configuración de la página con dependencias dinámicas

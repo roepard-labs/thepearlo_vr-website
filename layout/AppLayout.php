@@ -211,6 +211,7 @@ class AppLayout
             <!-- Session & Role Services -->
             <script src="/composables/sessionCheck.js"></script>
             <script src="/composables/roleCheck.js"></script>
+            <script src="/composables/changesCheck.js"></script>
             <script src="/services/logoutService.js"></script>
 
             <!-- JavaScript Dependencies -->

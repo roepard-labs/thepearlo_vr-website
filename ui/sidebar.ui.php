@@ -87,6 +87,20 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     </a>
                 </li>
 
+                <!-- Registro de Cambios -->
+                <li class="nav-item">
+                    <a href="/dashboard/changes" class="nav-link sidebar-link" data-page="changes"
+                        title="Registro de Cambios">
+                        <i class="bx bx-git-branch me-3"></i>
+                        <span class="sidebar-text">Cambios</span>
+                    </a>
+                </li>
+
+                <!-- Divider -->
+                <li>
+                    <hr class="sidebar-divider my-3">
+                </li>
+
                 <!-- Perfil -->
                 <li class="nav-item">
                     <a href="/dashboard/profile" class="nav-link sidebar-link" data-page="profile" title="Mi Perfil">
@@ -214,9 +228,33 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     </a>
                 </li>
 
+                <!-- Archivos -->
+                <li class="nav-item">
+                    <a href="/dashboard/files" class="nav-link sidebar-link">
+                        <i class="bx bx-folder-open me-3"></i>
+                        <span>Archivos</span>
+                    </a>
+                </li>
+
+                <!-- Registro de Cambios -->
+                <li class="nav-item">
+                    <a href="/dashboard/changes" class="nav-link sidebar-link">
+                        <i class="bx bx-git-branch me-3"></i>
+                        <span>Cambios</span>
+                    </a>
+                </li>
+
                 <!-- Divider -->
                 <li>
                     <hr class="sidebar-divider my-3">
+                </li>
+
+                <!-- Perfil -->
+                <li class="nav-item">
+                    <a href="/dashboard/profile" class="nav-link sidebar-link">
+                        <i class="bx bx-user-circle me-3"></i>
+                        <span>Mi Perfil</span>
+                    </a>
                 </li>
 
                 <!-- Configuración -->

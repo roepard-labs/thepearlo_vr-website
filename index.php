@@ -44,7 +44,8 @@ $routes = [
     '/dashboard/users' => 'dashboard.view.php',
     '/dashboard/settings' => 'dashboard.view.php',
     '/dashboard/profile' => 'dashboard.view.php',
-    '/dashboard/files' => 'dashboard.view.php'
+    '/dashboard/files' => 'dashboard.view.php',
+    '/dashboard/changes' => 'dashboard.view.php'
 ];
 
 // NOTA: No verificamos autenticación aquí porque frontend PHP no puede leer
