@@ -43,10 +43,10 @@
                         <i class="bx bx-camera"></i>
                     </button>
                 </div>
-                <h4 class="mb-1" id="profileDisplayName">Juan Pérez</h4>
-                <p class="text-muted mb-3" id="profileUsername">@juanperez</p>
+                <h4 class="mb-1" id="profileDisplayName">Cargando...</h4>
+                <p class="text-muted mb-3" id="profileUsername">@usuario</p>
                 <div class="d-flex gap-2 justify-content-center">
-                    <span class="badge bg-primary" id="profileRole">Administrador</span>
+                    <span class="badge bg-primary" id="profileRole">Usuario</span>
                     <span class="badge bg-success">Activo</span>
                 </div>
             </div>
@@ -116,73 +116,66 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="preferences-tab" data-bs-toggle="tab" data-bs-target="#preferences"
+                        <button class="nav-link" id="social-tab" data-bs-toggle="tab" data-bs-target="#social"
                             type="button" role="tab">
-                            <i class="bx bx-cog me-2"></i>
-                            Preferencias
+                            <i class="bx bx-share-alt me-2"></i>
+                            Social
                         </button>
                     </li>
                 </ul>
 
                 <!-- Tab Content -->
-                <div class="tab-content p-4" id="profileTabContent">
+                                <!-- Contenido de los Tabs -->
+                <div class="tab-content p-4" id="profileTabsContent">
 
-                    <!-- Información Personal -->
+                    <!-- Tab: Personal -->
                     <div class="tab-pane fade show active" id="personal" role="tabpanel">
-                        <h5 class="mb-4">Información Personal</h5>
+                        <h5 class="mb-4">
+                            <i class="bx bx-user-circle me-2 text-primary"></i>
+                            Información Personal
+                        </h5>
 
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Nombre</label>
-                                <input type="text" class="form-control" value="Juan" placeholder="Tu nombre">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Apellido</label>
-                                <input type="text" class="form-control" value="Pérez" placeholder="Tu apellido">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Nombre de Usuario</label>
-                                <div class="input-group">
-                                    <span class="input-group-text">@</span>
-                                    <input type="text" class="form-control" value="juanperez" placeholder="username">
+                        <form id="personalForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Tu nombre">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Tu apellido">
+                                </div>
+                                <div class="col-12">
+                                    <label for="bio" class="form-label">
+                                        Biografía 
+                                        <small class="text-muted">(<span id="bioCounter">0</span>/255 caracteres)</small>
+                                    </label>
+                                    <textarea class="form-control" id="bio" name="bio" rows="3" maxlength="255"
+                                        placeholder="Escribe una breve descripción sobre ti"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="gender" class="form-label">Género</label>
+                                    <select class="form-select" id="gender" name="gender_id">
+                                        <option value="1">Prefiero no decirlo</option>
+                                        <option value="2">Masculino</option>
+                                        <option value="3">Femenino</option>
+                                        <option value="4">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="birthdate" class="form-label">Fecha de Nacimiento</label>
+                                    <input type="date" class="form-control" id="birthdate" name="birthdate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="country" class="form-label">País</label>
+                                    <input type="text" class="form-control" id="country" name="country" placeholder="Tu país">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="city" class="form-label">Ciudad</label>
+                                    <input type="text" class="form-control" id="city" name="city" placeholder="Tu ciudad">
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" value="1990-01-15">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Género</label>
-                                <select class="form-select">
-                                    <option value="">Prefiero no decirlo</option>
-                                    <option value="M" selected>Masculino</option>
-                                    <option value="F">Femenino</option>
-                                    <option value="O">Otro</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">País</label>
-                                <select class="form-select">
-                                    <option value="MX" selected>México</option>
-                                    <option value="US">Estados Unidos</option>
-                                    <option value="ES">España</option>
-                                    <option value="AR">Argentina</option>
-                                    <option value="CO">Colombia</option>
-                                </select>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">Biografía</label>
-                                <textarea class="form-control" rows="4"
-                                    placeholder="Cuéntanos sobre ti...">Desarrollador apasionado por la realidad aumentada y la tecnología inmersiva. Administrador de HomeLab AR desde 2024.</textarea>
-                                <small class="form-text text-muted">Máximo 500 caracteres</small>
-                            </div>
-                        </div>
+                        </form>
                     </div>
 
                     <!-- Sesiones Activas -->
@@ -250,229 +243,83 @@
 
                     <!-- Información de Contacto -->
                     <div class="tab-pane fade" id="contact" role="tabpanel">
-                        <h5 class="mb-4">Información de Contacto</h5>
+                        <h5 class="mb-4">
+                            <i class="bx bx-envelope me-2 text-primary"></i>
+                            Información de Contacto
+                        </h5>
 
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Email Principal</label>
-                                <input type="email" class="form-control" value="juan.perez@example.com"
-                                    placeholder="tu@email.com">
-                                <small class="form-text text-muted">
-                                    <i class="bx bx-check-circle text-success"></i>
-                                    Verificado
-                                </small>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Email Alternativo</label>
-                                <input type="email" class="form-control" placeholder="alternativo@email.com">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Teléfono</label>
-                                <input type="tel" class="form-control" value="+52 55 1234 5678"
-                                    placeholder="+52 55 1234 5678">
-                            </div>
-
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">Teléfono Alternativo</label>
-                                <input type="tel" class="form-control" placeholder="+52 55 8765 4321">
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">Dirección</label>
-                                <input type="text" class="form-control" placeholder="Calle, número, colonia">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Ciudad</label>
-                                <input type="text" class="form-control" value="Ciudad de México"
-                                    placeholder="Tu ciudad">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Estado/Provincia</label>
-                                <input type="text" class="form-control" value="CDMX" placeholder="Tu estado">
-                            </div>
-
-                            <div class="col-md-4">
-                                <label class="form-label fw-semibold">Código Postal</label>
-                                <input type="text" class="form-control" value="01000" placeholder="CP">
-                            </div>
-
-                            <div class="col-12">
-                                <div class="alert alert-info d-flex align-items-start" role="alert">
-                                    <i class="bx bx-info-circle fs-5 me-3 mt-1"></i>
-                                    <div>
-                                        <strong>Privacidad:</strong> Tu información de contacto solo será visible para
-                                        administradores del sistema y se usará únicamente para comunicaciones
-                                        importantes.
-                                    </div>
+                        <form id="contactForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="tu@email.com" readonly disabled>
+                                    <small class="text-muted">No puedes cambiar tu email desde aquí</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label">Teléfono</label>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Tu número de teléfono">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="username" class="form-label">Nombre de Usuario</label>
+                                    <input type="text" class="form-control" id="username" name="username" 
+                                        placeholder="tu_usuario" readonly disabled>
+                                    <small class="text-muted">No puedes cambiar tu username</small>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Redes Sociales -->
+                        </form>
+                    </div>                    <!-- Redes Sociales -->
                     <div class="tab-pane fade" id="social" role="tabpanel">
-                        <h5 class="mb-4">Redes Sociales</h5>
+                        <h5 class="mb-4">
+                            <i class="bx bx-share-alt me-2 text-primary"></i>
+                            Redes Sociales
+                        </h5>
 
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">
-                                    <i class="bx bxl-github text-dark me-2"></i>
-                                    GitHub
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">github.com/</span>
-                                    <input type="text" class="form-control" value="juanperez" placeholder="username">
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">
-                                    <i class="bx bxl-linkedin text-primary me-2"></i>
-                                    LinkedIn
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">linkedin.com/in/</span>
-                                    <input type="text" class="form-control" value="juanperez" placeholder="username">
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">
-                                    <i class="bx bxl-twitter text-info me-2"></i>
-                                    Twitter / X
-                                </label>
-                                <div class="input-group">
-                                    <span class="input-group-text">@</span>
-                                    <input type="text" class="form-control" value="juanperez" placeholder="username">
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">
-                                    <i class="bx bxl-discord text-primary me-2"></i>
-                                    Discord
-                                </label>
-                                <input type="text" class="form-control" value="juanperez#1234"
-                                    placeholder="username#0000">
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label fw-semibold">
-                                    <i class="bx bx-globe text-success me-2"></i>
-                                    Sitio Web Personal
-                                </label>
-                                <input type="url" class="form-control" placeholder="https://tusitio.com">
-                            </div>
-
-                            <div class="col-12">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="showSocialPublic" checked>
-                                    <label class="form-check-label" for="showSocialPublic">
-                                        <span class="fw-semibold">Mostrar redes sociales en mi perfil público</span>
+                        <form id="socialForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="github" class="form-label">
+                                        <i class="bx bxl-github me-1"></i> GitHub
                                     </label>
+                                    <input type="text" class="form-control" id="github" name="github_username" placeholder="Tu usuario de GitHub">
                                 </div>
+                                <div class="col-md-6">
+                                    <label for="linkedin" class="form-label">
+                                        <i class="bx bxl-linkedin me-1"></i> LinkedIn
+                                    </label>
+                                    <input type="text" class="form-control" id="linkedin" name="linkedin_username" placeholder="Tu usuario de LinkedIn">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="twitter" class="form-label">
+                                        <i class="bx bxl-twitter me-1"></i> Twitter/X
+                                    </label>
+                                    <input type="text" class="form-control" id="twitter" name="twitter_username" placeholder="Tu usuario de Twitter/X">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="discord" class="form-label">
+                                        <i class="bx bxl-discord me-1"></i> Discord
+                                </label>
+                                <input type="text" class="form-control" id="discord" name="discord_tag" placeholder="usuario#1234">
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Preferencias -->
-                    <div class="tab-pane fade" id="preferences" role="tabpanel">
-                        <h5 class="mb-4">Preferencias del Perfil</h5>
-
-                        <div class="row g-4">
                             <div class="col-12">
-                                <h6 class="fw-semibold mb-3">Visibilidad del Perfil</h6>
-
-                                <div class="form-check mb-3">
-                                    <input class="form-check-radio" type="radio" name="profileVisibility"
-                                        id="visibilityPublic" checked>
-                                    <label class="form-check-label" for="visibilityPublic">
-                                        <div class="fw-semibold">Público</div>
-                                        <small class="text-muted">Cualquiera puede ver tu perfil</small>
-                                    </label>
-                                </div>
-
-                                <div class="form-check mb-3">
-                                    <input class="form-check-radio" type="radio" name="profileVisibility"
-                                        id="visibilityMembers">
-                                    <label class="form-check-label" for="visibilityMembers">
-                                        <div class="fw-semibold">Solo Miembros</div>
-                                        <small class="text-muted">Solo usuarios registrados pueden ver tu perfil</small>
-                                    </label>
-                                </div>
-
+                                <label for="website" class="form-label">
+                                    <i class="bx bx-globe me-1"></i> Sitio Web Personal
+                                </label>
+                                <input type="url" class="form-control" id="website" name="personal_website"
+                                    placeholder="https://tusitio.com">
+                            </div>
+                            <div class="col-12">
                                 <div class="form-check">
-                                    <input class="form-check-radio" type="radio" name="profileVisibility"
-                                        id="visibilityPrivate">
-                                    <label class="form-check-label" for="visibilityPrivate">
-                                        <div class="fw-semibold">Privado</div>
-                                        <small class="text-muted">Solo tú puedes ver tu perfil completo</small>
+                                    <input class="form-check-input" type="checkbox" id="showSocialPublic" name="show_social_public">
+                                    <label class="form-check-label" for="showSocialPublic">
+                                        Mostrar mis redes sociales públicamente
                                     </label>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <hr>
-                            </div>
-
-                            <div class="col-12">
-                                <h6 class="fw-semibold mb-3">Privacidad</h6>
-
-                                <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input" type="checkbox" id="showEmail">
-                                    <label class="form-check-label" for="showEmail">
-                                        <span class="fw-semibold">Mostrar mi email en mi perfil</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input" type="checkbox" id="showLastSeen" checked>
-                                    <label class="form-check-label" for="showLastSeen">
-                                        <span class="fw-semibold">Mostrar última conexión</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-switch mb-3">
-                                    <input class="form-check-input" type="checkbox" id="allowMessages" checked>
-                                    <label class="form-check-label" for="allowMessages">
-                                        <span class="fw-semibold">Permitir que otros usuarios me envíen mensajes</span>
-                                    </label>
-                                </div>
-
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="searchable" checked>
-                                    <label class="form-check-label" for="searchable">
-                                        <span class="fw-semibold">Aparecer en resultados de búsqueda</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <hr>
-                            </div>
-
-                            <div class="col-12">
-                                <h6 class="fw-semibold mb-3 text-danger">Zona de Peligro</h6>
-
-                                <div class="card bg-danger bg-opacity-10 border-danger">
-                                    <div class="card-body">
-                                        <h6 class="text-danger">Eliminar Cuenta</h6>
-                                        <p class="text-muted mb-3">Una vez que elimines tu cuenta, no hay vuelta atrás.
-                                            Por favor, ten cuidado.</p>
-                                        <button class="btn btn-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteAccountModal">
-                                            <i class="bx bx-trash me-2"></i>
-                                            Eliminar mi cuenta
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
+
 
                 </div>
             </div>
@@ -531,38 +378,114 @@
         let currentUserData = null;
         let activeSessions = [];
 
+        // Instancia de Notyf (se inicializa de forma lazy)
+        let notyfInstance = null;
+
+        /**
+         * Obtener instancia de Notyf (inicialización lazy)
+         * Espera a que Notyf esté disponible antes de crear la instancia
+         */
+        function getNotyf() {
+            if (!notyfInstance && typeof Notyf !== 'undefined') {
+                notyfInstance = new Notyf({
+                    duration: 4000,
+                    position: { x: 'right', y: 'top' },
+                    ripple: true,
+                    dismissible: true
+                });
+                console.log('✅ Notyf inicializado correctamente (lazy)');
+            }
+            
+            // Si aún no está disponible, usar fallback
+            if (!notyfInstance) {
+                console.warn('⚠️ Notyf aún no disponible, usando fallback alert');
+                return {
+                    success: (msg) => alert('✅ ' + (typeof msg === 'string' ? msg : msg.message)),
+                    error: (msg) => alert('❌ ' + (typeof msg === 'string' ? msg : msg.message))
+                };
+            }
+            
+            return notyfInstance;
+        }
+
         // ===================================
         // CARGAR DATOS DEL USUARIO
         // ===================================
         async function loadUserData() {
             try {
-                console.log('📊 Cargando datos del usuario...');
+                console.log('� Cargando datos completos del perfil...');
+                
+                // Obtener perfil completo con bio, género y redes sociales
+                const response = await window.AppRouter.get('/routes/profile/det_user.php');
 
-                // Verificar que AppRouter esté disponible
-                if (!window.AppRouter || !window.AppRouter.isReady()) {
-                    console.warn('⏳ AppRouter no está listo, esperando...');
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    return loadUserData(); // Reintentar
-                }
-
-                const response = await window.AppRouter.get('/routes/user/user_data.php');
-
-                if (response.status === 'success') {
+                if (response && response.status === 'success') {
+                    console.log('✅ Perfil completo cargado:', response.data);
                     currentUserData = response.data;
+
+                    // Actualizar UI con los datos
                     updateProfileUI(currentUserData);
-                    console.log('✅ Datos del usuario cargados:', currentUserData);
+                    
+                    // Llenar formularios con datos del backend
+                    fillFormData(currentUserData);
                 } else {
-                    throw new Error(response.message || 'Error al cargar datos');
+                    throw new Error(response?.message || 'Error al cargar perfil');
                 }
             } catch (error) {
-                console.error('❌ Error al cargar datos del usuario:', error);
-
-                const notyf = new Notyf({ duration: 4000 });
-                notyf.error('No se pudieron cargar los datos del perfil');
+                console.error('❌ Error al cargar perfil:', error);
+                getNotyf().error('Error al cargar información del perfil');
             }
         }
 
         // ===================================
+        // LLENAR FORMULARIOS CON DATOS
+        // ===================================
+        function fillFormData(userData) {
+            console.log('📝 Llenando formularios con datos del usuario');
+
+            // Tab Personal
+            document.getElementById('firstName').value = userData.first_name || '';
+            document.getElementById('lastName').value = userData.last_name || '';
+            document.getElementById('bio').value = userData.bio || '';
+            updateBioCounter(); // Actualizar contador
+            document.getElementById('gender').value = userData.gender_id || 1;
+            document.getElementById('birthdate').value = userData.birthdate || '';
+            document.getElementById('country').value = userData.country || '';
+            document.getElementById('city').value = userData.city || '';
+
+            // Tab Contacto
+            document.getElementById('email').value = userData.email || '';
+            document.getElementById('phone').value = userData.phone || '';
+            document.getElementById('username').value = userData.username || '';
+
+            // Tab Social
+            if (userData.social) {
+                document.getElementById('github').value = userData.social.github_username || '';
+                document.getElementById('linkedin').value = userData.social.linkedin_username || '';
+                document.getElementById('twitter').value = userData.social.twitter_username || '';
+                document.getElementById('discord').value = userData.social.discord_tag || '';
+                document.getElementById('website').value = userData.social.personal_website || '';
+                document.getElementById('showSocialPublic').checked = userData.social.show_social_public || false;
+            }
+
+            console.log('✅ Formularios llenados correctamente');
+        }
+
+        // ===================================
+        // CONTADOR DE CARACTERES PARA BIO
+        // ===================================
+        function updateBioCounter() {
+            const bioInput = document.getElementById('bio');
+            const bioCounter = document.getElementById('bioCounter');
+            if (bioInput && bioCounter) {
+                bioCounter.textContent = bioInput.value.length;
+            }
+        }
+
+        // Event listener para bio
+        const bioInput = document.getElementById('bio');
+        if (bioInput) {
+            bioInput.addEventListener('input', updateBioCounter);
+        }        // ===================================
         // ACTUALIZAR UI CON DATOS DEL USUARIO
         // ===================================
         function updateProfileUI(userData) {
@@ -603,31 +526,48 @@
 
             // Último acceso (usar last_login del usuario)
             const lastAccess = document.getElementById('lastAccessTime');
-            if (lastAccess && userData.last_login) {
-                const lastLoginDate = new Date(userData.last_login);
-                const now = new Date();
-                const diffMinutes = Math.floor((now - lastLoginDate) / 60000);
+            if (lastAccess) {
+                if (userData.last_login) {
+                    const lastLoginDate = new Date(userData.last_login);
+                    const now = new Date();
+                    const diffMinutes = Math.floor((now - lastLoginDate) / 60000);
 
-                let timeText = '';
-                if (diffMinutes < 1) {
-                    timeText = 'Ahora mismo';
-                } else if (diffMinutes < 60) {
-                    timeText = `Hace ${diffMinutes} ${diffMinutes === 1 ? 'minuto' : 'minutos'}`;
-                } else if (diffMinutes < 1440) {
-                    const hours = Math.floor(diffMinutes / 60);
-                    timeText = `Hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
+                    let timeText = '';
+                    if (diffMinutes < 1) {
+                        timeText = 'Ahora mismo';
+                    } else if (diffMinutes < 60) {
+                        timeText = `Hace ${diffMinutes} ${diffMinutes === 1 ? 'minuto' : 'minutos'}`;
+                    } else if (diffMinutes < 1440) {
+                        const hours = Math.floor(diffMinutes / 60);
+                        timeText = `Hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
+                    } else {
+                        const days = Math.floor(diffMinutes / 1440);
+                        timeText = `Hace ${days} ${days === 1 ? 'día' : 'días'}`;
+                    }
+
+                    lastAccess.textContent = timeText;
+                    console.log(`🕒 Último acceso actualizado: ${timeText} (${userData.last_login})`);
                 } else {
-                    const days = Math.floor(diffMinutes / 1440);
-                    timeText = `Hace ${days} ${days === 1 ? 'día' : 'días'}`;
+                    lastAccess.textContent = 'No disponible';
+                    console.warn('⚠️ last_login no está disponible en userData');
                 }
-
-                lastAccess.textContent = timeText;
+            } else {
+                console.error('❌ Elemento lastAccessTime no encontrado');
             }
 
             // Miembro desde
             const memberSince = document.getElementById('memberSince');
             if (memberSince) {
                 memberSince.textContent = userData.member_since || 'Reciente';
+                console.log(`📅 Miembro desde actualizado: ${userData.member_since || 'Reciente'}`);
+            }
+
+            // Sesiones activas (actualizar contador)
+            const activeSessions = document.getElementById('activeSessions');
+            if (activeSessions && userData.active_sessions_count !== undefined) {
+                const count = userData.active_sessions_count;
+                activeSessions.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
+                console.log(`📱 Sesiones activas actualizadas: ${count}`);
             }
         }
 
@@ -740,23 +680,83 @@
         // ===================================
         // GUARDAR PERFIL
         // ===================================
-        document.getElementById('saveProfile')?.addEventListener('click', function () {
+        document.getElementById('saveProfile')?.addEventListener('click', async function () {
             console.log('💾 Guardando perfil...');
 
-            this.disabled = true;
-            this.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Guardando...';
+            const saveBtn = this;
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Guardando...';
 
-            // Simulación de guardado (implementar lógica real)
-            setTimeout(() => {
-                const notyf = new Notyf({ duration: 3000 });
-                notyf.success('Perfil actualizado exitosamente');
+            try {
+                // Recopilar datos de todos los formularios
+                const profileData = {
+                    // Datos personales
+                    first_name: document.getElementById('firstName').value.trim(),
+                    last_name: document.getElementById('lastName').value.trim(),
+                    bio: document.getElementById('bio').value.trim(),
+                    gender_id: parseInt(document.getElementById('gender').value),
+                    birthdate: document.getElementById('birthdate').value,
+                    country: document.getElementById('country').value.trim(),
+                    city: document.getElementById('city').value.trim(),
 
-                this.disabled = false;
-                this.innerHTML = '<i class="bx bx-save me-1"></i>Guardar Cambios';
-            }, 1500);
-        });
+                    // Contacto
+                    phone: document.getElementById('phone').value.trim(),
 
-        // ===================================
+                    // Redes sociales
+                    social: {
+                        github_username: document.getElementById('github').value.trim(),
+                        linkedin_username: document.getElementById('linkedin').value.trim(),
+                        twitter_username: document.getElementById('twitter').value.trim(),
+                        discord_tag: document.getElementById('discord').value.trim(),
+                        personal_website: document.getElementById('website').value.trim(),
+                        show_social_public: document.getElementById('showSocialPublic').checked
+                    }
+                };
+
+                console.log('📤 Enviando datos al backend:', profileData);
+
+                // Enviar al backend
+                const response = await window.AppRouter.put('/routes/profile/up_user.php', profileData);
+
+                if (response && response.status === 'success') {
+                    console.log('✅ Perfil actualizado:', response.data);
+                    
+                    getNotyf().success({
+                        message: `Perfil actualizado correctamente. ${response.data.total_updates} campo(s) modificado(s).`,
+                        duration: 5000
+                    });
+
+                    // Recargar datos del perfil
+                    await loadUserData();
+
+                    // Actualizar header si cambió el nombre
+                    if (response.data.updated_fields.includes('first_name') || 
+                        response.data.updated_fields.includes('last_name')) {
+                        console.log('🔄 Nombre actualizado, recargando header...');
+                        // El header se actualizará con los nuevos datos en loadUserData()
+                    }
+                } else {
+                    throw new Error(response?.message || 'Error al actualizar perfil');
+                }
+
+            } catch (error) {
+                console.error('❌ Error al guardar perfil:', error);
+                
+                let errorMessage = 'Error al guardar los cambios';
+                if (error.response && error.response.data && error.response.data.message) {
+                    errorMessage = error.response.data.message;
+                }
+
+                getNotyf().error({
+                    message: errorMessage,
+                    duration: 5000
+                });
+            } finally {
+                // Restaurar botón
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="bx bx-save me-1"></i>Guardar Cambios';
+            }
+        });        // ===================================
         // CONFIRMACIÓN PARA ELIMINAR CUENTA
         // ===================================
         const deleteInput = document.getElementById('deleteConfirmation');
@@ -818,8 +818,7 @@
 
             if (!isReady) {
                 console.error('❌ No se pudo inicializar el perfil: AppRouter no disponible');
-                const notyf = new Notyf({ duration: 5000 });
-                notyf.error('Error al cargar el perfil. Por favor, recarga la página.');
+                getNotyf().error('Error al cargar el perfil. Por favor, recarga la página.');
                 return;
             }
 
