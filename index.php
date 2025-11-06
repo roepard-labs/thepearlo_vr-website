@@ -37,8 +37,8 @@ $routes = [
     '/' => 'home.view.php',
     '/home' => 'home.view.php',
     '/features' => 'features.view.php',
-    '/privacy' => 'privacy.view.php',
-    '/terms' => 'terms.view.php',
+    '/privacy' => 'privacy.view.php', // Usar vista dinámica que carga desde API
+    '/terms' => 'terms.view.php', // Usar vista dinámica que carga desde API
     '/dashboard' => 'dashboard.view.php',
     // Dashboard pages - renderizadas dentro de dashboard.view.php
     '/dashboard/users' => 'dashboard.view.php',

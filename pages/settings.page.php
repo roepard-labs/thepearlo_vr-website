@@ -31,402 +31,76 @@
         <!-- Nav Tabs -->
         <ul class="nav nav-tabs nav-fill border-bottom" id="settingsTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general"
+                <button class="nav-link active" id="privacy-tab" data-bs-toggle="tab" data-bs-target="#privacy-content"
                     type="button" role="tab">
-                    <i class="bx bx-cog me-2"></i>
-                    General
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="appearance-tab" data-bs-toggle="tab" data-bs-target="#appearance"
-                    type="button" role="tab">
-                    <i class="bx bx-palette me-2"></i>
-                    Apariencia
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications"
-                    type="button" role="tab">
-                    <i class="bx bx-bell me-2"></i>
-                    Notificaciones
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button"
-                    role="tab">
                     <i class="bx bx-shield me-2"></i>
-                    Seguridad
+                    Política de Privacidad
                 </button>
             </li>
-        </ul>
-
-        <!-- Tab Content -->
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="terms-tab" data-bs-toggle="tab" data-bs-target="#terms-content"
+                    type="button" role="tab">
+                    <i class="bx bx-file-blank me-2"></i>
+                    Términos y Condiciones
+                </button>
+            </li>
+        </ul> <!-- Tab Content -->
         <div class="tab-content p-4" id="settingsTabContent">
 
-            <!-- General Settings -->
-            <div class="tab-pane fade show active" id="general" role="tabpanel">
-                <h5 class="mb-4">Configuración General</h5>
-
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Nombre de la Aplicación</label>
-                        <input type="text" class="form-control" value="HomeLab AR" placeholder="Nombre de tu HomeLab">
-                        <small class="form-text text-muted">Este nombre aparecerá en el dashboard y
-                            notificaciones</small>
+            <!-- Privacy Policy Content (Admin Only) -->
+            <div class="tab-pane fade show active" id="privacy-content" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="mb-1">
+                            <i class="bx bx-shield me-2 text-primary"></i>
+                            Política de Privacidad
+                        </h5>
+                        <p class="text-muted mb-0">Gestiona el contenido de la política de privacidad del sitio web</p>
                     </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Idioma</label>
-                        <select class="form-select">
-                            <option value="es" selected>Español</option>
-                            <option value="en">English</option>
-                            <option value="pt">Português</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Zona Horaria</label>
-                        <select class="form-select">
-                            <option value="America/Mexico_City" selected>Ciudad de México (GMT-6)</option>
-                            <option value="America/New_York">Nueva York (GMT-5)</option>
-                            <option value="Europe/Madrid">Madrid (GMT+1)</option>
-                            <option value="America/Sao_Paulo">São Paulo (GMT-3)</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Formato de Fecha</label>
-                        <select class="form-select">
-                            <option value="DD/MM/YYYY" selected>DD/MM/YYYY</option>
-                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
-                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
-                        </select>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="enableAutoSave" checked>
-                            <label class="form-check-label" for="enableAutoSave">
-                                <span class="fw-semibold">Guardado Automático</span>
-                                <br>
-                                <small class="text-muted">Guardar cambios automáticamente sin necesidad de hacer clic en
-                                    guardar</small>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="enableAnalytics">
-                            <label class="form-check-label" for="enableAnalytics">
-                                <span class="fw-semibold">Análisis de Uso</span>
-                                <br>
-                                <small class="text-muted">Ayúdanos a mejorar compartiendo datos anónimos de uso</small>
-                            </label>
-                        </div>
-                    </div>
+                    <a href="/privacy" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="bx bx-link-external me-1"></i>
+                        Ver Pública
+                    </a>
                 </div>
+
+                <!-- Loading State -->
+                <div id="privacy-loading" class="text-center py-5">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="text-muted">Cargando contenido de privacidad...</p>
+                </div>
+
+                <!-- Editor Container -->
+                <div id="privacy-editor-container"></div>
             </div>
 
-            <!-- Appearance Settings -->
-            <div class="tab-pane fade" id="appearance" role="tabpanel">
-                <h5 class="mb-4">Personalización de Apariencia</h5>
-
-                <div class="row g-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Tema</label>
-                        <div class="btn-group w-100" role="group">
-                            <input type="radio" class="btn-check" name="theme" id="themeLight" value="light" checked>
-                            <label class="btn btn-outline-primary" for="themeLight">
-                                <i class="bx bx-sun me-2"></i>Claro
-                            </label>
-
-                            <input type="radio" class="btn-check" name="theme" id="themeDark" value="dark">
-                            <label class="btn btn-outline-primary" for="themeDark">
-                                <i class="bx bx-moon me-2"></i>Oscuro
-                            </label>
-
-                            <input type="radio" class="btn-check" name="theme" id="themeAuto" value="auto">
-                            <label class="btn btn-outline-primary" for="themeAuto">
-                                <i class="bx bx-desktop me-2"></i>Auto
-                            </label>
-                        </div>
+            <!-- Terms and Conditions Content (Admin Only) -->
+            <div class="tab-pane fade" id="terms-content" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h5 class="mb-1">
+                            <i class="bx bx-file-blank me-2 text-primary"></i>
+                            Términos y Condiciones
+                        </h5>
+                        <p class="text-muted mb-0">Gestiona el contenido de los términos y condiciones del sitio web</p>
                     </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Color Principal</label>
-                        <div class="d-flex gap-2">
-                            <input type="color" class="form-control form-control-color" value="#00ff88"
-                                title="Elegir color">
-                            <input type="text" class="form-control" value="#00ff88" placeholder="#00ff88">
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label fw-semibold">Tamaño de Fuente</label>
-                        <div class="d-flex align-items-center gap-3">
-                            <span class="text-muted">A</span>
-                            <input type="range" class="form-range flex-grow-1" min="12" max="18" value="14" step="1"
-                                id="fontSizeRange">
-                            <span class="fw-bold">A</span>
-                            <span class="badge bg-primary" id="fontSizeValue">14px</span>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="enableAnimations" checked>
-                            <label class="form-check-label" for="enableAnimations">
-                                <span class="fw-semibold">Animaciones</span>
-                                <br>
-                                <small class="text-muted">Habilitar animaciones y transiciones en la interfaz</small>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="compactMode">
-                            <label class="form-check-label" for="compactMode">
-                                <span class="fw-semibold">Modo Compacto</span>
-                                <br>
-                                <small class="text-muted">Reducir el espaciado para mostrar más información en
-                                    pantalla</small>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label fw-semibold">Vista Previa del Tema</label>
-                        <div class="card bg-light">
-                            <div class="card-body text-center py-5">
-                                <h4>Ejemplo de Tarjeta</h4>
-                                <p class="text-muted">Este es un ejemplo de cómo se verá tu dashboard con la
-                                    configuración actual</p>
-                                <button class="btn btn-primary">Botón de Ejemplo</button>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="/terms" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="bx bx-link-external me-1"></i>
+                        Ver Pública
+                    </a>
                 </div>
-            </div>
 
-            <!-- Notifications Settings -->
-            <div class="tab-pane fade" id="notifications" role="tabpanel">
-                <h5 class="mb-4">Preferencias de Notificaciones</h5>
-
-                <div class="row g-4">
-                    <div class="col-12">
-                        <div class="alert alert-info d-flex align-items-center" role="alert">
-                            <i class="bx bx-info-circle fs-4 me-3"></i>
-                            <div>
-                                Controla qué notificaciones quieres recibir y cómo prefieres ser notificado
-                            </div>
-                        </div>
+                <!-- Loading State -->
+                <div id="terms-loading" class="text-center py-5">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Cargando...</span>
                     </div>
-
-                    <div class="col-12">
-                        <h6 class="fw-semibold mb-3">Notificaciones del Sistema</h6>
-
-                        <div class="list-group">
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold">Actualizaciones del Sistema</div>
-                                    <small class="text-muted">Recibe notificaciones sobre nuevas versiones y
-                                        mejoras</small>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" checked>
-                                </div>
-                            </div>
-
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold">Alertas de Seguridad</div>
-                                    <small class="text-muted">Notificaciones importantes sobre la seguridad de tu
-                                        cuenta</small>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" checked disabled>
-                                </div>
-                            </div>
-
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold">Mantenimiento Programado</div>
-                                    <small class="text-muted">Avisos sobre mantenimientos y tiempos de
-                                        inactividad</small>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" checked>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <h6 class="fw-semibold mb-3">Notificaciones de Actividad</h6>
-
-                        <div class="list-group">
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold">Nuevos Usuarios</div>
-                                    <small class="text-muted">Cuando un nuevo usuario se registra en el sistema</small>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox">
-                                </div>
-                            </div>
-
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold">Cambios en Configuración</div>
-                                    <small class="text-muted">Cuando se modifica la configuración del sistema</small>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" checked>
-                                </div>
-                            </div>
-
-                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                <div>
-                                    <div class="fw-semibold">Resumen Diario</div>
-                                    <small class="text-muted">Recibe un resumen de actividad al final del día</small>
-                                </div>
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Método de Notificación</label>
-                        <select class="form-select">
-                            <option value="all" selected>Todas (Email + Push + In-App)</option>
-                            <option value="email-push">Email + Push</option>
-                            <option value="push-only">Solo Push</option>
-                            <option value="in-app-only">Solo In-App</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label fw-semibold">Frecuencia de Emails</label>
-                        <select class="form-select">
-                            <option value="instant">Instantáneo</option>
-                            <option value="hourly" selected>Cada Hora</option>
-                            <option value="daily">Diario</option>
-                            <option value="weekly">Semanal</option>
-                        </select>
-                    </div>
+                    <p class="text-muted">Cargando contenido de términos...</p>
                 </div>
-            </div>
 
-            <!-- Security Settings -->
-            <div class="tab-pane fade" id="security" role="tabpanel">
-                <h5 class="mb-4">Seguridad y Privacidad</h5>
-
-                <div class="row g-4">
-                    <div class="col-12">
-                        <div class="alert alert-warning d-flex align-items-center" role="alert">
-                            <i class="bx bx-shield fs-4 me-3"></i>
-                            <div>
-                                Protege tu cuenta con opciones de seguridad adicionales
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <div>
-                                        <h6 class="mb-1">Cambiar Contraseña</h6>
-                                        <small class="text-muted">Última actualización: hace 3 meses</small>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                        data-bs-target="#changePasswordModal">
-                                        <i class="bx bx-lock me-1"></i>
-                                        Cambiar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="enable2FA">
-                            <label class="form-check-label" for="enable2FA">
-                                <span class="fw-semibold">Autenticación de Dos Factores (2FA)</span>
-                                <br>
-                                <small class="text-muted">Agrega una capa extra de seguridad a tu cuenta</small>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="sessionTimeout" checked>
-                            <label class="form-check-label" for="sessionTimeout">
-                                <span class="fw-semibold">Cerrar Sesión Automáticamente</span>
-                                <br>
-                                <small class="text-muted">Cierra la sesión después de 30 minutos de inactividad</small>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="loginNotifications" checked>
-                            <label class="form-check-label" for="loginNotifications">
-                                <span class="fw-semibold">Notificar Inicios de Sesión</span>
-                                <br>
-                                <small class="text-muted">Recibe un email cada vez que alguien inicie sesión en tu
-                                    cuenta</small>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <h6 class="fw-semibold mb-3">Sesiones Activas</h6>
-                        <div class="list-group">
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="bx bx-laptop fs-4 text-primary me-2"></i>
-                                            <span class="fw-semibold">Windows - Chrome</span>
-                                            <span class="badge bg-success ms-2">Actual</span>
-                                        </div>
-                                        <small class="text-muted">Ciudad de México, México • Ahora</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <i class="bx bx-mobile fs-4 text-info me-2"></i>
-                                            <span class="fw-semibold">Android - Firefox</span>
-                                        </div>
-                                        <small class="text-muted">Ciudad de México, México • Hace 2 horas</small>
-                                    </div>
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bx bx-x"></i>
-                                        Cerrar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <button class="btn btn-outline-danger">
-                            <i class="bx bx-log-out me-2"></i>
-                            Cerrar Todas las Sesiones
-                        </button>
-                    </div>
-                </div>
+                <!-- Editor Container -->
+                <div id="terms-editor-container"></div>
             </div>
 
         </div>
@@ -563,6 +237,9 @@
     })();
 </script>
 
+<!-- Legal Content Editor (Admin Only) -->
+<script src="../js/legal-editor.js"></script>
+
 <style>
     .nav-tabs .nav-link {
         color: var(--bs-secondary);
@@ -599,5 +276,193 @@
     .form-check-input:checked {
         background-color: var(--bs-primary);
         border-color: var(--bs-primary);
+    }
+
+    /* ===================================
+       ESTILOS DE MODALES SWEETALERT2 - MODO OSCURO
+    =================================== */
+
+    /* Modal principal en modo oscuro */
+    [data-bs-theme="dark"] .swal2-popup {
+        background-color: #1a1d29 !important;
+        color: #e9ecef !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Título del modal */
+    [data-bs-theme="dark"] .swal2-title {
+        color: #ffffff !important;
+    }
+
+    /* Contenido HTML del modal */
+    [data-bs-theme="dark"] .swal2-html-container {
+        color: #e9ecef !important;
+    }
+
+    /* Textos pequeños (labels) */
+    [data-bs-theme="dark"] .swal2-html-container .text-muted {
+        color: #adb5bd !important;
+    }
+
+    /* Textos con peso semibold */
+    [data-bs-theme="dark"] .swal2-html-container .fw-semibold {
+        color: #f8f9fa !important;
+    }
+
+    /* Botones del modal */
+    [data-bs-theme="dark"] .swal2-confirm,
+    [data-bs-theme="dark"] .swal2-cancel {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* Botón de confirmar (primary) */
+    [data-bs-theme="dark"] .swal2-confirm {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-confirm:hover {
+        background-color: #0b5ed7 !important;
+        border-color: #0a58ca !important;
+    }
+
+    /* Botón de cancelar */
+    [data-bs-theme="dark"] .swal2-cancel {
+        background-color: #6c757d !important;
+        border-color: #6c757d !important;
+        color: #fff !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-cancel:hover {
+        background-color: #5c636a !important;
+        border-color: #565e64 !important;
+    }
+
+    /* Botón de cerrar (X) */
+    [data-bs-theme="dark"] .swal2-close {
+        color: #adb5bd !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-close:hover {
+        color: #ffffff !important;
+    }
+
+    /* Inputs del formulario en modal */
+    [data-bs-theme="dark"] .swal2-input,
+    [data-bs-theme="dark"] .swal2-textarea,
+    [data-bs-theme="dark"] .swal2-select,
+    [data-bs-theme="dark"] .swal2-html-container input,
+    [data-bs-theme="dark"] .swal2-html-container textarea,
+    [data-bs-theme="dark"] .swal2-html-container select {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #f8f9fa !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-input:focus,
+    [data-bs-theme="dark"] .swal2-textarea:focus,
+    [data-bs-theme="dark"] .swal2-select:focus,
+    [data-bs-theme="dark"] .swal2-html-container input:focus,
+    [data-bs-theme="dark"] .swal2-html-container textarea:focus,
+    [data-bs-theme="dark"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
+
+    /* Labels de formulario */
+    [data-bs-theme="dark"] .swal2-html-container label,
+    [data-bs-theme="dark"] .swal2-html-container .form-label {
+        color: #adb5bd !important;
+    }
+
+    /* Placeholder de inputs */
+    [data-bs-theme="dark"] .swal2-input::placeholder,
+    [data-bs-theme="dark"] .swal2-textarea::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container input::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container textarea::placeholder {
+        color: #6c757d !important;
+    }
+
+    /* Badges en modal */
+    [data-bs-theme="dark"] .swal2-html-container .badge {
+        font-weight: 500 !important;
+    }
+
+    /* Loader/Loading spinner */
+    [data-bs-theme="dark"] .swal2-loader {
+        border-color: #0d6efd transparent #0d6efd transparent !important;
+    }
+
+    /* Modal de confirmación de loading */
+    [data-bs-theme="dark"] .swal2-loading .swal2-styled {
+        background-color: transparent !important;
+        color: #f8f9fa !important;
+    }
+
+    /* Dividers/Separadores */
+    [data-bs-theme="dark"] .swal2-html-container hr {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Select options en modo oscuro */
+    [data-bs-theme="dark"] .swal2-select option,
+    [data-bs-theme="dark"] .swal2-html-container select option {
+        background-color: #1a1d29 !important;
+        color: #f8f9fa !important;
+    }
+
+    /* Checkbox y radio buttons */
+    [data-bs-theme="dark"] .swal2-html-container input[type="checkbox"],
+    [data-bs-theme="dark"] .swal2-html-container input[type="radio"] {
+        border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    /* Background del modal overlay */
+    [data-bs-theme="dark"] .swal2-container.swal2-backdrop-show {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+
+    /* Iconos del modal */
+    [data-bs-theme="dark"] .swal2-icon {
+        border-color: #e9ecef !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-icon .swal2-icon-content {
+        color: #e9ecef !important;
+    }
+
+    /* ===================================
+       ESTILOS DE MODALES SWEETALERT2 - MODO CLARO (mejoras)
+    =================================== */
+
+    /* Asegurar buen contraste en modo claro */
+    [data-bs-theme="light"] .swal2-popup {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+    }
+
+    [data-bs-theme="light"] .swal2-html-container .text-muted {
+        color: #6c757d !important;
+    }
+
+    [data-bs-theme="light"] .swal2-input,
+    [data-bs-theme="light"] .swal2-textarea,
+    [data-bs-theme="light"] .swal2-select,
+    [data-bs-theme="light"] .swal2-html-container input,
+    [data-bs-theme="light"] .swal2-html-container textarea,
+    [data-bs-theme="light"] .swal2-html-container select {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    [data-bs-theme="light"] .swal2-input:focus,
+    [data-bs-theme="light"] .swal2-textarea:focus,
+    [data-bs-theme="light"] .swal2-select:focus,
+    [data-bs-theme="light"] .swal2-html-container input:focus,
+    [data-bs-theme="light"] .swal2-html-container textarea:focus,
+    [data-bs-theme="light"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
     }
 </style>
