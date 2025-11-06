@@ -56,50 +56,29 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body">
                 <h6 class="card-title mb-3">
-                    <i class="bx bx-bar-chart me-2"></i>
-                    Mi Actividad
+                    <i class="bx bx-bar-chart text-primary me-2"></i>
+                    Estadísticas
                 </h6>
                 <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
                     <div>
                         <small class="text-muted d-block">Último acceso</small>
-                        <span class="fw-semibold">Hace 5 minutos</span>
+                        <strong id="lastAccessTime">Cargando...</strong>
                     </div>
                     <i class="bx bx-time-five fs-4 text-primary"></i>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
                     <div>
                         <small class="text-muted d-block">Miembro desde</small>
-                        <span class="fw-semibold">Enero 2024</span>
+                        <strong id="memberSince">Cargando...</strong>
                     </div>
-                    <i class="bx bx-calendar fs-4 text-success"></i>
+                    <i class="bx bx-calendar fs-4 text-primary"></i>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <small class="text-muted d-block">Sesiones activas</small>
-                        <span class="fw-semibold">2 dispositivos</span>
+                        <strong id="activeSessions">Cargando...</strong>
                     </div>
-                    <i class="bx bx-devices fs-4 text-info"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card: Insignias -->
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <h6 class="card-title mb-3">
-                    <i class="bx bx-award me-2"></i>
-                    Insignias
-                </h6>
-                <div class="d-flex flex-wrap gap-2">
-                    <span class="badge bg-warning text-dark" title="Usuario destacado">
-                        <i class="bx bx-star me-1"></i>Destacado
-                    </span>
-                    <span class="badge bg-info" title="Early adopter">
-                        <i class="bx bx-rocket me-1"></i>Early Bird
-                    </span>
-                    <span class="badge bg-success" title="100% de perfil completado">
-                        <i class="bx bx-check-circle me-1"></i>Completo
-                    </span>
+                    <i class="bx bx-devices fs-4 text-primary"></i>
                 </div>
             </div>
         </div>
@@ -123,17 +102,17 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="sessions-tab" data-bs-toggle="tab" data-bs-target="#sessions"
+                            type="button" role="tab">
+                            <i class="bx bx-shield-quarter me-2"></i>
+                            Sesiones
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
                             type="button" role="tab">
                             <i class="bx bx-envelope me-2"></i>
                             Contacto
-                        </button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="social-tab" data-bs-toggle="tab" data-bs-target="#social"
-                            type="button" role="tab">
-                            <i class="bx bx-share-alt me-2"></i>
-                            Social
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -202,6 +181,69 @@
                                 <textarea class="form-control" rows="4"
                                     placeholder="Cuéntanos sobre ti...">Desarrollador apasionado por la realidad aumentada y la tecnología inmersiva. Administrador de HomeLab AR desde 2024.</textarea>
                                 <small class="form-text text-muted">Máximo 500 caracteres</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sesiones Activas -->
+                    <div class="tab-pane fade" id="sessions" role="tabpanel">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Sesiones Activas</h5>
+                            <button class="btn btn-warning btn-sm" id="closeAllSessionsBtn">
+                                <i class="bx bx-exit me-1"></i>
+                                Cerrar Todas
+                            </button>
+                        </div>
+
+                        <div class="alert alert-info border-0 mb-4">
+                            <i class="bx bx-info-circle me-2"></i>
+                            <strong>Seguridad:</strong> Verifica que reconozcas todos los dispositivos con sesión
+                            activa.
+                            Si detectas actividad sospechosa, cierra las sesiones inmediatamente.
+                        </div>
+
+                        <!-- Contenedor de sesiones -->
+                        <div id="sessionsContainer">
+                            <!-- Las sesiones se cargarán dinámicamente aquí -->
+                            <div class="text-center py-5">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando sesiones...</span>
+                                </div>
+                                <p class="text-muted mt-3">Cargando sesiones activas...</p>
+                            </div>
+                        </div>
+
+                        <!-- Estadísticas de sesiones -->
+                        <div class="row g-3 mt-4">
+                            <div class="col-md-6">
+                                <div class="card session-stat-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="bx bx-time fs-2 text-primary"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <small class="text-muted d-block">Última Actividad</small>
+                                                <strong id="lastActivityStat">Cargando...</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card session-stat-card">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="bx bx-devices fs-2 text-success"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <small class="text-muted d-block">Dispositivos Conectados</small>
+                                                <strong id="devicesConnectedStat">Cargando...</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -484,6 +526,218 @@
         console.log('👤 Página: Perfil - Inicializando');
 
         // ===================================
+        // VARIABLES GLOBALES
+        // ===================================
+        let currentUserData = null;
+        let activeSessions = [];
+
+        // ===================================
+        // CARGAR DATOS DEL USUARIO
+        // ===================================
+        async function loadUserData() {
+            try {
+                console.log('📊 Cargando datos del usuario...');
+
+                // Verificar que AppRouter esté disponible
+                if (!window.AppRouter || !window.AppRouter.isReady()) {
+                    console.warn('⏳ AppRouter no está listo, esperando...');
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    return loadUserData(); // Reintentar
+                }
+
+                const response = await window.AppRouter.get('/routes/user/user_data.php');
+
+                if (response.status === 'success') {
+                    currentUserData = response.data;
+                    updateProfileUI(currentUserData);
+                    console.log('✅ Datos del usuario cargados:', currentUserData);
+                } else {
+                    throw new Error(response.message || 'Error al cargar datos');
+                }
+            } catch (error) {
+                console.error('❌ Error al cargar datos del usuario:', error);
+
+                const notyf = new Notyf({ duration: 4000 });
+                notyf.error('No se pudieron cargar los datos del perfil');
+            }
+        }
+
+        // ===================================
+        // ACTUALIZAR UI CON DATOS DEL USUARIO
+        // ===================================
+        function updateProfileUI(userData) {
+            // Nombre en header
+            const displayName = document.getElementById('profileDisplayName');
+            if (displayName) {
+                displayName.textContent = userData.full_name || 'Usuario';
+            }
+
+            // Username
+            const username = document.getElementById('profileUsername');
+            if (username) {
+                username.textContent = '@' + (userData.username || 'username');
+            }
+
+            // Badge de Rol (Administrador/Usuario)
+            const roleBadge = document.getElementById('profileRole');
+            if (roleBadge) {
+                const isAdmin = userData.role_id === 2;
+                roleBadge.textContent = isAdmin ? 'Administrador' : 'Usuario';
+                roleBadge.className = isAdmin ? 'badge bg-primary' : 'badge bg-info';
+            }
+
+            // Badge de Estado (Activo/Inactivo/Suspendido/Baneado)
+            const statusBadge = roleBadge?.nextElementSibling;
+            if (statusBadge) {
+                const statusMap = {
+                    1: { text: 'Activo', class: 'badge bg-success' },
+                    2: { text: 'Inactivo', class: 'badge bg-secondary' },
+                    3: { text: 'Suspendido', class: 'badge bg-warning' },
+                    4: { text: 'Baneado', class: 'badge bg-danger' }
+                };
+
+                const status = statusMap[userData.status_id] || statusMap[1];
+                statusBadge.textContent = status.text;
+                statusBadge.className = status.class;
+            }
+
+            // Último acceso (usar last_login del usuario)
+            const lastAccess = document.getElementById('lastAccessTime');
+            if (lastAccess && userData.last_login) {
+                const lastLoginDate = new Date(userData.last_login);
+                const now = new Date();
+                const diffMinutes = Math.floor((now - lastLoginDate) / 60000);
+
+                let timeText = '';
+                if (diffMinutes < 1) {
+                    timeText = 'Ahora mismo';
+                } else if (diffMinutes < 60) {
+                    timeText = `Hace ${diffMinutes} ${diffMinutes === 1 ? 'minuto' : 'minutos'}`;
+                } else if (diffMinutes < 1440) {
+                    const hours = Math.floor(diffMinutes / 60);
+                    timeText = `Hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
+                } else {
+                    const days = Math.floor(diffMinutes / 1440);
+                    timeText = `Hace ${days} ${days === 1 ? 'día' : 'días'}`;
+                }
+
+                lastAccess.textContent = timeText;
+            }
+
+            // Miembro desde
+            const memberSince = document.getElementById('memberSince');
+            if (memberSince) {
+                memberSince.textContent = userData.member_since || 'Reciente';
+            }
+        }
+
+        // ===================================
+        // CARGAR SESIONES ACTIVAS
+        // ===================================
+        async function loadActiveSessions() {
+            try {
+                console.log('🔐 Cargando sesiones activas...');
+
+                // Verificar que AppRouter esté disponible
+                if (!window.AppRouter || !window.AppRouter.isReady()) {
+                    console.warn('⏳ AppRouter no está listo para sesiones, esperando...');
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    return loadActiveSessions(); // Reintentar
+                }
+
+                activeSessions = await window.SessionsService.getActiveSessions();
+
+                // Actualizar contador en estadísticas
+                const activeSessionsCount = document.getElementById('activeSessions');
+                if (activeSessionsCount) {
+                    const count = activeSessions.length;
+                    activeSessionsCount.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
+                }
+
+                // Renderizar sesiones en el contenedor
+                window.SessionsService.renderSessionCards(activeSessions, 'sessionsContainer');
+
+                // Actualizar estadísticas de sesiones
+                updateSessionStats(activeSessions);
+
+                console.log('✅ Sesiones activas cargadas:', activeSessions.length);
+            } catch (error) {
+                console.error('❌ Error al cargar sesiones:', error);
+
+                const container = document.getElementById('sessionsContainer');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="bx bx-error-circle me-2"></i>
+                            No se pudieron cargar las sesiones activas. Intenta nuevamente.
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // ===================================
+        // ACTUALIZAR ESTADÍSTICAS DE SESIONES
+        // ===================================
+        function updateSessionStats(sessions) {
+            // Última actividad
+            const lastActivityStat = document.getElementById('lastActivityStat');
+            if (lastActivityStat && sessions.length > 0) {
+                const mostRecent = sessions.reduce((latest, session) => {
+                    const sessionDate = new Date(session.last_activity);
+                    const latestDate = new Date(latest.last_activity);
+                    return sessionDate > latestDate ? session : latest;
+                });
+
+                const lastActivity = new Date(mostRecent.last_activity);
+                const now = new Date();
+                const diffMinutes = Math.floor((now - lastActivity) / 60000);
+
+                let timeText = '';
+                if (diffMinutes < 1) {
+                    timeText = 'Ahora mismo';
+                } else if (diffMinutes < 60) {
+                    timeText = `Hace ${diffMinutes} min`;
+                } else {
+                    const hours = Math.floor(diffMinutes / 60);
+                    timeText = `Hace ${hours} h`;
+                }
+
+                lastActivityStat.textContent = timeText;
+            }
+
+            // Dispositivos conectados
+            const devicesConnected = document.getElementById('devicesConnectedStat');
+            if (devicesConnected) {
+                const count = sessions.length;
+                devicesConnected.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
+            }
+        }
+
+        // ===================================
+        // CERRAR TODAS LAS SESIONES
+        // ===================================
+        const closeAllBtn = document.getElementById('closeAllSessionsBtn');
+        if (closeAllBtn) {
+            closeAllBtn.addEventListener('click', async function () {
+                await window.SessionsService.confirmCloseAllSessions(async () => {
+                    // Recargar sesiones después de cerrar
+                    await loadActiveSessions();
+                });
+            });
+        }
+
+        // ===================================
+        // EVENTOS DE SESIONES
+        // ===================================
+        function initSessionEvents() {
+            window.SessionsService.initSessionEvents('sessionsContainer', async () => {
+                // Recargar sesiones después de cerrar una
+                await loadActiveSessions();
+            });
+        }
+
+        // ===================================
         // GUARDAR PERFIL
         // ===================================
         document.getElementById('saveProfile')?.addEventListener('click', function () {
@@ -492,15 +746,13 @@
             this.disabled = true;
             this.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Guardando...';
 
-            // Simulación de guardado
+            // Simulación de guardado (implementar lógica real)
             setTimeout(() => {
+                const notyf = new Notyf({ duration: 3000 });
+                notyf.success('Perfil actualizado exitosamente');
+
                 this.disabled = false;
                 this.innerHTML = '<i class="bx bx-save me-1"></i>Guardar Cambios';
-
-                if (typeof Notyf !== 'undefined') {
-                    const notyf = new Notyf();
-                    notyf.success('Perfil actualizado exitosamente');
-                }
             }, 1500);
         });
 
@@ -516,42 +768,77 @@
             });
 
             deleteButton.addEventListener('click', function () {
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        title: '¿Estás completamente seguro?',
-                        text: "Esta acción no se puede deshacer",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#dc3545',
-                        cancelButtonColor: '#6c757d',
-                        confirmButtonText: 'Sí, eliminar',
-                        cancelButtonText: 'Cancelar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Aquí iría la lógica de eliminación
-                            console.log('Cuenta eliminada');
-                            window.location.href = '/';
-                        }
-                    });
-                }
+                console.log('🗑️ Eliminar cuenta solicitado');
+                // Implementar lógica de eliminación
             });
         }
 
         // ===================================
-        // CARGAR DATOS DEL PERFIL
+        // TAB CHANGE EVENT - Cargar sesiones al abrir tab
         // ===================================
-        function loadProfileData() {
-            // Aquí se cargarían los datos desde el backend
-            console.log('Cargando datos del perfil...');
+        const sessionsTab = document.getElementById('sessions-tab');
+        if (sessionsTab) {
+            sessionsTab.addEventListener('shown.bs.tab', function () {
+                console.log('📑 Tab de sesiones activado');
+                loadActiveSessions();
+                initSessionEvents();
+            });
+        }
+
+        // ===================================
+        // ESPERAR A QUE APPROUTER ESTÉ LISTO
+        // ===================================
+        async function waitForAppRouter() {
+            let attempts = 0;
+            const maxAttempts = 20; // 10 segundos máximo
+
+            while (attempts < maxAttempts) {
+                if (window.AppRouter && typeof window.AppRouter.isReady === 'function' && window.AppRouter.isReady()) {
+                    console.log('✅ AppRouter está listo para usar');
+                    return true;
+                }
+
+                console.log(`⏳ Esperando a AppRouter... Intento ${attempts + 1}/${maxAttempts}`);
+                await new Promise(resolve => setTimeout(resolve, 500));
+                attempts++;
+            }
+
+            console.error('❌ Timeout esperando a AppRouter');
+            return false;
         }
 
         // ===================================
         // INICIALIZACIÓN
         // ===================================
-        document.addEventListener('DOMContentLoaded', function () {
-            loadProfileData();
-            console.log('✅ Perfil inicializado');
-        });
+        async function init() {
+            console.log('🚀 Inicializando perfil...');
+
+            // Esperar a que AppRouter esté disponible
+            const isReady = await waitForAppRouter();
+
+            if (!isReady) {
+                console.error('❌ No se pudo inicializar el perfil: AppRouter no disponible');
+                const notyf = new Notyf({ duration: 5000 });
+                notyf.error('Error al cargar el perfil. Por favor, recarga la página.');
+                return;
+            }
+
+            // Cargar datos del usuario
+            await loadUserData();
+
+            // Cargar sesiones activas inicialmente
+            await loadActiveSessions();
+            initSessionEvents();
+
+            console.log('✅ Perfil inicializado completamente');
+        }
+
+        // Ejecutar inicialización cuando el DOM esté listo
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
 
     })();
 </script>
@@ -590,5 +877,42 @@
     .form-check-label {
         cursor: pointer;
         padding-left: 0.5rem;
+    }
+
+    /* ===================================
+       ESTILOS PARA ESTADÍSTICAS DE SESIONES
+       =================================== */
+
+    /* Modo Claro (por defecto) */
+    [data-bs-theme="light"] .session-stat-card {
+        background-color: #f8f9fa !important;
+        border: 1px solid #e9ecef !important;
+    }
+
+    [data-bs-theme="light"] .session-stat-card .card-body {
+        color: #212529;
+    }
+
+    [data-bs-theme="light"] .session-stat-card .text-muted {
+        color: #6c757d !important;
+    }
+
+    /* Modo Oscuro */
+    [data-bs-theme="dark"] .session-stat-card {
+        background-color: #2d3748 !important;
+        border: 1px solid #4a5568 !important;
+    }
+
+    [data-bs-theme="dark"] .session-stat-card .card-body {
+        color: #e2e8f0;
+    }
+
+    [data-bs-theme="dark"] .session-stat-card .text-muted {
+        color: #a0aec0 !important;
+    }
+
+    /* Transición suave entre temas */
+    .session-stat-card {
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
     }
 </style>

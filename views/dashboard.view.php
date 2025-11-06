@@ -586,7 +586,40 @@ ob_start();
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
+
+    /* ===================================
+   SESSION CARDS - Profile Page
+=================================== */
+    .session-card {
+        transition: all 0.3s ease;
+    }
+
+    .session-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .session-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .session-card:hover .session-icon {
+        transform: scale(1.1);
+    }
+
+    .btn-close-session {
+        opacity: 0.7;
+        transition: all 0.2s ease;
+    }
+
+    .btn-close-session:hover {
+        opacity: 1;
+        transform: scale(1.1);
+    }
 </style>
+
+<!-- Sessions Management Service -->
+<script src="../js/sessions.js"></script>
 
 <script>
     (function () {

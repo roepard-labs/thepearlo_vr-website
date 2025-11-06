@@ -119,9 +119,17 @@ class Router {
                 return response;
             },
             (error) => {
+                const endpoint = error.config?.url || 'unknown';
+                const status = error.response?.status;
+
                 if (error.response) {
-                    // Error con respuesta del servidor
-                    console.error('❌ Response Error:', error.response.status, error.response.data);
+                    // CRÍTICO: 401 en check_session/check_role es ESPERADO sin sesión
+                    if (status === 401 && (endpoint.includes('check_session') || endpoint.includes('check_role'))) {
+                        console.log(`ℹ️ Sin sesión activa en ${endpoint} (esperado)`);
+                    } else {
+                        // Error con respuesta del servidor
+                        console.error('❌ Response Error:', error.response.status, error.response.data);
+                    }
                 } else if (error.request) {
                     // Error sin respuesta (timeout, network error)
                     console.error('❌ Network Error:', error.message);
@@ -143,7 +151,7 @@ class Router {
      */
     isReady() {
         if (!this.axiosInstance) {
-            console.error('❌ Axios no está inicializado. Usa router.initAxios() primero.');
+            console.log('⏳ Axios aún no está listo, esperando...');
             return false;
         }
         return true;
@@ -318,15 +326,22 @@ class Router {
             // Error con respuesta del servidor (4xx, 5xx)
             const status = error.response.status;
             const message = error.response.data?.message || error.response.statusText;
+            const endpoint = error.config?.url || 'unknown';
 
             switch (status) {
                 case 400:
                     console.error('❌ Bad Request:', message);
                     break;
                 case 401:
-                    console.error('❌ No autorizado:', message);
-                    // Redirigir a login si es necesario
-                    // window.location.href = '/login';
+                    // CRÍTICO: 401 en check_session es ESPERADO cuando no hay sesión
+                    // Solo es error si ocurre en otros endpoints
+                    if (endpoint.includes('check_session') || endpoint.includes('check_role')) {
+                        console.log('ℹ️ Sin sesión activa (esperado)');
+                    } else {
+                        console.error('❌ No autorizado:', message);
+                        // Redirigir a login si es necesario
+                        // window.location.href = '/login';
+                    }
                     break;
                 case 403:
                     console.error('❌ Acceso denegado:', message);

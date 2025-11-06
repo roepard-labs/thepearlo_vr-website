@@ -273,9 +273,13 @@ window.LogoutService = {
 
 // Auto-adjuntar a botones de logout comunes al cargar
 document.addEventListener('DOMContentLoaded', function () {
+    console.log('🔍 LogoutService: Buscando botones de logout...');
+
     // Buscar botones de logout comunes
     const logoutButtons = [
-        '#logoutBtn',
+        '#logoutBtn',                    // Header
+        '#logoutBtnSidebar',            // Sidebar expandido
+        '#logoutBtnSidebarCollapsed',   // Sidebar colapsado
         '.logout-btn',
         '[data-logout]'
     ];
@@ -283,10 +287,32 @@ document.addEventListener('DOMContentLoaded', function () {
     logoutButtons.forEach(selector => {
         const button = document.querySelector(selector);
         if (button && !button.hasAttribute('data-logout-attached')) {
-            window.LogoutService.attachToButton(selector);
+            window.LogoutService.attachToButton(selector, {
+                confirm: true,
+                redirect: true,
+                redirectUrl: '/'
+            });
             button.setAttribute('data-logout-attached', 'true');
+            console.log(`✅ LogoutService adjuntado a: ${selector}`);
         }
     });
+
+    // Si no se encontraron botones, intentar de nuevo después de un delay
+    // (útil para vistas que cargan dinámicamente)
+    setTimeout(() => {
+        logoutButtons.forEach(selector => {
+            const button = document.querySelector(selector);
+            if (button && !button.hasAttribute('data-logout-attached')) {
+                window.LogoutService.attachToButton(selector, {
+                    confirm: true,
+                    redirect: true,
+                    redirectUrl: '/'
+                });
+                button.setAttribute('data-logout-attached', 'true');
+                console.log(`✅ LogoutService adjuntado (delayed) a: ${selector}`);
+            }
+        });
+    }, 1000);
 });
 
 console.log('✅ LogoutService inicializado y disponible globalmente');

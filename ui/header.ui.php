@@ -349,7 +349,7 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
                         console.log('✅ Header ya muestra usuario correctamente');
                     }
                 } else {
-                    console.log('ℹ️ No hay sesión activa en el backend');
+                    console.log('ℹ️ No hay sesión activa en el backend (esperado sin login)');
 
                     // Si frontend muestra usuario pero backend no tiene sesión
                     const userDropdown = document.getElementById('userDropdown');
@@ -361,9 +361,15 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
                 }
             })
             .catch(error => {
-                console.error('❌ Error al verificar sesión del backend:', error);
-                console.error('💡 Backend URL:', apiUrl);
-                console.error('💡 Verifica que el backend esté accesible');
+                // CRÍTICO: 401 Unauthorized es ESPERADO cuando no hay sesión
+                // Solo mostrar error si es un problema real de conexión
+                if (error.response && error.response.status === 401) {
+                    console.log('ℹ️ Sin sesión activa (401 - esperado)');
+                } else {
+                    console.error('❌ Error de conexión con el backend:', error.message);
+                    console.error('💡 Backend URL:', apiUrl);
+                    console.error('💡 Verifica que el backend esté accesible');
+                }
             });
     }
 
@@ -378,6 +384,8 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
         if (logoutBtn && window.LogoutService) {
             console.log('🔗 Adjuntando LogoutService al botón de logout existente');
             window.LogoutService.attachToButton('#logoutBtn', {
+                confirm: true,
+                redirect: true,
                 redirectUrl: '/'
             });
         }
@@ -495,6 +503,8 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
             const logoutBtn = document.getElementById('logoutBtn');
             if (logoutBtn && window.LogoutService) {
                 window.LogoutService.attachToButton('#logoutBtn', {
+                    confirm: true,
+                    redirect: true,
                     redirectUrl: '/'
                 });
                 console.log('✅ LogoutService adjuntado al botón de logout');
