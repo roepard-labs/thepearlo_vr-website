@@ -147,22 +147,67 @@
                     }).length
                 };
 
-                // Actualizar UI
-                document.getElementById('totalUsers').textContent = stats.total;
-                document.getElementById('activeUsers').textContent = stats.active;
-                document.getElementById('pendingUsers').textContent = stats.pending;
-                document.getElementById('inactiveUsers').textContent = stats.inactive;
+                // Actualizar UI con animación
+                updateStatCounter('totalUsers', stats.total);
+                updateStatCounter('activeUsers', stats.active);
+                updateStatCounter('pendingUsers', stats.pending);
+                updateStatCounter('inactiveUsers', stats.inactive);
 
                 console.log('✅ Estadísticas cargadas:', stats);
 
                 // Retornar los datos para que initDataTable los use
                 return users;
+            } else {
+                console.error('❌ Respuesta del backend inválida:', response);
+                throw new Error('Los datos recibidos no tienen el formato esperado');
             }
         } catch (error) {
             console.error('❌ Error al cargar estadísticas:', error);
             showNotification('error', 'Error al cargar estadísticas de usuarios');
+            // Mostrar error en las estadísticas
+            ['totalUsers', 'activeUsers', 'pendingUsers', 'inactiveUsers'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.innerHTML = '<i class="bx bx-error-circle text-danger"></i>';
+                }
+            });
             return null;
         }
+    }
+
+    // ===================================
+    // ACTUALIZAR CONTADOR CON ANIMACIÓN
+    // ===================================
+    function updateStatCounter(elementId, targetValue) {
+        const element = document.getElementById(elementId);
+        if (!element) {
+            console.warn(`⚠️ Elemento ${elementId} no encontrado`);
+            return;
+        }
+
+        // Animar el contador de 0 al valor objetivo
+        const duration = 1000; // 1 segundo
+        const startTime = performance.now();
+        const startValue = 0;
+
+        function animate(currentTime) {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            // Easing function (ease-out)
+            const easedProgress = 1 - Math.pow(1 - progress, 3);
+            const currentValue = Math.floor(startValue + (targetValue - startValue) * easedProgress);
+
+            element.textContent = currentValue;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                element.textContent = targetValue; // Asegurar valor final exacto
+            }
+        }
+
+        requestAnimationFrame(animate);
     }
 
     // ===================================
