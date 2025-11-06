@@ -19,10 +19,6 @@
         </h2>
         <p class="text-muted mb-0">Administra los usuarios del sistema</p>
     </div>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-        <i class="bx bx-plus me-1"></i>
-        Nuevo Usuario
-    </button>
 </div>
 
 <!-- Estadísticas Rápidas -->
@@ -68,13 +64,13 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <div class="stats-icon-wrapper bg-warning bg-opacity-10 rounded-circle p-3">
-                            <i class="bx bx-user-plus fs-3 text-warning"></i>
+                        <div class="stats-icon-wrapper bg-info bg-opacity-10 rounded-circle p-3">
+                            <i class="bx bx-user-plus fs-3 text-info"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
-                        <p class="text-muted mb-1 small fw-medium">Pendientes</p>
-                        <h2 class="mb-0 fw-bold text-warning" id="pendingUsers">0</h2>
+                        <p class="text-muted mb-1 small fw-medium">Nuevos (7 días)</p>
+                        <h2 class="mb-0 fw-bold text-info" id="pendingUsers">0</h2>
                     </div>
                 </div>
             </div>
@@ -86,13 +82,13 @@
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <div class="stats-icon-wrapper bg-danger bg-opacity-10 rounded-circle p-3">
-                            <i class="bx bx-user-x fs-3 text-danger"></i>
+                        <div class="stats-icon-wrapper bg-secondary bg-opacity-10 rounded-circle p-3">
+                            <i class="bx bx-user-x fs-3 text-secondary"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <p class="text-muted mb-1 small fw-medium">Inactivos</p>
-                        <h2 class="mb-0 fw-bold text-danger" id="inactiveUsers">0</h2>
+                        <h2 class="mb-0 fw-bold text-secondary" id="inactiveUsers">0</h2>
                     </div>
                 </div>
             </div>
@@ -119,17 +115,17 @@
                 <label class="form-label">Estado</label>
                 <select class="form-select" id="filterStatus">
                     <option value="">Todos</option>
-                    <option value="1">Activos</option>
-                    <option value="0">Inactivos</option>
+                    <option value="active">Activos</option>
+                    <option value="inactive">Inactivos</option>
                 </select>
             </div>
             <div class="col-md-3">
                 <label class="form-label">Rol</label>
                 <select class="form-select" id="filterRole">
                     <option value="">Todos</option>
-                    <option value="1">Usuario</option>
-                    <option value="2">Administrador</option>
-                    <option value="3">Supervisor</option>
+                    <option value="user">Usuario</option>
+                    <option value="admin">Administrador</option>
+                    <option value="supervisor">Supervisor</option>
                 </select>
             </div>
             <div class="col-md-2 d-flex align-items-end">
@@ -155,312 +151,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Datos de ejemplo - serían cargados dinámicamente -->
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2"
-                                    style="width: 35px; height: 35px;">
-                                    <i class="bx bx-user"></i>
-                                </div>
-                                <div>
-                                    <div class="fw-semibold">Juan Pérez</div>
-                                    <small class="text-muted">@juanperez</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>juan.perez@example.com</td>
-                        <td><span class="badge bg-primary">Administrador</span></td>
-                        <td><span class="badge bg-success">Activo</span></td>
-                        <td>2024-01-15</td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-outline-primary" title="Editar">
-                                <i class="bx bx-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                <i class="bx bx-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-sm bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-2"
-                                    style="width: 35px; height: 35px;">
-                                    <i class="bx bx-user"></i>
-                                </div>
-                                <div>
-                                    <div class="fw-semibold">María García</div>
-                                    <small class="text-muted">@mariagarcia</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>maria.garcia@example.com</td>
-                        <td><span class="badge bg-info">Usuario</span></td>
-                        <td><span class="badge bg-success">Activo</span></td>
-                        <td>2024-02-20</td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-outline-primary" title="Editar">
-                                <i class="bx bx-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                <i class="bx bx-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="avatar-sm bg-warning text-white rounded-circle d-flex align-items-center justify-content-center me-2"
-                                    style="width: 35px; height: 35px;">
-                                    <i class="bx bx-user"></i>
-                                </div>
-                                <div>
-                                    <div class="fw-semibold">Carlos López</div>
-                                    <small class="text-muted">@carloslopez</small>
-                                </div>
-                            </div>
-                        </td>
-                        <td>carlos.lopez@example.com</td>
-                        <td><span class="badge bg-secondary">Supervisor</span></td>
-                        <td><span class="badge bg-warning">Pendiente</span></td>
-                        <td>2024-03-10</td>
-                        <td class="text-center">
-                            <button class="btn btn-sm btn-outline-primary" title="Editar">
-                                <i class="bx bx-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" title="Eliminar">
-                                <i class="bx bx-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
+                    <!-- Los datos se cargarán dinámicamente desde el backend -->
                 </tbody>
             </table>
         </div>
     </div>
 </div>
 
-<!-- Modal: Agregar Usuario -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">
-                    <i class="bx bx-user-plus me-2"></i>
-                    Nuevo Usuario
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addUserForm">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre Completo</label>
-                        <input type="text" class="form-control" placeholder="Ej: Juan Pérez" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" placeholder="ejemplo@email.com" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Usuario</label>
-                        <input type="text" class="form-control" placeholder="@username" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Rol</label>
-                        <select class="form-select" required>
-                            <option value="">Seleccionar...</option>
-                            <option value="1">Usuario</option>
-                            <option value="2">Administrador</option>
-                            <option value="3">Supervisor</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" placeholder="••••••••" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary">
-                    <i class="bx bx-save me-1"></i>
-                    Guardar Usuario
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    (function () {
-        'use strict';
-
-        console.log('👥 Página: Usuarios - Inicializando');
-
-        // ===================================
-        // CARGAR ESTADÍSTICAS
-        // ===================================
-        function loadUserStats() {
-            // Ejemplo con datos estáticos - conectar con backend real
-            const stats = {
-                total: 156,
-                active: 142,
-                pending: 8,
-                inactive: 6
-            };
-
-            document.getElementById('totalUsers').textContent = stats.total;
-            document.getElementById('activeUsers').textContent = stats.active;
-            document.getElementById('pendingUsers').textContent = stats.pending;
-            document.getElementById('inactiveUsers').textContent = stats.inactive;
-        }
-
-        // ===================================
-        // INICIALIZAR DATATABLE
-        // ===================================
-        let dataTableInitAttempts = 0;
-        const MAX_DATATABLE_ATTEMPTS = 20; // 10 segundos máximo
-
-        function initDataTable() {
-            dataTableInitAttempts++;
-
-            // Verificar límite de reintentos
-            if (dataTableInitAttempts > MAX_DATATABLE_ATTEMPTS) {
-                console.error('❌ DataTables no se pudo cargar después de', MAX_DATATABLE_ATTEMPTS, 'intentos');
-                console.error('Verifica que las dependencias estén correctamente configuradas en AppLayout.php');
-                return;
-            }
-
-            // Verificar que jQuery esté disponible primero
-            if (typeof $ === 'undefined' || typeof jQuery === 'undefined') {
-                console.warn('⏳ jQuery no disponible aún, reintentando... (', dataTableInitAttempts, '/', MAX_DATATABLE_ATTEMPTS, ')');
-                setTimeout(initDataTable, 500);
-                return;
-            }
-
-            // Verificar que DataTables esté disponible
-            if (typeof $.fn.dataTable === 'undefined') {
-                console.warn('⏳ DataTables no disponible aún, reintentando... (', dataTableInitAttempts, '/', MAX_DATATABLE_ATTEMPTS, ')');
-                setTimeout(initDataTable, 500);
-                return;
-            }
-
-            // Verificar que la tabla exista en el DOM
-            if ($('#usersTable').length === 0) {
-                console.warn('⏳ Tabla #usersTable no encontrada en DOM, reintentando... (', dataTableInitAttempts, '/', MAX_DATATABLE_ATTEMPTS, ')');
-                setTimeout(initDataTable, 500);
-                return;
-            }
-
-            // Verificar si ya está inicializado
-            if ($.fn.dataTable.isDataTable('#usersTable')) {
-                console.log('✅ DataTable ya inicializado');
-                return;
-            }
-
-            console.log('📊 Inicializando DataTable de usuarios (jQuery:', $.fn.jquery, ', DataTables:', $.fn.dataTable.version, ')');
-
-            $('#usersTable').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
-                },
-                responsive: true,
-                pageLength: 10,
-                order: [
-                    [0, 'desc']
-                ],
-                dom: '<"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>rtip',
-                columnDefs: [{
-                    targets: -1,
-                    orderable: false,
-                    className: 'text-center'
-                }],
-                drawCallback: function () {
-                    // Aplicar estilos al DataTable después de cada redibujado
-                    applyDataTableDarkMode();
-                }
-            });
-
-            // Aplicar estilos iniciales
-            applyDataTableDarkMode();
-        }
-
-        // ===================================
-        // APLICAR MODO OSCURO A DATATABLE
-        // ===================================
-        function applyDataTableDarkMode() {
-            const isDarkMode = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-
-            if (isDarkMode) {
-                // Agregar clase dark mode a elementos de DataTables
-                $('#usersTable_wrapper').addClass('datatable-dark');
-                $('#usersTable_filter input').addClass('form-control-dark');
-                $('#usersTable_length select').addClass('form-select-dark');
-            } else {
-                $('#usersTable_wrapper').removeClass('datatable-dark');
-                $('#usersTable_filter input').removeClass('form-control-dark');
-                $('#usersTable_length select').removeClass('form-select-dark');
-            }
-        }
-
-        // ===================================
-        // DETECTAR CAMBIOS DE TEMA
-        // ===================================
-        const themeObserver = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mutation) {
-                if (mutation.attributeName === 'data-bs-theme') {
-                    applyDataTableDarkMode();
-                }
-            });
-        });
-
-        themeObserver.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ['data-bs-theme']
-        });
-
-        // ===================================
-        // FILTROS
-        // ===================================
-        document.getElementById('clearFilters')?.addEventListener('click', function () {
-            document.getElementById('searchUser').value = '';
-            document.getElementById('filterStatus').value = '';
-            document.getElementById('filterRole').value = '';
-
-            // Recargar tabla
-            if ($.fn.dataTable.isDataTable('#usersTable')) {
-                $('#usersTable').DataTable().search('').draw();
-            }
-        });
-
-        // ===================================
-        // INICIALIZACIÓN
-        // ===================================
-
-        // Función de inicialización que espera a que todo esté listo
-        function initialize() {
-            // Verificar que el DOM esté listo
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initialize);
-                return;
-            }
-
-            // Cargar estadísticas (no depende de jQuery)
-            loadUserStats();
-
-            // Inicializar DataTable (requiere jQuery y DataTables)
-            // Se ejecutará con reintentos hasta que las dependencias estén disponibles
-            initDataTable();
-        }
-
-        // Ejecutar inicialización
-        initialize();
-
-    })();
-</script>
+<!-- Script de gestión de usuarios -->
+<script src="../js/users.js"></script>
 
 <style>
     /* ===================================
@@ -626,4 +325,188 @@
     }
 
     /* Acciones */
+
+    /* ===================================
+   ESTILOS DE MODALES SWEETALERT2 - MODO OSCURO
+=================================== */
+
+    /* Modal principal en modo oscuro */
+    [data-bs-theme="dark"] .swal2-popup {
+        background-color: #1a1d29 !important;
+        color: #e9ecef !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Título del modal */
+    [data-bs-theme="dark"] .swal2-title {
+        color: #ffffff !important;
+    }
+
+    /* Contenido HTML del modal */
+    [data-bs-theme="dark"] .swal2-html-container {
+        color: #e9ecef !important;
+    }
+
+    /* Textos pequeños (labels) */
+    [data-bs-theme="dark"] .swal2-html-container .text-muted {
+        color: #adb5bd !important;
+    }
+
+    /* Textos con peso semibold */
+    [data-bs-theme="dark"] .swal2-html-container .fw-semibold {
+        color: #f8f9fa !important;
+    }
+
+    /* Botones del modal */
+    [data-bs-theme="dark"] .swal2-confirm,
+    [data-bs-theme="dark"] .swal2-cancel {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* Botón de confirmar (primary) */
+    [data-bs-theme="dark"] .swal2-confirm {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-confirm:hover {
+        background-color: #0b5ed7 !important;
+        border-color: #0a58ca !important;
+    }
+
+    /* Botón de cancelar */
+    [data-bs-theme="dark"] .swal2-cancel {
+        background-color: #6c757d !important;
+        border-color: #6c757d !important;
+        color: #fff !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-cancel:hover {
+        background-color: #5c636a !important;
+        border-color: #565e64 !important;
+    }
+
+    /* Botón de cerrar (X) */
+    [data-bs-theme="dark"] .swal2-close {
+        color: #adb5bd !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-close:hover {
+        color: #ffffff !important;
+    }
+
+    /* Inputs del formulario en modal */
+    [data-bs-theme="dark"] .swal2-input,
+    [data-bs-theme="dark"] .swal2-textarea,
+    [data-bs-theme="dark"] .swal2-select,
+    [data-bs-theme="dark"] .swal2-html-container input,
+    [data-bs-theme="dark"] .swal2-html-container textarea,
+    [data-bs-theme="dark"] .swal2-html-container select {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #f8f9fa !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-input:focus,
+    [data-bs-theme="dark"] .swal2-textarea:focus,
+    [data-bs-theme="dark"] .swal2-select:focus,
+    [data-bs-theme="dark"] .swal2-html-container input:focus,
+    [data-bs-theme="dark"] .swal2-html-container textarea:focus,
+    [data-bs-theme="dark"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
+
+    /* Labels de formulario */
+    [data-bs-theme="dark"] .swal2-html-container label,
+    [data-bs-theme="dark"] .swal2-html-container .form-label {
+        color: #adb5bd !important;
+    }
+
+    /* Placeholder de inputs */
+    [data-bs-theme="dark"] .swal2-input::placeholder,
+    [data-bs-theme="dark"] .swal2-textarea::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container input::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container textarea::placeholder {
+        color: #6c757d !important;
+    }
+
+    /* Badges en modal */
+    [data-bs-theme="dark"] .swal2-html-container .badge {
+        font-weight: 500 !important;
+    }
+
+    /* Loader/Loading spinner */
+    [data-bs-theme="dark"] .swal2-loader {
+        border-color: #0d6efd transparent #0d6efd transparent !important;
+    }
+
+    /* Modal de confirmación de loading */
+    [data-bs-theme="dark"] .swal2-loading .swal2-styled {
+        background-color: transparent !important;
+        color: #f8f9fa !important;
+    }
+
+    /* Avatar circular del usuario */
+    [data-bs-theme="dark"] .swal2-html-container .rounded-circle {
+        border: 3px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Dividers/Separadores */
+    [data-bs-theme="dark"] .swal2-html-container hr {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Select options en modo oscuro */
+    [data-bs-theme="dark"] .swal2-select option,
+    [data-bs-theme="dark"] .swal2-html-container select option {
+        background-color: #1a1d29 !important;
+        color: #f8f9fa !important;
+    }
+
+    /* Checkbox y radio buttons */
+    [data-bs-theme="dark"] .swal2-html-container input[type="checkbox"],
+    [data-bs-theme="dark"] .swal2-html-container input[type="radio"] {
+        border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    /* Background del modal overlay */
+    [data-bs-theme="dark"] .swal2-container.swal2-backdrop-show {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+
+    /* ===================================
+   ESTILOS DE MODALES SWEETALERT2 - MODO CLARO (mejoras)
+=================================== */
+
+    /* Asegurar buen contraste en modo claro */
+    [data-bs-theme="light"] .swal2-popup {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+    }
+
+    [data-bs-theme="light"] .swal2-html-container .text-muted {
+        color: #6c757d !important;
+    }
+
+    [data-bs-theme="light"] .swal2-input,
+    [data-bs-theme="light"] .swal2-textarea,
+    [data-bs-theme="light"] .swal2-select,
+    [data-bs-theme="light"] .swal2-html-container input,
+    [data-bs-theme="light"] .swal2-html-container textarea,
+    [data-bs-theme="light"] .swal2-html-container select {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    [data-bs-theme="light"] .swal2-input:focus,
+    [data-bs-theme="light"] .swal2-textarea:focus,
+    [data-bs-theme="light"] .swal2-select:focus,
+    [data-bs-theme="light"] .swal2-html-container input:focus,
+    [data-bs-theme="light"] .swal2-html-container textarea:focus,
+    [data-bs-theme="light"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
 </style>

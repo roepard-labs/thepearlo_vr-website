@@ -28,7 +28,8 @@
 <script src="/node_modules/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js"></script>
 <script src="/node_modules/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js"></script>
 <script src="/node_modules/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js"></script>
-<script src="/node_modules/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js"></script>
+<script src="/node_modules/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js">
+</script>
 
 <!-- Header de la Página -->
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -55,15 +56,17 @@
             <div class="card-body text-center p-4">
                 <div class="position-relative d-inline-block mb-3">
                     <!-- Avatar con imagen de perfil -->
-                    <div id="profileAvatarContainer" class="avatar-xl bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center mx-auto overflow-hidden"
+                    <div id="profileAvatarContainer"
+                        class="avatar-xl bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center mx-auto overflow-hidden"
                         style="width: 120px; height: 120px;">
-                        <img id="profileAvatarImg" src="/assets/img/default-avatar.png" alt="Foto de perfil" 
+                        <img id="profileAvatarImg" src="/assets/img/default-avatar.png" alt="Foto de perfil"
                             class="w-100 h-100 object-fit-cover" style="display: block;">
-                        <i id="profileAvatarIcon" class="bx bx-user text-white" style="font-size: 60px; display: none;"></i>
+                        <i id="profileAvatarIcon" class="bx bx-user text-white"
+                            style="font-size: 60px; display: none;"></i>
                     </div>
                     <button class="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 end-0"
-                        title="Cambiar foto" style="width: 35px; height: 35px;" 
-                        data-bs-toggle="modal" data-bs-target="#uploadProfilePictureModal">
+                        title="Cambiar foto" style="width: 35px; height: 35px;" data-bs-toggle="modal"
+                        data-bs-target="#uploadProfilePictureModal">
                         <i class="bx bx-camera"></i>
                     </button>
                 </div>
@@ -154,7 +157,7 @@
                 </ul>
 
                 <!-- Tab Content -->
-                                <!-- Contenido de los Tabs -->
+                <!-- Contenido de los Tabs -->
                 <div class="tab-content p-4" id="profileTabsContent">
 
                     <!-- Tab: Personal -->
@@ -167,24 +170,30 @@
                         <form id="personalForm">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label for="firstName" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" id="firstName" name="first_name" placeholder="Tu nombre">
+                                    <label for="firstName" class="form-label">Nombre <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="firstName" name="first_name"
+                                        placeholder="Tu nombre" required minlength="2" maxlength="50">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="lastName" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Tu apellido">
+                                    <label for="lastName" class="form-label">Apellido <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="lastName" name="last_name"
+                                        placeholder="Tu apellido" required minlength="2" maxlength="50">
                                 </div>
                                 <div class="col-12">
                                     <label for="bio" class="form-label">
-                                        Biografía 
-                                        <small class="text-muted">(<span id="bioCounter">0</span>/255 caracteres)</small>
+                                        Biografía
+                                        <small class="text-muted">(<span id="bioCounter">0</span>/255
+                                            caracteres)</small>
                                     </label>
                                     <textarea class="form-control" id="bio" name="bio" rows="3" maxlength="255"
                                         placeholder="Escribe una breve descripción sobre ti"></textarea>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="gender" class="form-label">Género</label>
-                                    <select class="form-select" id="gender" name="gender_id">
+                                    <label for="gender" class="form-label">Género <span
+                                            class="text-danger">*</span></label>
+                                    <select class="form-select" id="gender" name="gender_id" required>
                                         <option value="1">Prefiero no decirlo</option>
                                         <option value="2">Masculino</option>
                                         <option value="3">Femenino</option>
@@ -193,15 +202,18 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="birthdate" class="form-label">Fecha de Nacimiento</label>
-                                    <input type="date" class="form-control" id="birthdate" name="birthdate">
+                                    <input type="date" class="form-control" id="birthdate" name="birthdate"
+                                        max="<?php echo date('Y-m-d'); ?>">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="country" class="form-label">País</label>
-                                    <input type="text" class="form-control" id="country" name="country" placeholder="Tu país">
+                                    <input type="text" class="form-control" id="country" name="country"
+                                        placeholder="Tu país" maxlength="100">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="city" class="form-label">Ciudad</label>
-                                    <input type="text" class="form-control" id="city" name="city" placeholder="Tu ciudad">
+                                    <input type="text" class="form-control" id="city" name="city"
+                                        placeholder="Tu ciudad" maxlength="100">
                                 </div>
                             </div>
                         </form>
@@ -287,17 +299,18 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="phone" class="form-label">Teléfono</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Tu número de teléfono">
+                                    <input type="tel" class="form-control" id="phone" name="phone"
+                                        placeholder="Tu número de teléfono" maxlength="20">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="username" class="form-label">Nombre de Usuario</label>
-                                    <input type="text" class="form-control" id="username" name="username" 
+                                    <input type="text" class="form-control" id="username" name="username"
                                         placeholder="tu_usuario" readonly disabled>
                                     <small class="text-muted">No puedes cambiar tu username</small>
                                 </div>
                             </div>
                         </form>
-                    </div>                    <!-- Redes Sociales -->
+                    </div> <!-- Redes Sociales -->
                     <div class="tab-pane fade" id="social" role="tabpanel">
                         <h5 class="mb-4">
                             <i class="bx bx-share-alt me-2 text-primary"></i>
@@ -310,42 +323,47 @@
                                     <label for="github" class="form-label">
                                         <i class="bx bxl-github me-1"></i> GitHub
                                     </label>
-                                    <input type="text" class="form-control" id="github" name="github_username" placeholder="Tu usuario de GitHub">
+                                    <input type="text" class="form-control" id="github" name="github_username"
+                                        placeholder="Tu usuario de GitHub" maxlength="39">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="linkedin" class="form-label">
                                         <i class="bx bxl-linkedin me-1"></i> LinkedIn
                                     </label>
-                                    <input type="text" class="form-control" id="linkedin" name="linkedin_username" placeholder="Tu usuario de LinkedIn">
+                                    <input type="text" class="form-control" id="linkedin" name="linkedin_username"
+                                        placeholder="Tu usuario de LinkedIn" maxlength="100">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="twitter" class="form-label">
                                         <i class="bx bxl-twitter me-1"></i> Twitter/X
                                     </label>
-                                    <input type="text" class="form-control" id="twitter" name="twitter_username" placeholder="Tu usuario de Twitter/X">
+                                    <input type="text" class="form-control" id="twitter" name="twitter_username"
+                                        placeholder="Tu usuario de Twitter/X" maxlength="15">
                                 </div>
                                 <div class="col-md-6">
                                     <label for="discord" class="form-label">
                                         <i class="bx bxl-discord me-1"></i> Discord
-                                </label>
-                                <input type="text" class="form-control" id="discord" name="discord_tag" placeholder="usuario#1234">
-                            </div>
-                            <div class="col-12">
-                                <label for="website" class="form-label">
-                                    <i class="bx bx-globe me-1"></i> Sitio Web Personal
-                                </label>
-                                <input type="url" class="form-control" id="website" name="personal_website"
-                                    placeholder="https://tusitio.com">
-                            </div>
-                            <div class="col-12">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="showSocialPublic" name="show_social_public">
-                                    <label class="form-check-label" for="showSocialPublic">
-                                        Mostrar mis redes sociales públicamente
                                     </label>
+                                    <input type="text" class="form-control" id="discord" name="discord_tag"
+                                        placeholder="usuario#1234" maxlength="37">
+                                </div>
+                                <div class="col-12">
+                                    <label for="website" class="form-label">
+                                        <i class="bx bx-globe me-1"></i> Sitio Web Personal
+                                    </label>
+                                    <input type="url" class="form-control" id="website" name="personal_website"
+                                        placeholder="https://tusitio.com" maxlength="255">
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="showSocialPublic"
+                                            name="show_social_public">
+                                        <label class="form-check-label" for="showSocialPublic">
+                                            Mostrar mis redes sociales públicamente
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </form>
                     </div>
 
@@ -429,841 +447,936 @@
 </div>
 
 <script>
-    (function () {
-        'use strict';
+(function() {
+    'use strict';
 
-        console.log('👤 Página: Perfil - Inicializando');
+    console.log('👤 Página: Perfil - Inicializando');
 
-        // ===================================
-        // VARIABLES GLOBALES
-        // ===================================
-        let currentUserData = null;
-        let activeSessions = [];
+    // ===================================
+    // VARIABLES GLOBALES
+    // ===================================
+    let currentUserData = null;
+    let activeSessions = [];
 
-        // Instancia de Notyf (se inicializa de forma lazy)
-        let notyfInstance = null;
+    // Instancia de Notyf (se inicializa de forma lazy)
+    let notyfInstance = null;
 
-        // Instancia de FilePond para foto de perfil
-        let profilePicturePond = null;
+    // Instancia de FilePond para foto de perfil
+    let profilePicturePond = null;
 
-        /**
-         * Obtener instancia de Notyf (inicialización lazy)
-         * Espera a que Notyf esté disponible antes de crear la instancia
-         */
-        function getNotyf() {
-            if (!notyfInstance && typeof Notyf !== 'undefined') {
-                notyfInstance = new Notyf({
-                    duration: 4000,
-                    position: { x: 'right', y: 'top' },
-                    ripple: true,
-                    dismissible: true
-                });
-                console.log('✅ Notyf inicializado correctamente (lazy)');
-            }
-            
-            // Si aún no está disponible, usar fallback
-            if (!notyfInstance) {
-                console.warn('⚠️ Notyf aún no disponible, usando fallback alert');
-                return {
-                    success: (msg) => alert('✅ ' + (typeof msg === 'string' ? msg : msg.message)),
-                    error: (msg) => alert('❌ ' + (typeof msg === 'string' ? msg : msg.message))
-                };
-            }
-            
-            return notyfInstance;
+    /**
+     * Obtener instancia de Notyf (inicialización lazy)
+     * Espera a que Notyf esté disponible antes de crear la instancia
+     */
+    function getNotyf() {
+        if (!notyfInstance && typeof Notyf !== 'undefined') {
+            notyfInstance = new Notyf({
+                duration: 4000,
+                position: {
+                    x: 'right',
+                    y: 'top'
+                },
+                ripple: true,
+                dismissible: true
+            });
+            console.log('✅ Notyf inicializado correctamente (lazy)');
         }
 
-        // ===================================
-        // CARGAR DATOS DEL USUARIO
-        // ===================================
-        async function loadUserData() {
-            try {
-                console.log('� Cargando datos completos del perfil...');
-                
-                // Obtener perfil completo con bio, género y redes sociales
-                const response = await window.AppRouter.get('/routes/profile/det_user.php');
-
-                if (response && response.status === 'success') {
-                    console.log('✅ Perfil completo cargado:', response.data);
-                    currentUserData = response.data;
-
-                    // Actualizar UI con los datos
-                    updateProfileUI(currentUserData);
-                    
-                    // Llenar formularios con datos del backend
-                    fillFormData(currentUserData);
-                } else {
-                    throw new Error(response?.message || 'Error al cargar perfil');
-                }
-            } catch (error) {
-                console.error('❌ Error al cargar perfil:', error);
-                getNotyf().error('Error al cargar información del perfil');
-            }
+        // Si aún no está disponible, usar fallback
+        if (!notyfInstance) {
+            console.warn('⚠️ Notyf aún no disponible, usando fallback alert');
+            return {
+                success: (msg) => alert('✅ ' + (typeof msg === 'string' ? msg : msg.message)),
+                error: (msg) => alert('❌ ' + (typeof msg === 'string' ? msg : msg.message))
+            };
         }
 
-        // ===================================
-        // LLENAR FORMULARIOS CON DATOS
-        // ===================================
-        function fillFormData(userData) {
-            console.log('📝 Llenando formularios con datos del usuario');
+        return notyfInstance;
+    }
 
-            // Tab Personal
-            document.getElementById('firstName').value = userData.first_name || '';
-            document.getElementById('lastName').value = userData.last_name || '';
-            document.getElementById('bio').value = userData.bio || '';
-            updateBioCounter(); // Actualizar contador
-            document.getElementById('gender').value = userData.gender_id || 1;
-            document.getElementById('birthdate').value = userData.birthdate || '';
-            document.getElementById('country').value = userData.country || '';
-            document.getElementById('city').value = userData.city || '';
+    // ===================================
+    // CARGAR DATOS DEL USUARIO
+    // ===================================
+    async function loadUserData() {
+        try {
+            console.log('� Cargando datos completos del perfil...');
 
-            // Tab Contacto
-            document.getElementById('email').value = userData.email || '';
-            document.getElementById('phone').value = userData.phone || '';
-            document.getElementById('username').value = userData.username || '';
+            // Obtener perfil completo con bio, género y redes sociales
+            const response = await window.AppRouter.get('/routes/profile/det_user.php');
 
-            // Tab Social
-            if (userData.social) {
-                document.getElementById('github').value = userData.social.github_username || '';
-                document.getElementById('linkedin').value = userData.social.linkedin_username || '';
-                document.getElementById('twitter').value = userData.social.twitter_username || '';
-                document.getElementById('discord').value = userData.social.discord_tag || '';
-                document.getElementById('website').value = userData.social.personal_website || '';
-                document.getElementById('showSocialPublic').checked = userData.social.show_social_public || false;
-            }
+            if (response && response.status === 'success') {
+                console.log('✅ Perfil completo cargado:', response.data);
+                currentUserData = response.data;
 
-            console.log('✅ Formularios llenados correctamente');
-        }
+                // Actualizar UI con los datos
+                updateProfileUI(currentUserData);
 
-        // ===================================
-        // CONTADOR DE CARACTERES PARA BIO
-        // ===================================
-        function updateBioCounter() {
-            const bioInput = document.getElementById('bio');
-            const bioCounter = document.getElementById('bioCounter');
-            if (bioInput && bioCounter) {
-                bioCounter.textContent = bioInput.value.length;
-            }
-        }
-
-        // Event listener para bio
-        const bioInput = document.getElementById('bio');
-        if (bioInput) {
-            bioInput.addEventListener('input', updateBioCounter);
-        }        // ===================================
-        // ACTUALIZAR UI CON DATOS DEL USUARIO
-        // ===================================
-        function updateProfileUI(userData) {
-            // Nombre en header
-            const displayName = document.getElementById('profileDisplayName');
-            if (displayName) {
-                displayName.textContent = userData.full_name || 'Usuario';
-            }
-
-            // Username
-            const username = document.getElementById('profileUsername');
-            if (username) {
-                username.textContent = '@' + (userData.username || 'username');
-            }
-
-            // Foto de perfil
-            updateProfilePicture(userData.profile_picture);
-
-            // Badge de Rol (Administrador/Usuario)
-            const roleBadge = document.getElementById('profileRole');
-            if (roleBadge) {
-                const isAdmin = userData.role_id === 2;
-                roleBadge.textContent = isAdmin ? 'Administrador' : 'Usuario';
-                roleBadge.className = isAdmin ? 'badge bg-primary' : 'badge bg-info';
-            }
-
-            // Badge de Estado (Activo/Inactivo/Suspendido/Baneado)
-            const statusBadge = roleBadge?.nextElementSibling;
-            if (statusBadge) {
-                const statusMap = {
-                    1: { text: 'Activo', class: 'badge bg-success' },
-                    2: { text: 'Inactivo', class: 'badge bg-secondary' },
-                    3: { text: 'Suspendido', class: 'badge bg-warning' },
-                    4: { text: 'Baneado', class: 'badge bg-danger' }
-                };
-
-                const status = statusMap[userData.status_id] || statusMap[1];
-                statusBadge.textContent = status.text;
-                statusBadge.className = status.class;
-            }
-
-            // Último acceso (usar last_login del usuario)
-            const lastAccess = document.getElementById('lastAccessTime');
-            if (lastAccess) {
-                if (userData.last_login) {
-                    const lastLoginDate = new Date(userData.last_login);
-                    const now = new Date();
-                    const diffMinutes = Math.floor((now - lastLoginDate) / 60000);
-
-                    let timeText = '';
-                    if (diffMinutes < 1) {
-                        timeText = 'Ahora mismo';
-                    } else if (diffMinutes < 60) {
-                        timeText = `Hace ${diffMinutes} ${diffMinutes === 1 ? 'minuto' : 'minutos'}`;
-                    } else if (diffMinutes < 1440) {
-                        const hours = Math.floor(diffMinutes / 60);
-                        timeText = `Hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
-                    } else {
-                        const days = Math.floor(diffMinutes / 1440);
-                        timeText = `Hace ${days} ${days === 1 ? 'día' : 'días'}`;
-                    }
-
-                    lastAccess.textContent = timeText;
-                    console.log(`🕒 Último acceso actualizado: ${timeText} (${userData.last_login})`);
-                } else {
-                    lastAccess.textContent = 'No disponible';
-                    console.warn('⚠️ last_login no está disponible en userData');
-                }
+                // Llenar formularios con datos del backend
+                fillFormData(currentUserData);
             } else {
-                console.error('❌ Elemento lastAccessTime no encontrado');
+                throw new Error(response?.message || 'Error al cargar perfil');
             }
+        } catch (error) {
+            console.error('❌ Error al cargar perfil:', error);
+            getNotyf().error('Error al cargar información del perfil');
+        }
+    }
 
-            // Miembro desde
-            const memberSince = document.getElementById('memberSince');
-            if (memberSince) {
-                memberSince.textContent = userData.member_since || 'Reciente';
-                console.log(`📅 Miembro desde actualizado: ${userData.member_since || 'Reciente'}`);
-            }
+    // ===================================
+    // LLENAR FORMULARIOS CON DATOS
+    // ===================================
+    function fillFormData(userData) {
+        console.log('📝 Llenando formularios con datos del usuario');
 
-            // Sesiones activas (actualizar contador)
-            const activeSessions = document.getElementById('activeSessions');
-            if (activeSessions && userData.active_sessions_count !== undefined) {
-                const count = userData.active_sessions_count;
-                activeSessions.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
-                console.log(`📱 Sesiones activas actualizadas: ${count}`);
-            }
+        // Tab Personal
+        document.getElementById('firstName').value = userData.first_name || '';
+        document.getElementById('lastName').value = userData.last_name || '';
+        document.getElementById('bio').value = userData.bio || '';
+        updateBioCounter(); // Actualizar contador
+        document.getElementById('gender').value = userData.gender_id || 1;
+        document.getElementById('birthdate').value = userData.birthdate || '';
+        document.getElementById('country').value = userData.country || '';
+        document.getElementById('city').value = userData.city || '';
+
+        // Tab Contacto
+        document.getElementById('email').value = userData.email || '';
+        document.getElementById('phone').value = userData.phone || '';
+        document.getElementById('username').value = userData.username || '';
+
+        // Tab Social
+        if (userData.social) {
+            document.getElementById('github').value = userData.social.github_username || '';
+            document.getElementById('linkedin').value = userData.social.linkedin_username || '';
+            document.getElementById('twitter').value = userData.social.twitter_username || '';
+            document.getElementById('discord').value = userData.social.discord_tag || '';
+            document.getElementById('website').value = userData.social.personal_website || '';
+            document.getElementById('showSocialPublic').checked = userData.social.show_social_public || false;
         }
 
-        // ===================================
-        // CARGAR SESIONES ACTIVAS
-        // ===================================
-        async function loadActiveSessions() {
-            try {
-                console.log('🔐 Cargando sesiones activas...');
+        console.log('✅ Formularios llenados correctamente');
+    }
 
-                // Verificar que AppRouter esté disponible
-                if (!window.AppRouter || !window.AppRouter.isReady()) {
-                    console.warn('⏳ AppRouter no está listo para sesiones, esperando...');
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                    return loadActiveSessions(); // Reintentar
-                }
+    // ===================================
+    // CONTADOR DE CARACTERES PARA BIO
+    // ===================================
+    function updateBioCounter() {
+        const bioInput = document.getElementById('bio');
+        const bioCounter = document.getElementById('bioCounter');
+        if (bioInput && bioCounter) {
+            bioCounter.textContent = bioInput.value.length;
+        }
+    }
 
-                activeSessions = await window.SessionsService.getActiveSessions();
-
-                // Actualizar contador en estadísticas
-                const activeSessionsCount = document.getElementById('activeSessions');
-                if (activeSessionsCount) {
-                    const count = activeSessions.length;
-                    activeSessionsCount.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
-                }
-
-                // Renderizar sesiones en el contenedor
-                window.SessionsService.renderSessionCards(activeSessions, 'sessionsContainer');
-
-                // Actualizar estadísticas de sesiones
-                updateSessionStats(activeSessions);
-
-                console.log('✅ Sesiones activas cargadas:', activeSessions.length);
-            } catch (error) {
-                console.error('❌ Error al cargar sesiones:', error);
-
-                const container = document.getElementById('sessionsContainer');
-                if (container) {
-                    container.innerHTML = `
-                        <div class="alert alert-danger">
-                            <i class="bx bx-error-circle me-2"></i>
-                            No se pudieron cargar las sesiones activas. Intenta nuevamente.
-                        </div>
-                    `;
-                }
-            }
+    // Event listener para bio
+    const bioInput = document.getElementById('bio');
+    if (bioInput) {
+        bioInput.addEventListener('input', updateBioCounter);
+    } // ===================================
+    // ACTUALIZAR UI CON DATOS DEL USUARIO
+    // ===================================
+    function updateProfileUI(userData) {
+        // Nombre en header
+        const displayName = document.getElementById('profileDisplayName');
+        if (displayName) {
+            displayName.textContent = userData.full_name || 'Usuario';
         }
 
-        // ===================================
-        // ACTUALIZAR ESTADÍSTICAS DE SESIONES
-        // ===================================
-        function updateSessionStats(sessions) {
-            // Última actividad
-            const lastActivityStat = document.getElementById('lastActivityStat');
-            if (lastActivityStat && sessions.length > 0) {
-                const mostRecent = sessions.reduce((latest, session) => {
-                    const sessionDate = new Date(session.last_activity);
-                    const latestDate = new Date(latest.last_activity);
-                    return sessionDate > latestDate ? session : latest;
-                });
+        // Username
+        const username = document.getElementById('profileUsername');
+        if (username) {
+            username.textContent = '@' + (userData.username || 'username');
+        }
 
-                const lastActivity = new Date(mostRecent.last_activity);
+        // Foto de perfil
+        updateProfilePicture(userData.profile_picture);
+
+        // Badge de Rol (Administrador/Usuario)
+        const roleBadge = document.getElementById('profileRole');
+        if (roleBadge) {
+            const isAdmin = userData.role_id === 2;
+            roleBadge.textContent = isAdmin ? 'Administrador' : 'Usuario';
+            roleBadge.className = isAdmin ? 'badge bg-primary' : 'badge bg-info';
+        }
+
+        // Badge de Estado (Activo/Inactivo/Suspendido/Baneado)
+        const statusBadge = roleBadge?.nextElementSibling;
+        if (statusBadge) {
+            const statusMap = {
+                1: {
+                    text: 'Activo',
+                    class: 'badge bg-success'
+                },
+                2: {
+                    text: 'Inactivo',
+                    class: 'badge bg-secondary'
+                },
+                3: {
+                    text: 'Suspendido',
+                    class: 'badge bg-warning'
+                },
+                4: {
+                    text: 'Baneado',
+                    class: 'badge bg-danger'
+                }
+            };
+
+            const status = statusMap[userData.status_id] || statusMap[1];
+            statusBadge.textContent = status.text;
+            statusBadge.className = status.class;
+        }
+
+        // Último acceso (usar last_login del usuario)
+        const lastAccess = document.getElementById('lastAccessTime');
+        if (lastAccess) {
+            if (userData.last_login) {
+                const lastLoginDate = new Date(userData.last_login);
                 const now = new Date();
-                const diffMinutes = Math.floor((now - lastActivity) / 60000);
+                const diffMinutes = Math.floor((now - lastLoginDate) / 60000);
 
                 let timeText = '';
                 if (diffMinutes < 1) {
                     timeText = 'Ahora mismo';
                 } else if (diffMinutes < 60) {
-                    timeText = `Hace ${diffMinutes} min`;
-                } else {
+                    timeText = `Hace ${diffMinutes} ${diffMinutes === 1 ? 'minuto' : 'minutos'}`;
+                } else if (diffMinutes < 1440) {
                     const hours = Math.floor(diffMinutes / 60);
-                    timeText = `Hace ${hours} h`;
+                    timeText = `Hace ${hours} ${hours === 1 ? 'hora' : 'horas'}`;
+                } else {
+                    const days = Math.floor(diffMinutes / 1440);
+                    timeText = `Hace ${days} ${days === 1 ? 'día' : 'días'}`;
                 }
 
-                lastActivityStat.textContent = timeText;
+                lastAccess.textContent = timeText;
+                console.log(`🕒 Último acceso actualizado: ${timeText} (${userData.last_login})`);
+            } else {
+                lastAccess.textContent = 'No disponible';
+                console.warn('⚠️ last_login no está disponible en userData');
             }
-
-            // Dispositivos conectados
-            const devicesConnected = document.getElementById('devicesConnectedStat');
-            if (devicesConnected) {
-                const count = sessions.length;
-                devicesConnected.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
-            }
+        } else {
+            console.error('❌ Elemento lastAccessTime no encontrado');
         }
 
-        // ===================================
-        // CERRAR TODAS LAS SESIONES
-        // ===================================
-        const closeAllBtn = document.getElementById('closeAllSessionsBtn');
-        if (closeAllBtn) {
-            closeAllBtn.addEventListener('click', async function () {
-                await window.SessionsService.confirmCloseAllSessions(async () => {
-                    // Recargar sesiones después de cerrar
-                    await loadActiveSessions();
-                });
+        // Miembro desde
+        const memberSince = document.getElementById('memberSince');
+        if (memberSince) {
+            memberSince.textContent = userData.member_since || 'Reciente';
+            console.log(`📅 Miembro desde actualizado: ${userData.member_since || 'Reciente'}`);
+        }
+
+        // Sesiones activas (actualizar contador)
+        const activeSessions = document.getElementById('activeSessions');
+        if (activeSessions && userData.active_sessions_count !== undefined) {
+            const count = userData.active_sessions_count;
+            activeSessions.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
+            console.log(`📱 Sesiones activas actualizadas: ${count}`);
+        }
+    }
+
+    // ===================================
+    // CARGAR SESIONES ACTIVAS
+    // ===================================
+    async function loadActiveSessions() {
+        try {
+            console.log('🔐 Cargando sesiones activas...');
+
+            // Verificar que AppRouter esté disponible
+            if (!window.AppRouter || !window.AppRouter.isReady()) {
+                console.warn('⏳ AppRouter no está listo para sesiones, esperando...');
+                await new Promise(resolve => setTimeout(resolve, 500));
+                return loadActiveSessions(); // Reintentar
+            }
+
+            activeSessions = await window.SessionsService.getActiveSessions();
+
+            // Actualizar contador en estadísticas
+            const activeSessionsCount = document.getElementById('activeSessions');
+            if (activeSessionsCount) {
+                const count = activeSessions.length;
+                activeSessionsCount.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
+            }
+
+            // Renderizar sesiones en el contenedor
+            window.SessionsService.renderSessionCards(activeSessions, 'sessionsContainer');
+
+            // Actualizar estadísticas de sesiones
+            updateSessionStats(activeSessions);
+
+            console.log('✅ Sesiones activas cargadas:', activeSessions.length);
+        } catch (error) {
+            console.error('❌ Error al cargar sesiones:', error);
+
+            const container = document.getElementById('sessionsContainer');
+            if (container) {
+                container.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="bx bx-error-circle me-2"></i>
+                            No se pudieron cargar las sesiones activas. Intenta nuevamente.
+                        </div>
+                    `;
+            }
+        }
+    }
+
+    // ===================================
+    // ACTUALIZAR ESTADÍSTICAS DE SESIONES
+    // ===================================
+    function updateSessionStats(sessions) {
+        // Última actividad
+        const lastActivityStat = document.getElementById('lastActivityStat');
+        if (lastActivityStat && sessions.length > 0) {
+            const mostRecent = sessions.reduce((latest, session) => {
+                const sessionDate = new Date(session.last_activity);
+                const latestDate = new Date(latest.last_activity);
+                return sessionDate > latestDate ? session : latest;
             });
+
+            const lastActivity = new Date(mostRecent.last_activity);
+            const now = new Date();
+            const diffMinutes = Math.floor((now - lastActivity) / 60000);
+
+            let timeText = '';
+            if (diffMinutes < 1) {
+                timeText = 'Ahora mismo';
+            } else if (diffMinutes < 60) {
+                timeText = `Hace ${diffMinutes} min`;
+            } else {
+                const hours = Math.floor(diffMinutes / 60);
+                timeText = `Hace ${hours} h`;
+            }
+
+            lastActivityStat.textContent = timeText;
         }
 
-        // ===================================
-        // EVENTOS DE SESIONES
-        // ===================================
-        function initSessionEvents() {
-            window.SessionsService.initSessionEvents('sessionsContainer', async () => {
-                // Recargar sesiones después de cerrar una
+        // Dispositivos conectados
+        const devicesConnected = document.getElementById('devicesConnectedStat');
+        if (devicesConnected) {
+            const count = sessions.length;
+            devicesConnected.textContent = `${count} ${count === 1 ? 'dispositivo' : 'dispositivos'}`;
+        }
+    }
+
+    // ===================================
+    // CERRAR TODAS LAS SESIONES
+    // ===================================
+    const closeAllBtn = document.getElementById('closeAllSessionsBtn');
+    if (closeAllBtn) {
+        closeAllBtn.addEventListener('click', async function() {
+            await window.SessionsService.confirmCloseAllSessions(async () => {
+                // Recargar sesiones después de cerrar
                 await loadActiveSessions();
             });
-        }
+        });
+    }
 
-        // ===================================
-        // GUARDAR PERFIL
-        // ===================================
-        document.getElementById('saveProfile')?.addEventListener('click', async function () {
-            console.log('💾 Guardando perfil...');
+    // ===================================
+    // EVENTOS DE SESIONES
+    // ===================================
+    function initSessionEvents() {
+        window.SessionsService.initSessionEvents('sessionsContainer', async () => {
+            // Recargar sesiones después de cerrar una
+            await loadActiveSessions();
+        });
+    }
 
-            const saveBtn = this;
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Guardando...';
+    // ===================================
+    // GUARDAR PERFIL
+    // ===================================
+    document.getElementById('saveProfile')?.addEventListener('click', async function() {
+        console.log('💾 Guardando perfil...');
 
-            try {
-                // Recopilar datos de todos los formularios
-                const profileData = {
-                    // Datos personales
-                    first_name: document.getElementById('firstName').value.trim(),
-                    last_name: document.getElementById('lastName').value.trim(),
-                    bio: document.getElementById('bio').value.trim(),
-                    gender_id: parseInt(document.getElementById('gender').value),
-                    birthdate: document.getElementById('birthdate').value,
-                    country: document.getElementById('country').value.trim(),
-                    city: document.getElementById('city').value.trim(),
+        const saveBtn = this;
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Guardando...';
 
-                    // Contacto
-                    phone: document.getElementById('phone').value.trim(),
+        try {
+            // ===================================
+            // VALIDAR CAMPOS REQUERIDOS
+            // ===================================
 
-                    // Redes sociales
-                    social: {
-                        github_username: document.getElementById('github').value.trim(),
-                        linkedin_username: document.getElementById('linkedin').value.trim(),
-                        twitter_username: document.getElementById('twitter').value.trim(),
-                        discord_tag: document.getElementById('discord').value.trim(),
-                        personal_website: document.getElementById('website').value.trim(),
-                        show_social_public: document.getElementById('showSocialPublic').checked
-                    }
-                };
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const bio = document.getElementById('bio').value.trim();
+            const genderIdValue = document.getElementById('gender').value;
 
-                console.log('📤 Enviando datos al backend:', profileData);
+            // Validar campos obligatorios
+            if (!firstName || firstName.length === 0) {
+                throw new Error('El nombre es requerido');
+            }
 
-                // Enviar al backend
-                const response = await window.AppRouter.put('/routes/profile/up_user.php', profileData);
+            if (!lastName || lastName.length === 0) {
+                throw new Error('El apellido es requerido');
+            }
 
-                if (response && response.status === 'success') {
-                    console.log('✅ Perfil actualizado:', response.data);
-                    
-                    getNotyf().success({
-                        message: `Perfil actualizado correctamente. ${response.data.total_updates} campo(s) modificado(s).`,
-                        duration: 5000
-                    });
+            // Validar longitud de biografía
+            if (bio && bio.length > 255) {
+                throw new Error(`La biografía no puede exceder 255 caracteres (actual: ${bio.length})`);
+            }
 
-                    // Recargar datos del perfil
-                    await loadUserData();
+            // Validar gender_id
+            const genderId = parseInt(genderIdValue);
+            if (isNaN(genderId) || genderId < 1 || genderId > 4) {
+                throw new Error('Debe seleccionar un género válido');
+            }
 
-                    // Actualizar header si cambió el nombre
-                    if (response.data.updated_fields.includes('first_name') || 
-                        response.data.updated_fields.includes('last_name')) {
-                        console.log('🔄 Nombre actualizado, recargando header...');
-                        // El header se actualizará con los nuevos datos en loadUserData()
-                    }
-                } else {
-                    throw new Error(response?.message || 'Error al actualizar perfil');
+            // Validar fecha de nacimiento (si se proporciona)
+            const birthdate = document.getElementById('birthdate').value;
+            if (birthdate) {
+                const birthdateObj = new Date(birthdate);
+                const today = new Date();
+                if (birthdateObj > today) {
+                    throw new Error('La fecha de nacimiento no puede ser futura');
                 }
 
-            } catch (error) {
-                console.error('❌ Error al guardar perfil:', error);
-                
-                let errorMessage = 'Error al guardar los cambios';
-                if (error.response && error.response.data && error.response.data.message) {
-                    errorMessage = error.response.data.message;
+                // Validar edad mínima (13 años)
+                const age = today.getFullYear() - birthdateObj.getFullYear();
+                if (age < 13) {
+                    throw new Error('Debes tener al menos 13 años para usar este servicio');
                 }
+            }
 
-                getNotyf().error({
-                    message: errorMessage,
+            // Validar personal website (si se proporciona)
+            const personalWebsite = document.getElementById('website').value.trim();
+            if (personalWebsite) {
+                try {
+                    new URL(personalWebsite);
+                    if (!personalWebsite.startsWith('http://') && !personalWebsite.startsWith(
+                            'https://')) {
+                        throw new Error('');
+                    }
+                } catch (e) {
+                    throw new Error(
+                        'La URL del sitio web personal debe ser válida (debe comenzar con http:// o https://)'
+                    );
+                }
+            }
+
+            // ===================================
+            // RECOPILAR DATOS VALIDADOS
+            // ===================================
+
+            const profileData = {
+                // Datos personales (validados)
+                first_name: firstName,
+                last_name: lastName,
+                bio: bio,
+                gender_id: genderId,
+                birthdate: birthdate,
+                country: document.getElementById('country').value.trim(),
+                city: document.getElementById('city').value.trim(),
+
+                // Contacto
+                phone: document.getElementById('phone').value.trim(),
+
+                // Redes sociales
+                social: {
+                    github_username: document.getElementById('github').value.trim(),
+                    linkedin_username: document.getElementById('linkedin').value.trim(),
+                    twitter_username: document.getElementById('twitter').value.trim(),
+                    discord_tag: document.getElementById('discord').value.trim(),
+                    personal_website: personalWebsite,
+                    show_social_public: document.getElementById('showSocialPublic').checked
+                }
+            };
+
+            console.log('📤 Enviando datos al backend:', profileData);
+
+            // Enviar al backend
+            const response = await window.AppRouter.put('/routes/profile/up_user.php', profileData);
+
+            if (response && response.status === 'success') {
+                console.log('✅ Perfil actualizado:', response.data);
+
+                getNotyf().success({
+                    message: `Perfil actualizado correctamente. ${response.data.total_updates} campo(s) modificado(s).`,
                     duration: 5000
                 });
-            } finally {
-                // Restaurar botón
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = '<i class="bx bx-save me-1"></i>Guardar Cambios';
-            }
-        });        // ===================================
-        // CONFIRMACIÓN PARA ELIMINAR CUENTA
-        // ===================================
-        const deleteInput = document.getElementById('deleteConfirmation');
-        const deleteButton = document.getElementById('confirmDelete');
 
-        if (deleteInput && deleteButton) {
-            deleteInput.addEventListener('input', function () {
-                deleteButton.disabled = this.value !== 'ELIMINAR';
-            });
+                // Recargar datos del perfil
+                await loadUserData();
 
-            deleteButton.addEventListener('click', function () {
-                console.log('🗑️ Eliminar cuenta solicitado');
-                // Implementar lógica de eliminación
-            });
-        }
-
-        // ===================================
-        // TAB CHANGE EVENT - Cargar sesiones al abrir tab
-        // ===================================
-        const sessionsTab = document.getElementById('sessions-tab');
-        if (sessionsTab) {
-            sessionsTab.addEventListener('shown.bs.tab', function () {
-                console.log('📑 Tab de sesiones activado');
-                loadActiveSessions();
-                initSessionEvents();
-            });
-        }
-
-        // ===================================
-        // ACTUALIZAR FOTO DE PERFIL EN UI
-        // ===================================
-        function updateProfilePicture(profilePicture) {
-            const avatarImg = document.getElementById('profileAvatarImg');
-            const avatarIcon = document.getElementById('profileAvatarIcon');
-            const deleteBtn = document.getElementById('deleteProfilePictureBtn');
-
-            console.log('📷 updateProfilePicture llamado con:', profilePicture);
-
-            // Normalizar rutas incorrectas del backend (defensivo)
-            if (profilePicture && !profilePicture.startsWith('/')) {
-                // Si es solo el nombre del archivo sin ruta, agregar ruta correcta
-                if (profilePicture === 'default-avatar.png' || profilePicture === 'default-profile.png') {
-                    profilePicture = '/assets/img/default-avatar.png';
-                    console.log('🔧 Ruta normalizada a:', profilePicture);
+                // Actualizar header si cambió el nombre
+                if (response.data.updated_fields.includes('first_name') ||
+                    response.data.updated_fields.includes('last_name')) {
+                    console.log('🔄 Nombre actualizado, recargando header...');
+                    // El header se actualizará con los nuevos datos en loadUserData()
                 }
-            }
-
-            // Si no hay foto o es null/undefined
-            if (!profilePicture) {
-                console.log('⚠️ Sin foto de perfil, mostrando icono por defecto');
-                avatarImg.style.display = 'none';
-                avatarIcon.style.display = 'block';
-                deleteBtn?.classList.add('d-none');
-                return;
-            }
-
-            // Construir URL completa según el tipo de imagen
-            let imageUrl;
-            
-            if (profilePicture === '/assets/img/default-avatar.png') {
-                // Foto por defecto: Cargar desde frontend
-                imageUrl = profilePicture;
-                console.log('🖼️ Cargando imagen por defecto:', imageUrl);
-                deleteBtn?.classList.add('d-none'); // No mostrar botón eliminar para default
-            } else if (profilePicture.startsWith('/uploads/')) {
-                // Foto personalizada: Cargar desde BACKEND
-                const backendUrl = window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:3000';
-                imageUrl = backendUrl + profilePicture;
-                console.log('📸 Cargando foto personalizada desde backend:', imageUrl);
-                deleteBtn?.classList.remove('d-none'); // Mostrar botón eliminar
             } else {
-                // Ruta relativa o desconocida
-                imageUrl = profilePicture;
-                console.log('⚠️ Ruta desconocida, usando tal cual:', imageUrl);
-                deleteBtn?.classList.add('d-none');
+                throw new Error(response?.message || 'Error al actualizar perfil');
             }
 
-            // Actualizar imagen
-            avatarImg.src = imageUrl;
-            avatarImg.style.display = 'block';
-            avatarIcon.style.display = 'none';
+        } catch (error) {
+            console.error('❌ Error al guardar perfil:', error);
+
+            let errorMessage = 'Error al guardar los cambios';
+
+            // Verificar si es un error de validación
+            if (error.message) {
+                errorMessage = error.message;
+            }
+            // Verificar si es un error del backend
+            else if (error.response && error.response.data && error.response.data.message) {
+                errorMessage = error.response.data.message;
+
+                // Agregar detalles si existen
+                if (error.response.data.details) {
+                    console.error('Detalles del error:', error.response.data.details);
+                }
+            }
+            // Verificar si Axios tiene el error en otra estructura
+            else if (error.data && error.data.message) {
+                errorMessage = error.data.message;
+            }
+
+            getNotyf().error({
+                message: errorMessage,
+                duration: 5000
+            });
+        } finally {
+            // Restaurar botón
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="bx bx-save me-1"></i>Guardar Cambios';
         }
+    }); // ===================================
+    // CONFIRMACIÓN PARA ELIMINAR CUENTA
+    // ===================================
+    const deleteInput = document.getElementById('deleteConfirmation');
+    const deleteButton = document.getElementById('confirmDelete');
 
-        // ===================================
-        // INICIALIZAR FILEPOND
-        // ===================================
-        function initFilePond() {
-            if (typeof FilePond === 'undefined') {
-                console.error('❌ FilePond no está cargado');
-                return;
-            }
+    if (deleteInput && deleteButton) {
+        deleteInput.addEventListener('input', function() {
+            deleteButton.disabled = this.value !== 'ELIMINAR';
+        });
 
-            // Registrar plugins
-            FilePond.registerPlugin(
-                FilePondPluginFileValidateType,
-                FilePondPluginFileValidateSize,
-                FilePondPluginImagePreview,
-                FilePondPluginImageCrop,
-                FilePondPluginImageResize,
-                FilePondPluginImageTransform,
-                FilePondPluginImageExifOrientation
-            );
+        deleteButton.addEventListener('click', function() {
+            console.log('🗑️ Eliminar cuenta solicitado');
+            // Implementar lógica de eliminación
+        });
+    }
 
-            // Crear instancia de FilePond
-            const inputElement = document.getElementById('profilePictureFilePond');
-            if (!inputElement) {
-                console.error('❌ Input de FilePond no encontrado');
-                return;
-            }
+    // ===================================
+    // TAB CHANGE EVENT - Cargar sesiones al abrir tab
+    // ===================================
+    const sessionsTab = document.getElementById('sessions-tab');
+    if (sessionsTab) {
+        sessionsTab.addEventListener('shown.bs.tab', function() {
+            console.log('📑 Tab de sesiones activado');
+            loadActiveSessions();
+            initSessionEvents();
+        });
+    }
 
-            profilePicturePond = FilePond.create(inputElement, {
-                acceptedFileTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'],
-                maxFileSize: '5MB',
-                maxFiles: 1,
-                allowMultiple: false,
-                credits: false,
-                labelIdle: 'Arrastra tu foto de perfil aquí o <span class="filepond--label-action">Examinar</span>',
-                labelInvalidField: 'Archivo inválido',
-                labelFileWaitingForSize: 'Calculando tamaño',
-                labelFileSizeNotAvailable: 'Tamaño no disponible',
-                labelFileLoading: 'Cargando',
-                labelFileLoadError: 'Error al cargar',
-                labelFileProcessing: 'Subiendo',
-                labelFileProcessingComplete: 'Subida completa',
-                labelFileProcessingAborted: 'Subida cancelada',
-                labelFileProcessingError: 'Error al subir',
-                labelFileProcessingRevertError: 'Error al revertir',
-                labelFileRemoveError: 'Error al eliminar',
-                labelTapToCancel: 'toca para cancelar',
-                labelTapToRetry: 'toca para reintentar',
-                labelTapToUndo: 'toca para deshacer',
-                labelButtonRemoveItem: 'Eliminar',
-                labelButtonAbortItemLoad: 'Abortar',
-                labelButtonRetryItemLoad: 'Reintentar',
-                labelButtonAbortItemProcessing: 'Cancelar',
-                labelButtonUndoItemProcessing: 'Deshacer',
-                labelButtonRetryItemProcessing: 'Reintentar',
-                labelButtonProcessItem: 'Subir',
-                labelMaxFileSizeExceeded: 'Archivo muy grande',
-                labelMaxFileSize: 'Tamaño máximo: {filesize}',
-                labelMaxTotalFileSizeExceeded: 'Tamaño total excedido',
-                labelMaxTotalFileSize: 'Tamaño total máximo: {filesize}',
-                labelFileTypeNotAllowed: 'Tipo de archivo no permitido',
-                fileValidateTypeLabelExpectedTypes: 'Permitidos: {allButLastType} o {lastType}',
-                imagePreviewHeight: 150,
-                imageCropAspectRatio: '1:1',
-                imageResizeTargetWidth: 400,
-                imageResizeTargetHeight: 400,
-                imageResizeMode: 'cover',
-                imageTransformOutputQuality: 90,
-                stylePanelLayout: 'compact',
-                styleLoadIndicatorPosition: 'center bottom',
-                styleProgressIndicatorPosition: 'right bottom',
-                styleButtonRemoveItemPosition: 'left bottom',
-                styleButtonProcessItemPosition: 'right bottom'
-            });
+    // ===================================
+    // ACTUALIZAR FOTO DE PERFIL EN UI
+    // ===================================
+    function updateProfilePicture(profilePicture) {
+        const avatarImg = document.getElementById('profileAvatarImg');
+        const avatarIcon = document.getElementById('profileAvatarIcon');
+        const deleteBtn = document.getElementById('deleteProfilePictureBtn');
 
-            // Event listeners
-            profilePicturePond.on('addfile', (error, file) => {
-                if (!error) {
-                    console.log('📷 Imagen agregada:', file.filename);
-                    document.getElementById('uploadProfilePictureBtn').disabled = false;
-                }
-            });
+        console.log('📷 updateProfilePicture llamado con:', profilePicture);
 
-            profilePicturePond.on('removefile', () => {
-                console.log('🗑️ Imagen removida');
-                document.getElementById('uploadProfilePictureBtn').disabled = true;
-            });
-
-            console.log('✅ FilePond inicializado para foto de perfil');
-        }
-
-        // ===================================
-        // SUBIR FOTO DE PERFIL
-        // ===================================
-        async function uploadProfilePicture() {
-            const uploadBtn = document.getElementById('uploadProfilePictureBtn');
-            uploadBtn.disabled = true;
-            uploadBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Subiendo...';
-
-            try {
-                const files = profilePicturePond.getFiles();
-                if (files.length === 0) {
-                    throw new Error('No hay ninguna imagen seleccionada');
-                }
-
-                const file = files[0].file;
-
-                // Crear FormData
-                const formData = new FormData();
-                formData.append('profile_picture', file);
-
-                console.log('📤 Subiendo foto de perfil:', file.name);
-
-                // Subir con AppRouter
-                const response = await window.AppRouter.upload('/routes/profile/upload_picture.php', formData);
-
-                if (response && response.status === 'success') {
-                    console.log('✅ Foto de perfil actualizada:', response.data);
-                    
-                    getNotyf().success('Foto de perfil actualizada exitosamente');
-
-                    // Actualizar UI
-                    updateProfilePicture(response.data.profile_picture);
-
-                    // Limpiar FilePond
-                    profilePicturePond.removeFiles();
-
-                    // Cerrar modal
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('uploadProfilePictureModal'));
-                    modal?.hide();
-
-                    // Recargar datos completos del perfil
-                    await loadUserData();
-                } else {
-                    throw new Error(response?.message || 'Error al subir foto de perfil');
-                }
-
-            } catch (error) {
-                console.error('❌ Error al subir foto de perfil:', error);
-                getNotyf().error(error.message || 'Error al subir la foto de perfil');
-            } finally {
-                uploadBtn.disabled = false;
-                uploadBtn.innerHTML = '<i class="bx bx-upload me-1"></i>Subir Foto';
+        // Normalizar rutas incorrectas del backend (defensivo)
+        if (profilePicture && !profilePicture.startsWith('/')) {
+            // Si es solo el nombre del archivo sin ruta, agregar ruta correcta
+            if (profilePicture === 'default-avatar.png' || profilePicture === 'default-profile.png') {
+                profilePicture = '/assets/img/default-avatar.png';
+                console.log('🔧 Ruta normalizada a:', profilePicture);
             }
         }
 
-        // ===================================
-        // ELIMINAR FOTO DE PERFIL
-        // ===================================
-        async function deleteProfilePicture() {
-            const result = await Swal.fire({
-                title: '¿Eliminar foto de perfil?',
-                text: 'Tu foto de perfil será reemplazada por la imagen por defecto',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Sí, eliminar',
-                cancelButtonText: 'Cancelar'
-            });
-
-            if (!result.isConfirmed) return;
-
-            try {
-                console.log('🗑️ Eliminando foto de perfil...');
-
-                const response = await window.AppRouter.delete('/routes/profile/delete_picture.php');
-
-                if (response && response.status === 'success') {
-                    console.log('✅ Foto de perfil eliminada');
-                    
-                    getNotyf().success('Foto de perfil eliminada exitosamente');
-
-                    // Actualizar UI
-                    updateProfilePicture(response.data.profile_picture);
-
-                    // Recargar datos completos del perfil
-                    await loadUserData();
-                } else {
-                    throw new Error(response?.message || 'Error al eliminar foto de perfil');
-                }
-
-            } catch (error) {
-                console.error('❌ Error al eliminar foto de perfil:', error);
-                getNotyf().error(error.message || 'Error al eliminar la foto de perfil');
-            }
+        // Si no hay foto o es null/undefined
+        if (!profilePicture) {
+            console.log('⚠️ Sin foto de perfil, mostrando icono por defecto');
+            avatarImg.style.display = 'none';
+            avatarIcon.style.display = 'block';
+            deleteBtn?.classList.add('d-none');
+            return;
         }
 
-        // ===================================
-        // EVENT LISTENERS - FOTO DE PERFIL
-        // ===================================
-        document.getElementById('uploadProfilePictureBtn')?.addEventListener('click', uploadProfilePicture);
-        document.getElementById('deleteProfilePictureBtn')?.addEventListener('click', deleteProfilePicture);
+        // Construir URL completa según el tipo de imagen
+        let imageUrl;
 
-        // Inicializar FilePond cuando se abre el modal
-        document.getElementById('uploadProfilePictureModal')?.addEventListener('shown.bs.modal', function () {
-            if (!profilePicturePond) {
-                initFilePond();
+        if (profilePicture === '/assets/img/default-avatar.png') {
+            // Foto por defecto: Cargar desde frontend
+            imageUrl = profilePicture;
+            console.log('🖼️ Cargando imagen por defecto:', imageUrl);
+            deleteBtn?.classList.add('d-none'); // No mostrar botón eliminar para default
+        } else if (profilePicture.startsWith('/uploads/')) {
+            // Foto personalizada: Cargar desde BACKEND
+            const backendUrl = window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:3000';
+            imageUrl = backendUrl + profilePicture;
+            console.log('📸 Cargando foto personalizada desde backend:', imageUrl);
+            deleteBtn?.classList.remove('d-none'); // Mostrar botón eliminar
+        } else {
+            // Ruta relativa o desconocida
+            imageUrl = profilePicture;
+            console.log('⚠️ Ruta desconocida, usando tal cual:', imageUrl);
+            deleteBtn?.classList.add('d-none');
+        }
+
+        // Actualizar imagen
+        avatarImg.src = imageUrl;
+        avatarImg.style.display = 'block';
+        avatarIcon.style.display = 'none';
+    }
+
+    // ===================================
+    // INICIALIZAR FILEPOND
+    // ===================================
+    function initFilePond() {
+        if (typeof FilePond === 'undefined') {
+            console.error('❌ FilePond no está cargado');
+            return;
+        }
+
+        // Registrar plugins
+        FilePond.registerPlugin(
+            FilePondPluginFileValidateType,
+            FilePondPluginFileValidateSize,
+            FilePondPluginImagePreview,
+            FilePondPluginImageCrop,
+            FilePondPluginImageResize,
+            FilePondPluginImageTransform,
+            FilePondPluginImageExifOrientation
+        );
+
+        // Crear instancia de FilePond
+        const inputElement = document.getElementById('profilePictureFilePond');
+        if (!inputElement) {
+            console.error('❌ Input de FilePond no encontrado');
+            return;
+        }
+
+        profilePicturePond = FilePond.create(inputElement, {
+            acceptedFileTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'],
+            maxFileSize: '5MB',
+            maxFiles: 1,
+            allowMultiple: false,
+            credits: false,
+            labelIdle: 'Arrastra tu foto de perfil aquí o <span class="filepond--label-action">Examinar</span>',
+            labelInvalidField: 'Archivo inválido',
+            labelFileWaitingForSize: 'Calculando tamaño',
+            labelFileSizeNotAvailable: 'Tamaño no disponible',
+            labelFileLoading: 'Cargando',
+            labelFileLoadError: 'Error al cargar',
+            labelFileProcessing: 'Subiendo',
+            labelFileProcessingComplete: 'Subida completa',
+            labelFileProcessingAborted: 'Subida cancelada',
+            labelFileProcessingError: 'Error al subir',
+            labelFileProcessingRevertError: 'Error al revertir',
+            labelFileRemoveError: 'Error al eliminar',
+            labelTapToCancel: 'toca para cancelar',
+            labelTapToRetry: 'toca para reintentar',
+            labelTapToUndo: 'toca para deshacer',
+            labelButtonRemoveItem: 'Eliminar',
+            labelButtonAbortItemLoad: 'Abortar',
+            labelButtonRetryItemLoad: 'Reintentar',
+            labelButtonAbortItemProcessing: 'Cancelar',
+            labelButtonUndoItemProcessing: 'Deshacer',
+            labelButtonRetryItemProcessing: 'Reintentar',
+            labelButtonProcessItem: 'Subir',
+            labelMaxFileSizeExceeded: 'Archivo muy grande',
+            labelMaxFileSize: 'Tamaño máximo: {filesize}',
+            labelMaxTotalFileSizeExceeded: 'Tamaño total excedido',
+            labelMaxTotalFileSize: 'Tamaño total máximo: {filesize}',
+            labelFileTypeNotAllowed: 'Tipo de archivo no permitido',
+            fileValidateTypeLabelExpectedTypes: 'Permitidos: {allButLastType} o {lastType}',
+            imagePreviewHeight: 150,
+            imageCropAspectRatio: '1:1',
+            imageResizeTargetWidth: 400,
+            imageResizeTargetHeight: 400,
+            imageResizeMode: 'cover',
+            imageTransformOutputQuality: 90,
+            stylePanelLayout: 'compact',
+            styleLoadIndicatorPosition: 'center bottom',
+            styleProgressIndicatorPosition: 'right bottom',
+            styleButtonRemoveItemPosition: 'left bottom',
+            styleButtonProcessItemPosition: 'right bottom'
+        });
+
+        // Event listeners
+        profilePicturePond.on('addfile', (error, file) => {
+            if (!error) {
+                console.log('📷 Imagen agregada:', file.filename);
+                document.getElementById('uploadProfilePictureBtn').disabled = false;
             }
         });
 
-        // ===================================
-        // ESPERAR A QUE APPROUTER ESTÉ LISTO
-        // ===================================
-        async function waitForAppRouter() {
-            let attempts = 0;
-            const maxAttempts = 20; // 10 segundos máximo
+        profilePicturePond.on('removefile', () => {
+            console.log('🗑️ Imagen removida');
+            document.getElementById('uploadProfilePictureBtn').disabled = true;
+        });
 
-            while (attempts < maxAttempts) {
-                if (window.AppRouter && typeof window.AppRouter.isReady === 'function' && window.AppRouter.isReady()) {
-                    console.log('✅ AppRouter está listo para usar');
-                    return true;
-                }
+        console.log('✅ FilePond inicializado para foto de perfil');
+    }
 
-                console.log(`⏳ Esperando a AppRouter... Intento ${attempts + 1}/${maxAttempts}`);
-                await new Promise(resolve => setTimeout(resolve, 500));
-                attempts++;
+    // ===================================
+    // SUBIR FOTO DE PERFIL
+    // ===================================
+    async function uploadProfilePicture() {
+        const uploadBtn = document.getElementById('uploadProfilePictureBtn');
+        uploadBtn.disabled = true;
+        uploadBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Subiendo...';
+
+        try {
+            const files = profilePicturePond.getFiles();
+            if (files.length === 0) {
+                throw new Error('No hay ninguna imagen seleccionada');
             }
 
-            console.error('❌ Timeout esperando a AppRouter');
-            return false;
-        }
+            const file = files[0].file;
 
-        // ===================================
-        // INICIALIZACIÓN
-        // ===================================
-        async function init() {
-            console.log('🚀 Inicializando perfil...');
+            // Crear FormData
+            const formData = new FormData();
+            formData.append('profile_picture', file);
 
-            // Esperar a que AppRouter esté disponible
-            const isReady = await waitForAppRouter();
+            console.log('📤 Subiendo foto de perfil:', file.name);
 
-            if (!isReady) {
-                console.error('❌ No se pudo inicializar el perfil: AppRouter no disponible');
-                getNotyf().error('Error al cargar el perfil. Por favor, recarga la página.');
-                return;
+            // Subir con AppRouter
+            const response = await window.AppRouter.upload('/routes/profile/upload_picture.php', formData);
+
+            if (response && response.status === 'success') {
+                console.log('✅ Foto de perfil actualizada:', response.data);
+
+                getNotyf().success('Foto de perfil actualizada exitosamente');
+
+                // Actualizar UI
+                updateProfilePicture(response.data.profile_picture);
+
+                // Limpiar FilePond
+                profilePicturePond.removeFiles();
+
+                // Cerrar modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('uploadProfilePictureModal'));
+                modal?.hide();
+
+                // Recargar datos completos del perfil
+                await loadUserData();
+            } else {
+                throw new Error(response?.message || 'Error al subir foto de perfil');
             }
 
-            // Cargar datos del usuario
-            await loadUserData();
+        } catch (error) {
+            console.error('❌ Error al subir foto de perfil:', error);
+            getNotyf().error(error.message || 'Error al subir la foto de perfil');
+        } finally {
+            uploadBtn.disabled = false;
+            uploadBtn.innerHTML = '<i class="bx bx-upload me-1"></i>Subir Foto';
+        }
+    }
 
-            // Cargar sesiones activas inicialmente
-            await loadActiveSessions();
-            initSessionEvents();
+    // ===================================
+    // ELIMINAR FOTO DE PERFIL
+    // ===================================
+    async function deleteProfilePicture() {
+        const result = await Swal.fire({
+            title: '¿Eliminar foto de perfil?',
+            text: 'Tu foto de perfil será reemplazada por la imagen por defecto',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
 
-            console.log('✅ Perfil inicializado completamente');
+        if (!result.isConfirmed) return;
+
+        try {
+            console.log('🗑️ Eliminando foto de perfil...');
+
+            const response = await window.AppRouter.delete('/routes/profile/delete_picture.php');
+
+            if (response && response.status === 'success') {
+                console.log('✅ Foto de perfil eliminada');
+
+                getNotyf().success('Foto de perfil eliminada exitosamente');
+
+                // Actualizar UI
+                updateProfilePicture(response.data.profile_picture);
+
+                // Recargar datos completos del perfil
+                await loadUserData();
+            } else {
+                throw new Error(response?.message || 'Error al eliminar foto de perfil');
+            }
+
+        } catch (error) {
+            console.error('❌ Error al eliminar foto de perfil:', error);
+            getNotyf().error(error.message || 'Error al eliminar la foto de perfil');
+        }
+    }
+
+    // ===================================
+    // EVENT LISTENERS - FOTO DE PERFIL
+    // ===================================
+    document.getElementById('uploadProfilePictureBtn')?.addEventListener('click', uploadProfilePicture);
+    document.getElementById('deleteProfilePictureBtn')?.addEventListener('click', deleteProfilePicture);
+
+    // Inicializar FilePond cuando se abre el modal
+    document.getElementById('uploadProfilePictureModal')?.addEventListener('shown.bs.modal', function() {
+        if (!profilePicturePond) {
+            initFilePond();
+        }
+    });
+
+    // ===================================
+    // ESPERAR A QUE APPROUTER ESTÉ LISTO
+    // ===================================
+    async function waitForAppRouter() {
+        let attempts = 0;
+        const maxAttempts = 20; // 10 segundos máximo
+
+        while (attempts < maxAttempts) {
+            if (window.AppRouter && typeof window.AppRouter.isReady === 'function' && window.AppRouter
+                .isReady()) {
+                console.log('✅ AppRouter está listo para usar');
+                return true;
+            }
+
+            console.log(`⏳ Esperando a AppRouter... Intento ${attempts + 1}/${maxAttempts}`);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            attempts++;
         }
 
-        // Ejecutar inicialización cuando el DOM esté listo
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
+        console.error('❌ Timeout esperando a AppRouter');
+        return false;
+    }
+
+    // ===================================
+    // INICIALIZACIÓN
+    // ===================================
+    async function init() {
+        console.log('🚀 Inicializando perfil...');
+
+        // Esperar a que AppRouter esté disponible
+        const isReady = await waitForAppRouter();
+
+        if (!isReady) {
+            console.error('❌ No se pudo inicializar el perfil: AppRouter no disponible');
+            getNotyf().error('Error al cargar el perfil. Por favor, recarga la página.');
+            return;
         }
 
-    })();
+        // Cargar datos del usuario
+        await loadUserData();
+
+        // Cargar sesiones activas inicialmente
+        await loadActiveSessions();
+        initSessionEvents();
+
+        console.log('✅ Perfil inicializado completamente');
+    }
+
+    // Ejecutar inicialización cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
 </script>
 
 <style>
-    .avatar-xl {
-        font-size: 80px;
-    }
+.avatar-xl {
+    font-size: 80px;
+}
 
-    .nav-tabs .nav-link {
-        color: var(--bs-secondary);
-        border: none;
-        padding: 1rem 1.5rem;
-        transition: all 0.2s ease;
-    }
+.nav-tabs .nav-link {
+    color: var(--bs-secondary);
+    border: none;
+    padding: 1rem 1.5rem;
+    transition: all 0.2s ease;
+}
 
-    .nav-tabs .nav-link:hover {
-        color: var(--bs-primary);
-        background-color: var(--bs-light);
-    }
+.nav-tabs .nav-link:hover {
+    color: var(--bs-primary);
+    background-color: var(--bs-light);
+}
 
-    .nav-tabs .nav-link.active {
-        color: var(--bs-primary);
-        background-color: transparent;
-        border-bottom: 3px solid var(--bs-primary);
-        font-weight: 600;
-    }
+.nav-tabs .nav-link.active {
+    color: var(--bs-primary);
+    background-color: transparent;
+    border-bottom: 3px solid var(--bs-primary);
+    font-weight: 600;
+}
 
-    .form-check-radio {
-        width: 1.25rem;
-        height: 1.25rem;
-        margin-top: 0.125rem;
-        cursor: pointer;
-    }
+.form-check-radio {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.125rem;
+    cursor: pointer;
+}
 
-    .form-check-label {
-        cursor: pointer;
-        padding-left: 0.5rem;
-    }
+.form-check-label {
+    cursor: pointer;
+    padding-left: 0.5rem;
+}
 
-    /* ===================================
+/* ===================================
        ESTILOS PARA ESTADÍSTICAS DE SESIONES
        =================================== */
 
-    /* Modo Claro (por defecto) */
-    [data-bs-theme="light"] .session-stat-card {
-        background-color: #f8f9fa !important;
-        border: 1px solid #e9ecef !important;
-    }
+/* Modo Claro (por defecto) */
+[data-bs-theme="light"] .session-stat-card {
+    background-color: #f8f9fa !important;
+    border: 1px solid #e9ecef !important;
+}
 
-    [data-bs-theme="light"] .session-stat-card .card-body {
-        color: #212529;
-    }
+[data-bs-theme="light"] .session-stat-card .card-body {
+    color: #212529;
+}
 
-    [data-bs-theme="light"] .session-stat-card .text-muted {
-        color: #6c757d !important;
-    }
+[data-bs-theme="light"] .session-stat-card .text-muted {
+    color: #6c757d !important;
+}
 
-    /* Modo Oscuro */
-    [data-bs-theme="dark"] .session-stat-card {
-        background-color: #2d3748 !important;
-        border: 1px solid #4a5568 !important;
-    }
+/* Modo Oscuro */
+[data-bs-theme="dark"] .session-stat-card {
+    background-color: #2d3748 !important;
+    border: 1px solid #4a5568 !important;
+}
 
-    [data-bs-theme="dark"] .session-stat-card .card-body {
-        color: #e2e8f0;
-    }
+[data-bs-theme="dark"] .session-stat-card .card-body {
+    color: #e2e8f0;
+}
 
-    [data-bs-theme="dark"] .session-stat-card .text-muted {
-        color: #a0aec0 !important;
-    }
+[data-bs-theme="dark"] .session-stat-card .text-muted {
+    color: #a0aec0 !important;
+}
 
-    /* Transición suave entre temas */
-    .session-stat-card {
-        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
-    }
+/* Transición suave entre temas */
+.session-stat-card {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
 
-    /* ===================================
+/* ===================================
        ESTILOS PARA FOTO DE PERFIL
        =================================== */
 
-    #profileAvatarContainer {
-        position: relative;
-        border: 3px solid rgba(var(--bs-primary-rgb), 0.2);
-    }
+#profileAvatarContainer {
+    position: relative;
+    border: 3px solid rgba(var(--bs-primary-rgb), 0.2);
+}
 
-    #profileAvatarImg {
-        object-fit: cover;
-        object-position: center;
-    }
+#profileAvatarImg {
+    object-fit: cover;
+    object-position: center;
+}
 
-    #profileAvatarContainer:hover {
-        border-color: var(--bs-primary);
-        transform: scale(1.05);
-        transition: all 0.3s ease;
-    }
+#profileAvatarContainer:hover {
+    border-color: var(--bs-primary);
+    transform: scale(1.05);
+    transition: all 0.3s ease;
+}
 
-    /* FilePond customization para perfil */
-    #uploadProfilePictureModal .filepond--root {
-        margin-bottom: 0;
-    }
+/* FilePond customization para perfil */
+#uploadProfilePictureModal .filepond--root {
+    margin-bottom: 0;
+}
 
-    #uploadProfilePictureModal .filepond--drop-label {
-        min-height: 200px;
-    }
+#uploadProfilePictureModal .filepond--drop-label {
+    min-height: 200px;
+}
 </style>
