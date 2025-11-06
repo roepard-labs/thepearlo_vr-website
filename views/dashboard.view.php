@@ -27,28 +27,58 @@ $userRole = $_SESSION['role_id'] ?? 1;
 // Obtener la ruta actual para determinar qué página cargar
 $currentPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-// Determinar qué página cargar desde /pages
+// Determinar qué página cargar desde /pages y sus dependencias
 $dashboardPage = null;
+$additionalCss = [];
+$additionalJs = [];
 
 if ($currentPath === '/dashboard/users') {
     $dashboardPage = 'users.page.php';
+    // Dependencias específicas para la página de usuarios
+    $additionalCss = ['datatables', 'datatablesResponsive'];
+    $additionalJs = ['datatables', 'datatablesBS5', 'datatablesResponsive'];
 } elseif ($currentPath === '/dashboard/settings') {
     $dashboardPage = 'settings.page.php';
+    // Sin dependencias adicionales
 } elseif ($currentPath === '/dashboard/profile') {
     $dashboardPage = 'profile.page.php';
+    // Dependencias específicas para la página de perfil
+    $additionalCss = ['filepond', 'filepondImagePreview'];
+    $additionalJs = [
+        'filepond',
+        'filepondValidateType',
+        'filepondValidateSize',
+        'filepondImagePreview',
+        'filepondImageCrop',
+        'filepondImageResize',
+        'filepondImageTransform',
+        'filepondImageExif'
+    ];
 } elseif ($currentPath === '/dashboard/files') {
     $dashboardPage = 'files.page.php';
+    // Dependencias específicas para la página de archivos
+    $additionalCss = ['filepond', 'filepondImagePreview'];
+    $additionalJs = [
+        'filepond',
+        'filepondValidateType',
+        'filepondValidateSize',
+        'filepondImagePreview',
+        'filepondImageCrop',
+        'filepondImageResize',
+        'filepondImageTransform',
+        'filepondImageExif'
+    ];
 }
 
-// Configuración de la página
+// Configuración de la página con dependencias dinámicas
 $pageConfig = [
     'title' => 'Mi Dashboard - HomeLab AR | Roepard Labs',
     'description' => 'Panel de control de HomeLab AR',
     'keywords' => 'dashboard, panel, control, homelab',
     'includeHeader' => false,  // Dashboard tiene su propio navbar
     'includeFooter' => false,  // Dashboard no necesita footer
-    'css' => ['chart'],
-    'js' => ['chart']
+    'additionalCss' => $additionalCss, // Solo CSS específico de cada página (Chart.js no tiene CSS)
+    'additionalJs' => array_merge(['chart'], $additionalJs) // Chart.js solo tiene JS
 ];
 
 // Capturar contenido del dashboard

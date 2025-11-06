@@ -56,7 +56,7 @@ class AppLayout
             'js' => [] // VR/AR dependencies loaded separately
         ],
         'dashboard' => [
-            'css' => ['datatables', 'datatablesResponsive', 'chart'],
+            'css' => ['datatables', 'datatablesResponsive'], // Chart.js NO tiene CSS
             'js' => ['datatables', 'datatablesBS5', 'datatablesResponsive', 'chart', 'dayjs', 'anime'] // Dashboard unificado con estadísticas
         ],
         // Páginas del dashboard usan las mismas dependencias
@@ -69,8 +69,17 @@ class AppLayout
             'js' => []
         ],
         'profile' => [
-            'css' => [],
-            'js' => []
+            'css' => ['filepond', 'filepondImagePreview'],
+            'js' => [
+                'filepond',
+                'filepondValidateType',
+                'filepondValidateSize',
+                'filepondImagePreview',
+                'filepondImageCrop',
+                'filepondImageResize',
+                'filepondImageTransform',
+                'filepondImageExif'
+            ]
         ],
         'features' => [
             'css' => [],
@@ -242,7 +251,9 @@ class AppLayout
         'notyf' => '/node_modules/notyf/notyf.min.css',
         'tippy' => '/node_modules/tippy.js/dist/tippy.css',
         'datatables' => '/node_modules/datatables.net-bs5/css/dataTables.bootstrap5.min.css',
-        'datatablesResponsive' => '/node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css'
+        'datatablesResponsive' => '/node_modules/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css',
+        'filepond' => '/node_modules/filepond/dist/filepond.min.css',
+        'filepondImagePreview' => '/node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
     ];
 
     /**
@@ -262,7 +273,16 @@ class AppLayout
         'tippy' => '/node_modules/tippy.js/dist/tippy-bundle.umd.min.js',
         'datatables' => '/node_modules/datatables.net/js/dataTables.min.js',
         'datatablesBS5' => '/node_modules/datatables.net-bs5/js/dataTables.bootstrap5.min.js',
-        'datatablesResponsive' => '/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js'
+        'datatablesResponsive' => '/node_modules/datatables.net-responsive/js/dataTables.responsive.min.js',
+        'dayjs' => '/node_modules/dayjs/dayjs.min.js',
+        'filepond' => '/node_modules/filepond/dist/filepond.min.js',
+        'filepondValidateType' => '/node_modules/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js',
+        'filepondValidateSize' => '/node_modules/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js',
+        'filepondImagePreview' => '/node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js',
+        'filepondImageCrop' => '/node_modules/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js',
+        'filepondImageResize' => '/node_modules/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js',
+        'filepondImageTransform' => '/node_modules/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js',
+        'filepondImageExif' => '/node_modules/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js'
     ];
 
     /**
@@ -271,8 +291,16 @@ class AppLayout
     private static function renderCssLinks($cssArray)
     {
         foreach ($cssArray as $cssName) {
-            $path = self::$cssMap[$cssName] ?? "/css/{$cssName}.css";
-            echo "    <link rel=\"stylesheet\" href=\"{$path}\">\n";
+            // Verificar si existe en el mapeo, sino intentar con ruta directa /css/
+            if (isset(self::$cssMap[$cssName])) {
+                $path = self::$cssMap[$cssName];
+                echo "    <link rel=\"stylesheet\" href=\"{$path}\">\n";
+            } elseif (file_exists(__DIR__ . "/../css/{$cssName}.css")) {
+                // Solo cargar si el archivo CSS existe físicamente
+                $path = "/css/{$cssName}.css";
+                echo "    <link rel=\"stylesheet\" href=\"{$path}\">\n";
+            }
+            // Si no existe ni en mapeo ni como archivo, no hacer nada (evitar 404)
         }
     }
 
@@ -282,8 +310,16 @@ class AppLayout
     private static function renderJsScripts($jsArray)
     {
         foreach ($jsArray as $jsName) {
-            $path = self::$jsMap[$jsName] ?? "/js/{$jsName}.js";
-            echo "    <script src=\"{$path}\"></script>\n";
+            // Verificar si existe en el mapeo, sino intentar con ruta directa /js/
+            if (isset(self::$jsMap[$jsName])) {
+                $path = self::$jsMap[$jsName];
+                echo "    <script src=\"{$path}\"></script>\n";
+            } elseif (file_exists(__DIR__ . "/../js/{$jsName}.js")) {
+                // Solo cargar si el archivo JS existe físicamente
+                $path = "/js/{$jsName}.js";
+                echo "    <script src=\"{$path}\"></script>\n";
+            }
+            // Si no existe ni en mapeo ni como archivo, no hacer nada (evitar 404)
         }
     }
 

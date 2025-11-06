@@ -321,10 +321,36 @@
         // ===================================
         // INICIALIZAR DATATABLE
         // ===================================
+        let dataTableInitAttempts = 0;
+        const MAX_DATATABLE_ATTEMPTS = 20; // 10 segundos máximo
+
         function initDataTable() {
-            // Esperar a que DataTables esté disponible
+            dataTableInitAttempts++;
+
+            // Verificar límite de reintentos
+            if (dataTableInitAttempts > MAX_DATATABLE_ATTEMPTS) {
+                console.error('❌ DataTables no se pudo cargar después de', MAX_DATATABLE_ATTEMPTS, 'intentos');
+                console.error('Verifica que las dependencias estén correctamente configuradas en AppLayout.php');
+                return;
+            }
+
+            // Verificar que jQuery esté disponible primero
+            if (typeof $ === 'undefined' || typeof jQuery === 'undefined') {
+                console.warn('⏳ jQuery no disponible aún, reintentando... (', dataTableInitAttempts, '/', MAX_DATATABLE_ATTEMPTS, ')');
+                setTimeout(initDataTable, 500);
+                return;
+            }
+
+            // Verificar que DataTables esté disponible
             if (typeof $.fn.dataTable === 'undefined') {
-                console.warn('⏳ DataTables no disponible aún, reintentando...');
+                console.warn('⏳ DataTables no disponible aún, reintentando... (', dataTableInitAttempts, '/', MAX_DATATABLE_ATTEMPTS, ')');
+                setTimeout(initDataTable, 500);
+                return;
+            }
+
+            // Verificar que la tabla exista en el DOM
+            if ($('#usersTable').length === 0) {
+                console.warn('⏳ Tabla #usersTable no encontrada en DOM, reintentando... (', dataTableInitAttempts, '/', MAX_DATATABLE_ATTEMPTS, ')');
                 setTimeout(initDataTable, 500);
                 return;
             }
@@ -335,7 +361,7 @@
                 return;
             }
 
-            console.log('📊 Inicializando DataTable de usuarios');
+            console.log('📊 Inicializando DataTable de usuarios (jQuery:', $.fn.jquery, ', DataTables:', $.fn.dataTable.version, ')');
 
             $('#usersTable').DataTable({
                 language: {
@@ -413,10 +439,25 @@
         // ===================================
         // INICIALIZACIÓN
         // ===================================
-        document.addEventListener('DOMContentLoaded', function () {
+
+        // Función de inicialización que espera a que todo esté listo
+        function initialize() {
+            // Verificar que el DOM esté listo
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initialize);
+                return;
+            }
+
+            // Cargar estadísticas (no depende de jQuery)
             loadUserStats();
+
+            // Inicializar DataTable (requiere jQuery y DataTables)
+            // Se ejecutará con reintentos hasta que las dependencias estén disponibles
             initDataTable();
-        });
+        }
+
+        // Ejecutar inicialización
+        initialize();
 
     })();
 </script>

@@ -114,15 +114,12 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                 <div class="d-flex align-items-center gap-3 mb-3">
                     <!-- User Avatar -->
                     <div class="user-avatar-wrapper flex-shrink-0">
-                        <?php
-                        // Verificar si existe foto de perfil
-                        $profilePicture = isset($_SESSION['profile_picture']) && !empty($_SESSION['profile_picture'])
-                            ? $_SESSION['profile_picture']
-                            : '../assets/img/default-avatar.png';
-                        ?>
-                        <div class="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center"
-                            style="width: 48px; height: 48px;">
-                            <i class="bx bx-user text-white fs-4"></i>
+                        <div class="user-avatar bg-primary rounded-circle d-flex align-items-center justify-content-center overflow-hidden"
+                            style="width: 48px; height: 48px;" id="sidebarAvatarExpanded">
+                            <img id="sidebarAvatarImgExpanded" src="/assets/img/default-avatar.png" alt="Avatar"
+                                class="w-100 h-100 object-fit-cover" style="display: block;">
+                            <i id="sidebarAvatarIconExpanded" class="bx bx-user text-white fs-4"
+                                style="display: none;"></i>
                         </div>
                     </div>
 
@@ -156,9 +153,12 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             <!-- Layout Colapsado: Solo avatar centrado -->
             <div class="user-footer-collapsed" style="display: none;">
                 <div class="user-avatar-wrapper text-center mb-2">
-                    <div class="user-avatar bg-primary rounded-circle d-inline-flex align-items-center justify-content-center"
-                        style="width: 48px; height: 48px;">
-                        <i class="bx bx-user text-white fs-4"></i>
+                    <div class="user-avatar bg-primary rounded-circle d-inline-flex align-items-center justify-content-center overflow-hidden"
+                        style="width: 48px; height: 48px;" id="sidebarAvatarCollapsed">
+                        <img id="sidebarAvatarImgCollapsed" src="/assets/img/default-avatar.png" alt="Avatar"
+                            class="w-100 h-100 object-fit-cover" style="display: block;">
+                        <i id="sidebarAvatarIconCollapsed" class="bx bx-user text-white fs-4"
+                            style="display: none;"></i>
                     </div>
                 </div>
 
@@ -405,10 +405,19 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 
     .user-avatar-wrapper .user-avatar {
         transition: transform 0.3s ease;
+        position: relative;
+        border: 2px solid rgba(var(--bs-primary-rgb), 0.2);
     }
 
     .sidebar-footer:hover .user-avatar {
         transform: scale(1.1);
+        border-color: var(--bs-primary);
+    }
+
+    /* Estilos para imagen de perfil en sidebar */
+    .user-avatar img {
+        object-fit: cover;
+        object-position: center;
     }
 
     /* Mobile adjustments */
@@ -700,12 +709,94 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     console.log('✅ Sidebar: Rol actualizado:', roleName);
                 }
 
+                // Actualizar foto de perfil (obtener desde endpoint de perfil completo)
+                try {
+                    const profileData = await window.AppRouter.get('/routes/profile/det_user.php');
+                    if (profileData && profileData.status === 'success' && profileData.data) {
+                        updateSidebarAvatar(profileData.data.profile_picture);
+                    } else {
+                        // Fallback a imagen por defecto
+                        updateSidebarAvatar('/assets/img/default-avatar.png');
+                    }
+                } catch (error) {
+                    console.warn('⚠️ Sidebar: No se pudo cargar foto de perfil, usando default:', error);
+                    updateSidebarAvatar('/assets/img/default-avatar.png');
+                }
+
                 console.log('✅ Sidebar: Información del usuario actualizada correctamente');
 
             } catch (error) {
                 console.error('❌ Sidebar: Error al actualizar información del usuario:', error);
                 sidebarUserUpdated = false; // Permitir reintento en caso de error
             }
+        }
+
+        // ===================================
+        // ACTUALIZAR AVATAR EN SIDEBAR
+        // ===================================
+        function updateSidebarAvatar(profilePicture) {
+            // Elementos del sidebar expandido
+            const avatarImgExpanded = document.getElementById('sidebarAvatarImgExpanded');
+            const avatarIconExpanded = document.getElementById('sidebarAvatarIconExpanded');
+
+            // Elementos del sidebar colapsado
+            const avatarImgCollapsed = document.getElementById('sidebarAvatarImgCollapsed');
+            const avatarIconCollapsed = document.getElementById('sidebarAvatarIconCollapsed');
+
+            console.log('📷 Sidebar: Actualizando avatar con:', profilePicture);
+            console.log('🔍 Sidebar: Elementos encontrados:', {
+                avatarImgExpanded: !!avatarImgExpanded,
+                avatarIconExpanded: !!avatarIconExpanded,
+                avatarImgCollapsed: !!avatarImgCollapsed,
+                avatarIconCollapsed: !!avatarIconCollapsed
+            });
+
+            // Normalizar rutas incorrectas del backend (defensivo)
+            if (profilePicture && !profilePicture.startsWith('/')) {
+                if (profilePicture === 'default-avatar.png' || profilePicture === 'default-profile.png') {
+                    profilePicture = '/assets/img/default-avatar.png';
+                    console.log('🔧 Sidebar: Ruta normalizada a:', profilePicture);
+                }
+            }
+
+            // Si no hay foto o es null/undefined
+            if (!profilePicture) {
+                console.log('⚠️ Sidebar: Sin foto de perfil, mostrando icono por defecto');
+                avatarImgExpanded.style.display = 'none';
+                avatarIconExpanded.style.display = 'block';
+                avatarImgCollapsed.style.display = 'none';
+                avatarIconCollapsed.style.display = 'block';
+                return;
+            }
+
+            // Construir URL completa según el tipo de imagen
+            let imageUrl;
+
+            if (profilePicture === '/assets/img/default-avatar.png') {
+                // Foto por defecto: Cargar desde frontend
+                imageUrl = profilePicture;
+                console.log('🖼️ Sidebar: Cargando imagen por defecto:', imageUrl);
+            } else if (profilePicture.startsWith('/uploads/')) {
+                // Foto personalizada: Cargar desde BACKEND
+                const backendUrl = window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:3000';
+                imageUrl = backendUrl + profilePicture;
+                console.log('📸 Sidebar: Cargando foto personalizada desde backend:', imageUrl);
+            } else {
+                // Ruta relativa o desconocida
+                imageUrl = profilePicture;
+                console.log('⚠️ Sidebar: Ruta desconocida, usando tal cual:', imageUrl);
+            }
+
+            // Actualizar ambas versiones del avatar (expandido y colapsado)
+            avatarImgExpanded.src = imageUrl;
+            avatarImgExpanded.style.display = 'block';
+            avatarIconExpanded.style.display = 'none';
+
+            avatarImgCollapsed.src = imageUrl;
+            avatarImgCollapsed.style.display = 'block';
+            avatarIconCollapsed.style.display = 'none';
+
+            console.log('✅ Sidebar: Avatar actualizado en ambas versiones (expandido y colapsado)');
         }
 
         // ===================================

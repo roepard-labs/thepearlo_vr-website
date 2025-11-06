@@ -10,6 +10,26 @@
 // No debe accederse directamente
 ?>
 
+<!-- ===================================== -->
+<!-- CARGAR DEPENDENCIAS DE FILEPOND -->
+<!-- ===================================== -->
+
+<!-- FilePond CSS -->
+<link href="/node_modules/filepond/dist/filepond.min.css" rel="stylesheet">
+<link href="/node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" rel="stylesheet">
+
+<!-- FilePond JS Core -->
+<script src="/node_modules/filepond/dist/filepond.min.js"></script>
+
+<!-- FilePond Plugins -->
+<script src="/node_modules/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+<script src="/node_modules/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+<script src="/node_modules/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+<script src="/node_modules/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js"></script>
+<script src="/node_modules/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js"></script>
+<script src="/node_modules/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js"></script>
+<script src="/node_modules/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js"></script>
+
 <!-- Header de la Página -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
@@ -34,12 +54,16 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-body text-center p-4">
                 <div class="position-relative d-inline-block mb-3">
-                    <div class="avatar-xl bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center mx-auto"
+                    <!-- Avatar con imagen de perfil -->
+                    <div id="profileAvatarContainer" class="avatar-xl bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center mx-auto overflow-hidden"
                         style="width: 120px; height: 120px;">
-                        <i class="bx bx-user text-white" style="font-size: 60px;"></i>
+                        <img id="profileAvatarImg" src="/assets/img/default-avatar.png" alt="Foto de perfil" 
+                            class="w-100 h-100 object-fit-cover" style="display: block;">
+                        <i id="profileAvatarIcon" class="bx bx-user text-white" style="font-size: 60px; display: none;"></i>
                     </div>
                     <button class="btn btn-sm btn-primary rounded-circle position-absolute bottom-0 end-0"
-                        title="Cambiar foto" style="width: 35px; height: 35px;">
+                        title="Cambiar foto" style="width: 35px; height: 35px;" 
+                        data-bs-toggle="modal" data-bs-target="#uploadProfilePictureModal">
                         <i class="bx bx-camera"></i>
                     </button>
                 </div>
@@ -49,6 +73,11 @@
                     <span class="badge bg-primary" id="profileRole">Usuario</span>
                     <span class="badge bg-success">Activo</span>
                 </div>
+                <!-- Botón para eliminar foto -->
+                <button class="btn btn-outline-danger btn-sm mt-2 d-none" id="deleteProfilePictureBtn">
+                    <i class="bx bx-trash me-1"></i>
+                    Eliminar foto
+                </button>
             </div>
         </div>
 
@@ -329,6 +358,39 @@
 
 </div>
 
+<!-- Modal: Subir Foto de Perfil -->
+<div class="modal fade" id="uploadProfilePictureModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bx bx-image-add me-2 text-primary"></i>
+                    Cambiar Foto de Perfil
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info border-0 mb-3">
+                    <i class="bx bx-info-circle me-2"></i>
+                    <strong>Requisitos:</strong> Máximo 5MB. Formatos: JPG, PNG, GIF, WEBP.
+                </div>
+
+                <!-- FilePond Container -->
+                <input type="file" id="profilePictureFilePond" name="profile_picture" accept="image/*">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" id="uploadProfilePictureBtn" disabled>
+                    <i class="bx bx-upload me-1"></i>
+                    Subir Foto
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal: Eliminar Cuenta -->
 <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
@@ -380,6 +442,9 @@
 
         // Instancia de Notyf (se inicializa de forma lazy)
         let notyfInstance = null;
+
+        // Instancia de FilePond para foto de perfil
+        let profilePicturePond = null;
 
         /**
          * Obtener instancia de Notyf (inicialización lazy)
@@ -500,6 +565,9 @@
             if (username) {
                 username.textContent = '@' + (userData.username || 'username');
             }
+
+            // Foto de perfil
+            updateProfilePicture(userData.profile_picture);
 
             // Badge de Rol (Administrador/Usuario)
             const roleBadge = document.getElementById('profileRole');
@@ -786,6 +854,261 @@
         }
 
         // ===================================
+        // ACTUALIZAR FOTO DE PERFIL EN UI
+        // ===================================
+        function updateProfilePicture(profilePicture) {
+            const avatarImg = document.getElementById('profileAvatarImg');
+            const avatarIcon = document.getElementById('profileAvatarIcon');
+            const deleteBtn = document.getElementById('deleteProfilePictureBtn');
+
+            console.log('📷 updateProfilePicture llamado con:', profilePicture);
+
+            // Normalizar rutas incorrectas del backend (defensivo)
+            if (profilePicture && !profilePicture.startsWith('/')) {
+                // Si es solo el nombre del archivo sin ruta, agregar ruta correcta
+                if (profilePicture === 'default-avatar.png' || profilePicture === 'default-profile.png') {
+                    profilePicture = '/assets/img/default-avatar.png';
+                    console.log('🔧 Ruta normalizada a:', profilePicture);
+                }
+            }
+
+            // Si no hay foto o es null/undefined
+            if (!profilePicture) {
+                console.log('⚠️ Sin foto de perfil, mostrando icono por defecto');
+                avatarImg.style.display = 'none';
+                avatarIcon.style.display = 'block';
+                deleteBtn?.classList.add('d-none');
+                return;
+            }
+
+            // Construir URL completa según el tipo de imagen
+            let imageUrl;
+            
+            if (profilePicture === '/assets/img/default-avatar.png') {
+                // Foto por defecto: Cargar desde frontend
+                imageUrl = profilePicture;
+                console.log('🖼️ Cargando imagen por defecto:', imageUrl);
+                deleteBtn?.classList.add('d-none'); // No mostrar botón eliminar para default
+            } else if (profilePicture.startsWith('/uploads/')) {
+                // Foto personalizada: Cargar desde BACKEND
+                const backendUrl = window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:3000';
+                imageUrl = backendUrl + profilePicture;
+                console.log('📸 Cargando foto personalizada desde backend:', imageUrl);
+                deleteBtn?.classList.remove('d-none'); // Mostrar botón eliminar
+            } else {
+                // Ruta relativa o desconocida
+                imageUrl = profilePicture;
+                console.log('⚠️ Ruta desconocida, usando tal cual:', imageUrl);
+                deleteBtn?.classList.add('d-none');
+            }
+
+            // Actualizar imagen
+            avatarImg.src = imageUrl;
+            avatarImg.style.display = 'block';
+            avatarIcon.style.display = 'none';
+        }
+
+        // ===================================
+        // INICIALIZAR FILEPOND
+        // ===================================
+        function initFilePond() {
+            if (typeof FilePond === 'undefined') {
+                console.error('❌ FilePond no está cargado');
+                return;
+            }
+
+            // Registrar plugins
+            FilePond.registerPlugin(
+                FilePondPluginFileValidateType,
+                FilePondPluginFileValidateSize,
+                FilePondPluginImagePreview,
+                FilePondPluginImageCrop,
+                FilePondPluginImageResize,
+                FilePondPluginImageTransform,
+                FilePondPluginImageExifOrientation
+            );
+
+            // Crear instancia de FilePond
+            const inputElement = document.getElementById('profilePictureFilePond');
+            if (!inputElement) {
+                console.error('❌ Input de FilePond no encontrado');
+                return;
+            }
+
+            profilePicturePond = FilePond.create(inputElement, {
+                acceptedFileTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'],
+                maxFileSize: '5MB',
+                maxFiles: 1,
+                allowMultiple: false,
+                credits: false,
+                labelIdle: 'Arrastra tu foto de perfil aquí o <span class="filepond--label-action">Examinar</span>',
+                labelInvalidField: 'Archivo inválido',
+                labelFileWaitingForSize: 'Calculando tamaño',
+                labelFileSizeNotAvailable: 'Tamaño no disponible',
+                labelFileLoading: 'Cargando',
+                labelFileLoadError: 'Error al cargar',
+                labelFileProcessing: 'Subiendo',
+                labelFileProcessingComplete: 'Subida completa',
+                labelFileProcessingAborted: 'Subida cancelada',
+                labelFileProcessingError: 'Error al subir',
+                labelFileProcessingRevertError: 'Error al revertir',
+                labelFileRemoveError: 'Error al eliminar',
+                labelTapToCancel: 'toca para cancelar',
+                labelTapToRetry: 'toca para reintentar',
+                labelTapToUndo: 'toca para deshacer',
+                labelButtonRemoveItem: 'Eliminar',
+                labelButtonAbortItemLoad: 'Abortar',
+                labelButtonRetryItemLoad: 'Reintentar',
+                labelButtonAbortItemProcessing: 'Cancelar',
+                labelButtonUndoItemProcessing: 'Deshacer',
+                labelButtonRetryItemProcessing: 'Reintentar',
+                labelButtonProcessItem: 'Subir',
+                labelMaxFileSizeExceeded: 'Archivo muy grande',
+                labelMaxFileSize: 'Tamaño máximo: {filesize}',
+                labelMaxTotalFileSizeExceeded: 'Tamaño total excedido',
+                labelMaxTotalFileSize: 'Tamaño total máximo: {filesize}',
+                labelFileTypeNotAllowed: 'Tipo de archivo no permitido',
+                fileValidateTypeLabelExpectedTypes: 'Permitidos: {allButLastType} o {lastType}',
+                imagePreviewHeight: 150,
+                imageCropAspectRatio: '1:1',
+                imageResizeTargetWidth: 400,
+                imageResizeTargetHeight: 400,
+                imageResizeMode: 'cover',
+                imageTransformOutputQuality: 90,
+                stylePanelLayout: 'compact',
+                styleLoadIndicatorPosition: 'center bottom',
+                styleProgressIndicatorPosition: 'right bottom',
+                styleButtonRemoveItemPosition: 'left bottom',
+                styleButtonProcessItemPosition: 'right bottom'
+            });
+
+            // Event listeners
+            profilePicturePond.on('addfile', (error, file) => {
+                if (!error) {
+                    console.log('📷 Imagen agregada:', file.filename);
+                    document.getElementById('uploadProfilePictureBtn').disabled = false;
+                }
+            });
+
+            profilePicturePond.on('removefile', () => {
+                console.log('🗑️ Imagen removida');
+                document.getElementById('uploadProfilePictureBtn').disabled = true;
+            });
+
+            console.log('✅ FilePond inicializado para foto de perfil');
+        }
+
+        // ===================================
+        // SUBIR FOTO DE PERFIL
+        // ===================================
+        async function uploadProfilePicture() {
+            const uploadBtn = document.getElementById('uploadProfilePictureBtn');
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Subiendo...';
+
+            try {
+                const files = profilePicturePond.getFiles();
+                if (files.length === 0) {
+                    throw new Error('No hay ninguna imagen seleccionada');
+                }
+
+                const file = files[0].file;
+
+                // Crear FormData
+                const formData = new FormData();
+                formData.append('profile_picture', file);
+
+                console.log('📤 Subiendo foto de perfil:', file.name);
+
+                // Subir con AppRouter
+                const response = await window.AppRouter.upload('/routes/profile/upload_picture.php', formData);
+
+                if (response && response.status === 'success') {
+                    console.log('✅ Foto de perfil actualizada:', response.data);
+                    
+                    getNotyf().success('Foto de perfil actualizada exitosamente');
+
+                    // Actualizar UI
+                    updateProfilePicture(response.data.profile_picture);
+
+                    // Limpiar FilePond
+                    profilePicturePond.removeFiles();
+
+                    // Cerrar modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('uploadProfilePictureModal'));
+                    modal?.hide();
+
+                    // Recargar datos completos del perfil
+                    await loadUserData();
+                } else {
+                    throw new Error(response?.message || 'Error al subir foto de perfil');
+                }
+
+            } catch (error) {
+                console.error('❌ Error al subir foto de perfil:', error);
+                getNotyf().error(error.message || 'Error al subir la foto de perfil');
+            } finally {
+                uploadBtn.disabled = false;
+                uploadBtn.innerHTML = '<i class="bx bx-upload me-1"></i>Subir Foto';
+            }
+        }
+
+        // ===================================
+        // ELIMINAR FOTO DE PERFIL
+        // ===================================
+        async function deleteProfilePicture() {
+            const result = await Swal.fire({
+                title: '¿Eliminar foto de perfil?',
+                text: 'Tu foto de perfil será reemplazada por la imagen por defecto',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            if (!result.isConfirmed) return;
+
+            try {
+                console.log('🗑️ Eliminando foto de perfil...');
+
+                const response = await window.AppRouter.delete('/routes/profile/delete_picture.php');
+
+                if (response && response.status === 'success') {
+                    console.log('✅ Foto de perfil eliminada');
+                    
+                    getNotyf().success('Foto de perfil eliminada exitosamente');
+
+                    // Actualizar UI
+                    updateProfilePicture(response.data.profile_picture);
+
+                    // Recargar datos completos del perfil
+                    await loadUserData();
+                } else {
+                    throw new Error(response?.message || 'Error al eliminar foto de perfil');
+                }
+
+            } catch (error) {
+                console.error('❌ Error al eliminar foto de perfil:', error);
+                getNotyf().error(error.message || 'Error al eliminar la foto de perfil');
+            }
+        }
+
+        // ===================================
+        // EVENT LISTENERS - FOTO DE PERFIL
+        // ===================================
+        document.getElementById('uploadProfilePictureBtn')?.addEventListener('click', uploadProfilePicture);
+        document.getElementById('deleteProfilePictureBtn')?.addEventListener('click', deleteProfilePicture);
+
+        // Inicializar FilePond cuando se abre el modal
+        document.getElementById('uploadProfilePictureModal')?.addEventListener('shown.bs.modal', function () {
+            if (!profilePicturePond) {
+                initFilePond();
+            }
+        });
+
+        // ===================================
         // ESPERAR A QUE APPROUTER ESTÉ LISTO
         // ===================================
         async function waitForAppRouter() {
@@ -913,5 +1236,34 @@
     /* Transición suave entre temas */
     .session-stat-card {
         transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* ===================================
+       ESTILOS PARA FOTO DE PERFIL
+       =================================== */
+
+    #profileAvatarContainer {
+        position: relative;
+        border: 3px solid rgba(var(--bs-primary-rgb), 0.2);
+    }
+
+    #profileAvatarImg {
+        object-fit: cover;
+        object-position: center;
+    }
+
+    #profileAvatarContainer:hover {
+        border-color: var(--bs-primary);
+        transform: scale(1.05);
+        transition: all 0.3s ease;
+    }
+
+    /* FilePond customization para perfil */
+    #uploadProfilePictureModal .filepond--root {
+        margin-bottom: 0;
+    }
+
+    #uploadProfilePictureModal .filepond--drop-label {
+        min-height: 200px;
     }
 </style>
