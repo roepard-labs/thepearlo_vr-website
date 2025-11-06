@@ -196,6 +196,9 @@ class AppLayout
             <!-- Backend Status Check -->
             <script src="/composables/statusCheck.js"></script>
 
+            <!-- Clock Service (Date & Time) -->
+            <script src="/composables/clockCheck.js"></script>
+
             <!-- Session & Role Services -->
             <script src="/composables/sessionCheck.js"></script>
             <script src="/composables/roleCheck.js"></script>
