@@ -1826,6 +1826,13 @@
         formData.append('folder_id', folderId);
         formData.append('user_id', currentUserId);
 
+        // ✅ AGREGAR DESCRIPCIÓN del archivo si existe
+        // CRÍTICO: El ID correcto es 'fileDescription' (del modal)
+        const description = document.getElementById('fileDescription')?.value?.trim() || '';
+        if (description) {
+            formData.append('description', description);
+        }
+
         if (isAdmin && document.getElementById('shareWithAll')) {
             formData.append('is_shared', document.getElementById('shareWithAll').checked ? '1' :
                 '0');
@@ -1834,6 +1841,7 @@
         console.log('📤 Subiendo archivo:', files[0].name);
         console.log('📁 Carpeta destino:', folderId || 'root (sin carpeta)');
         console.log('👤 Usuario:', currentUserId);
+        console.log('📝 Descripción:', description || '(sin descripción)');
 
         // DEBUG: Ver contenido de FormData
         console.log('📦 FormData contenido:');
@@ -2265,8 +2273,8 @@
                                         </div>
                                         <span class="badge bg-light text-dark">JSON Válido</span>
                                     </div>
-                                    <div class="card-body bg-dark text-light" style="max-height: 60vh; overflow-y: auto;">
-                                        <pre class="mb-0 text-light" style="white-space: pre; font-family: 'Courier New', monospace; font-size: 0.85rem;">${escapeHtml(formattedJson)}</pre>
+                                    <div class="card-body" style="max-height: 60vh; overflow-y: auto; background-color: var(--bs-secondary-bg); color: var(--bs-body-color);">
+                                        <pre class="mb-0" style="white-space: pre; font-family: 'Courier New', monospace; font-size: 0.85rem; color: var(--bs-body-color);">${escapeHtml(formattedJson)}</pre>
                                     </div>
                                     <div class="card-footer text-muted">
                                         <small>
@@ -2287,12 +2295,12 @@
                                         </div>
                                         <span class="badge bg-danger">JSON Inválido</span>
                                     </div>
-                                    <div class="card-body bg-light" style="max-height: 60vh; overflow-y: auto;">
+                                    <div class="card-body" style="max-height: 60vh; overflow-y: auto; background-color: var(--bs-secondary-bg); color: var(--bs-body-color);">
                                         <div class="alert alert-warning mb-3">
                                             <i class="bx bx-error-circle me-2"></i>
                                             <strong>Error de sintaxis:</strong> ${e.message}
                                         </div>
-                                        <pre class="mb-0" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 0.85rem;">${escapeHtml(text)}</pre>
+                                        <pre class="mb-0" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 0.85rem; color: var(--bs-body-color);">${escapeHtml(text)}</pre>
                                     </div>
                                 </div>
                             `;
@@ -2308,8 +2316,8 @@
                                     </div>
                                     <span class="badge bg-light text-dark">Markdown</span>
                                 </div>
-                                <div class="card-body bg-light" style="max-height: 60vh; overflow-y: auto;">
-                                    <pre class="mb-0" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 0.9rem;">${escapeHtml(text)}</pre>
+                                <div class="card-body" style="max-height: 60vh; overflow-y: auto; background-color: var(--bs-secondary-bg); color: var(--bs-body-color);">
+                                    <pre class="mb-0" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 0.9rem; color: var(--bs-body-color);">${escapeHtml(text)}</pre>
                                 </div>
                                 <div class="card-footer text-muted">
                                     <small>
@@ -2343,8 +2351,8 @@
                                     </div>
                                     <span class="badge bg-light text-dark">${file.extension.toUpperCase()}</span>
                                 </div>
-                                <div class="card-body bg-light" style="max-height: 60vh; overflow-y: auto;">
-                                    <pre class="mb-0" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 0.9rem;">${escapeHtml(text)}</pre>
+                                <div class="card-body" style="max-height: 60vh; overflow-y: auto; background-color: var(--bs-secondary-bg); color: var(--bs-body-color);">
+                                    <pre class="mb-0" style="white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', monospace; font-size: 0.9rem; color: var(--bs-body-color);">${escapeHtml(text)}</pre>
                                 </div>
                                 <div class="card-footer text-muted">
                                     <small>
