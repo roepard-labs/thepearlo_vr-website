@@ -145,6 +145,59 @@ window.SessionService = {
     },
 
     /**
+     * Listar todas las sesiones activas del usuario
+     * @returns {Promise<Array>} Lista de sesiones
+     */
+    async listSessions() {
+        console.log('📋 SessionService: Listando sesiones...');
+
+        // Esperar a que AppRouter esté listo
+        if (!window.AppRouter || !window.AppRouter.axiosInstance) {
+            await this._waitForRouter();
+        }
+
+        try {
+            const response = await AppRouter.get('/routes/user/list_sessions.php');
+
+            if (response.status === 'success' && response.data && response.data.sessions) {
+                console.log('✅ SessionService: Sesiones recuperadas:', response.data.sessions.length);
+                return response.data.sessions;
+            }
+
+            console.warn('⚠️ SessionService: Respuesta inesperada al listar sesiones:', response);
+            return [];
+        } catch (error) {
+            console.error('❌ SessionService: Error al listar sesiones:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Obtener la sesión actual (is_current = true)
+     * @returns {Promise<Object|null>} Sesión actual o null
+     */
+    async getCurrentSession() {
+        console.log('🔍 SessionService: Obteniendo sesión actual...');
+
+        try {
+            const sessions = await this.listSessions();
+            const currentSession = sessions.find(s => s.is_current === true);
+
+            if (currentSession) {
+                console.log('✅ SessionService: Sesión actual encontrada:', currentSession);
+                return currentSession;
+            }
+
+            console.warn('⚠️ SessionService: No se encontró sesión marcada como actual');
+            // Si no hay is_current, devolver la primera sesión (fallback)
+            return sessions.length > 0 ? sessions[0] : null;
+        } catch (error) {
+            console.error('❌ SessionService: Error al obtener sesión actual:', error);
+            return null;
+        }
+    },
+
+    /**
      * Esperar a que AppRouter esté disponible
      * @private
      */

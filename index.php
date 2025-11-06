@@ -39,6 +39,7 @@ $routes = [
     '/features' => 'features.view.php',
     '/privacy' => 'privacy.view.php', // Usar vista dinámica que carga desde API
     '/terms' => 'terms.view.php', // Usar vista dinámica que carga desde API
+    '/homelab' => 'homelab.view.php', // HomeLab VR Experience
     '/dashboard' => 'dashboard.view.php',
     // Dashboard pages - renderizadas dentro de dashboard.view.php
     '/dashboard/users' => 'dashboard.view.php',

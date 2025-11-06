@@ -22,7 +22,8 @@ try {
 const ENV_VARS_TO_EXPOSE = [
     'API_URL',
     'APP_NAME',
-    'APP_ENV'
+    'APP_ENV',
+    'APP_VERSION'
 ];
 
 const OUTPUT_FILE = path.join(__dirname, '../composables/config.js');
@@ -66,6 +67,7 @@ window.ENV_CONFIG = ${JSON.stringify(config, null, 4)};
 console.log('⚙️  Configuración cargada desde .env');
 console.log('📡 API URL:', window.ENV_CONFIG.API_URL);
 console.log('🏷️  App Name:', window.ENV_CONFIG.APP_NAME);
+console.log(' App version:', window.ENV_CONFIG.APP_VERSION);
 `;
 
     // Escribir archivo
