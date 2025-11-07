@@ -66,19 +66,82 @@ class ClockService {
     }
 
     /**
+     * Obtener formato de hora desde localStorage
+     * @private
+     * @returns {boolean} true para AM/PM, false para 24h
+     */
+    getHourFormat() {
+        const savedFormat = localStorage.getItem('widget_prefs_time_format');
+        if (savedFormat === 'AM/PM') {
+            return true; // hour12: true
+        } else if (savedFormat === '24h') {
+            return false; // hour12: false
+        }
+        // Default: 24h
+        return false;
+    }
+
+    /**
+     * Formatear fecha según preferencias del usuario
+     * @private
+     * @param {Date} date - Objeto Date
+     * @returns {string} Fecha formateada
+     */
+    formatDateWithPreferences(date) {
+        const savedFormat = localStorage.getItem('widget_prefs_date_format') || 'DD/MM/YYYY';
+
+        const day = String(date.getDate()).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        // Nombres de meses en español (abreviados)
+        const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+        const monthNamesEn = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const monthAbbr = monthNames[date.getMonth()];
+        const monthAbbrEn = monthNamesEn[date.getMonth()];
+
+        // Nombres de días en español (abreviados)
+        const weekdayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        const weekday = weekdayNames[date.getDay()];
+
+        // Aplicar formato según preferencias
+        switch (savedFormat) {
+            case 'DD/MM/YYYY':
+                return `${weekday}, ${day}/${month}/${year}`;
+            case 'MM/DD/YYYY':
+                return `${weekday}, ${month}/${day}/${year}`;
+            case 'YYYY-MM-DD':
+                return `${weekday}, ${year}-${month}-${day}`;
+            case 'DD-MM-YYYY':
+                return `${weekday}, ${day}-${month}-${year}`;
+            case 'YYYY/MM/DD':
+                return `${weekday}, ${year}/${month}/${day}`;
+            case 'DD MMM YYYY':
+                return `${weekday}, ${day} ${monthAbbr} ${year}`;
+            case 'MMM DD, YYYY':
+                return `${weekday}, ${monthAbbrEn} ${day}, ${year}`;
+            default:
+                return `${weekday}, ${day}/${month}/${year}`;
+        }
+    }
+
+    /**
      * Actualizar fecha y hora actual
      * @private
      */
     updateDateTime() {
         const now = new Date();
 
-        // Formatear fecha: Lun, 3 Nov 2025
-        const dateStr = now.toLocaleDateString(this.config.LOCALE, this.config.DATE_OPTIONS);
+        // Obtener formato de hora desde preferencias
+        const useAmPm = this.getHourFormat();
+
+        // Formatear fecha según preferencias del usuario
+        const dateStr = this.formatDateWithPreferences(now);
 
         // Configurar formato de hora según preferencia
         const timeOptions = {
             ...this.config.TIME_OPTIONS,
-            hour12: this.config.HOUR_FORMAT === 12
+            hour12: useAmPm  // true = AM/PM, false = 24h
         };
 
         // Formatear hora: 14:30:45 (24h) o 02:30:45 PM (12h)

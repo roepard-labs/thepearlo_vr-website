@@ -24,12 +24,12 @@
 <!-- Estadísticas Rápidas -->
 <div class="row g-3 mb-4">
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm stats-card">
+        <div class="card border-0 shadow-sm stats-card stats-card-primary">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <div class="stats-icon-wrapper bg-primary bg-opacity-10 rounded-circle p-3">
-                            <i class="bx bx-group fs-3 text-primary"></i>
+                        <div class="stats-icon-wrapper stats-icon-primary rounded-circle p-3">
+                            <i class="bx bx-group fs-3"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
@@ -46,12 +46,12 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm stats-card">
+        <div class="card border-0 shadow-sm stats-card stats-card-success">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <div class="stats-icon-wrapper bg-success bg-opacity-10 rounded-circle p-3">
-                            <i class="bx bx-user-check fs-3 text-success"></i>
+                        <div class="stats-icon-wrapper stats-icon-success rounded-circle p-3">
+                            <i class="bx bx-user-check fs-3"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
@@ -68,12 +68,12 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm stats-card">
+        <div class="card border-0 shadow-sm stats-card stats-card-info">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <div class="stats-icon-wrapper bg-info bg-opacity-10 rounded-circle p-3">
-                            <i class="bx bx-user-plus fs-3 text-info"></i>
+                        <div class="stats-icon-wrapper stats-icon-info rounded-circle p-3">
+                            <i class="bx bx-user-plus fs-3"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
@@ -90,12 +90,12 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm stats-card">
+        <div class="card border-0 shadow-sm stats-card stats-card-secondary">
             <div class="card-body">
                 <div class="d-flex align-items-center">
                     <div class="flex-shrink-0">
-                        <div class="stats-icon-wrapper bg-secondary bg-opacity-10 rounded-circle p-3">
-                            <i class="bx bx-user-x fs-3 text-secondary"></i>
+                        <div class="stats-icon-wrapper stats-icon-secondary rounded-circle p-3">
+                            <i class="bx bx-user-x fs-3"></i>
                         </div>
                     </div>
                     <div class="flex-grow-1 ms-3">
@@ -178,358 +178,478 @@
 <script src="../js/users.js"></script>
 
 <style>
-/* ===================================
-   ESTILOS DE ESTADÍSTICAS
+    /* ===================================
+   ESTILOS DE ESTADÍSTICAS - COLORIDOS
 =================================== */
-.stats-card {
-    transition: all 0.3s ease;
-    border: 1px solid transparent;
-}
+    .stats-card {
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+    }
 
-.stats-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
-    border-color: var(--bs-primary);
-}
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    }
 
-.stats-icon-wrapper {
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s ease;
-}
+    /* Hover específico por color */
+    .stats-card-primary:hover {
+        border-color: rgba(13, 110, 253, 0.3);
+    }
 
-.stats-card:hover .stats-icon-wrapper {
-    transform: scale(1.1);
-}
+    .stats-card-success:hover {
+        border-color: rgba(25, 135, 84, 0.3);
+    }
 
-/* Spinner de carga en estadísticas */
-.stats-card h2 .spinner-border-sm {
-    width: 1.5rem;
-    height: 1.5rem;
-    border-width: 0.2em;
-}
+    .stats-card-info:hover {
+        border-color: rgba(13, 202, 240, 0.3);
+    }
 
-/* ===================================
+    .stats-card-secondary:hover {
+        border-color: rgba(108, 117, 125, 0.3);
+    }
+
+    .stats-icon-wrapper {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover .stats-icon-wrapper {
+        transform: scale(1.1) rotate(5deg);
+    }
+
+    /* ===================================
+   ICONOS COLORIDOS CON OPACIDAD
+=================================== */
+
+    /* Primary - Azul vibrante */
+    .stats-icon-primary {
+        background: linear-gradient(135deg, rgba(13, 110, 253, 0.25), rgba(13, 110, 253, 0.15));
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+    }
+
+    .stats-icon-primary i {
+        color: #0d6efd;
+        filter: drop-shadow(0 2px 4px rgba(13, 110, 253, 0.3));
+    }
+
+    [data-bs-theme="dark"] .stats-icon-primary {
+        background: linear-gradient(135deg, rgba(13, 110, 253, 0.35), rgba(13, 110, 253, 0.25));
+        box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+
+    [data-bs-theme="dark"] .stats-icon-primary i {
+        color: #5a9cff;
+    }
+
+    .stats-card-primary:hover .stats-icon-primary {
+        background: linear-gradient(135deg, rgba(13, 110, 253, 0.4), rgba(13, 110, 253, 0.25));
+        box-shadow: 0 6px 16px rgba(13, 110, 253, 0.35);
+    }
+
+    /* Success - Verde vibrante */
+    .stats-icon-success {
+        background: linear-gradient(135deg, rgba(25, 135, 84, 0.25), rgba(25, 135, 84, 0.15));
+        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.2);
+    }
+
+    .stats-icon-success i {
+        color: #198754;
+        filter: drop-shadow(0 2px 4px rgba(25, 135, 84, 0.3));
+    }
+
+    [data-bs-theme="dark"] .stats-icon-success {
+        background: linear-gradient(135deg, rgba(25, 135, 84, 0.35), rgba(25, 135, 84, 0.25));
+        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+    }
+
+    [data-bs-theme="dark"] .stats-icon-success i {
+        color: #4caf50;
+    }
+
+    .stats-card-success:hover .stats-icon-success {
+        background: linear-gradient(135deg, rgba(25, 135, 84, 0.4), rgba(25, 135, 84, 0.25));
+        box-shadow: 0 6px 16px rgba(25, 135, 84, 0.35);
+    }
+
+    /* Info - Cyan vibrante */
+    .stats-icon-info {
+        background: linear-gradient(135deg, rgba(13, 202, 240, 0.25), rgba(13, 202, 240, 0.15));
+        box-shadow: 0 4px 12px rgba(13, 202, 240, 0.2);
+    }
+
+    .stats-icon-info i {
+        color: #0dcaf0;
+        filter: drop-shadow(0 2px 4px rgba(13, 202, 240, 0.3));
+    }
+
+    [data-bs-theme="dark"] .stats-icon-info {
+        background: linear-gradient(135deg, rgba(13, 202, 240, 0.35), rgba(13, 202, 240, 0.25));
+        box-shadow: 0 4px 12px rgba(13, 202, 240, 0.3);
+    }
+
+    [data-bs-theme="dark"] .stats-icon-info i {
+        color: #31d2f2;
+    }
+
+    .stats-card-info:hover .stats-icon-info {
+        background: linear-gradient(135deg, rgba(13, 202, 240, 0.4), rgba(13, 202, 240, 0.25));
+        box-shadow: 0 6px 16px rgba(13, 202, 240, 0.35);
+    }
+
+    /* Secondary - Gris vibrante */
+    .stats-icon-secondary {
+        background: linear-gradient(135deg, rgba(108, 117, 125, 0.25), rgba(108, 117, 125, 0.15));
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.2);
+    }
+
+    .stats-icon-secondary i {
+        color: #6c757d;
+        filter: drop-shadow(0 2px 4px rgba(108, 117, 125, 0.3));
+    }
+
+    [data-bs-theme="dark"] .stats-icon-secondary {
+        background: linear-gradient(135deg, rgba(108, 117, 125, 0.35), rgba(108, 117, 125, 0.25));
+        box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+    }
+
+    [data-bs-theme="dark"] .stats-icon-secondary i {
+        color: #adb5bd;
+    }
+
+    .stats-card-secondary:hover .stats-icon-secondary {
+        background: linear-gradient(135deg, rgba(108, 117, 125, 0.4), rgba(108, 117, 125, 0.25));
+        box-shadow: 0 6px 16px rgba(108, 117, 125, 0.35);
+    }
+
+    /* Spinner de carga en estadísticas */
+    .stats-card h2 .spinner-border-sm {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-width: 0.2em;
+    }
+
+    /* ===================================
    ESTILOS DE CARD DE USUARIOS
 =================================== */
-.users-table-card .card-header {
-    background-color: var(--bs-card-bg);
-    border-bottom: 1px solid var(--bs-border-color);
-}
+    .users-table-card .card-header {
+        background-color: var(--bs-card-bg);
+        border-bottom: 1px solid var(--bs-border-color);
+    }
 
-[data-bs-theme="dark"] .users-table-card .card-header {
-    background-color: rgba(255, 255, 255, 0.05);
-}
+    [data-bs-theme="dark"] .users-table-card .card-header {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
 
-/* ===================================
+    /* ===================================
    ESTILOS DE DATATABLE - MODO OSCURO
 =================================== */
-[data-bs-theme="dark"] #usersTable thead th {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: var(--bs-body-color) !important;
-    border-color: var(--bs-border-color) !important;
-}
+    [data-bs-theme="dark"] #usersTable thead th {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) !important;
+    }
 
-[data-bs-theme="dark"] #usersTable tbody td {
-    color: var(--bs-body-color) !important;
-    border-color: var(--bs-border-color) !important;
-}
+    [data-bs-theme="dark"] #usersTable tbody td {
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) !important;
+    }
 
-[data-bs-theme="dark"] #usersTable tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-}
+    [data-bs-theme="dark"] #usersTable tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+    }
 
-/* DataTables wrapper en modo oscuro */
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_length,
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_filter,
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_info,
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate {
-    color: var(--bs-body-color) !important;
-}
+    /* DataTables wrapper en modo oscuro */
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_length,
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_filter,
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_info,
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate {
+        color: var(--bs-body-color) !important;
+    }
 
-/* Input de búsqueda en modo oscuro */
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_filter input {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: var(--bs-body-color) !important;
-    border-color: var(--bs-border-color) !important;
-}
+    /* Input de búsqueda en modo oscuro */
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_filter input {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) !important;
+    }
 
-/* Select de registros por página en modo oscuro */
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_length select {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: var(--bs-body-color) !important;
-    border-color: var(--bs-border-color) !important;
-}
+    /* Select de registros por página en modo oscuro */
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_length select {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) !important;
+    }
 
-/* Paginación en modo oscuro */
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
-    color: var(--bs-body-color) !important;
-}
+    /* Paginación en modo oscuro */
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+        color: var(--bs-body-color) !important;
+    }
 
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: rgba(255, 255, 255, 0.1) !important;
-    color: var(--bs-body-color) !important;
-    border-color: var(--bs-border-color) !important;
-}
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        color: var(--bs-body-color) !important;
+        border-color: var(--bs-border-color) !important;
+    }
 
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-    background: var(--bs-primary) !important;
-    color: white !important;
-    border-color: var(--bs-primary) !important;
-}
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: var(--bs-primary) !important;
+        color: white !important;
+        border-color: var(--bs-primary) !important;
+    }
 
-[data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
-    color: rgba(255, 255, 255, 0.3) !important;
-}
+    [data-bs-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.disabled {
+        color: rgba(255, 255, 255, 0.3) !important;
+    }
 
-/* ===================================
+    /* ===================================
    MODO CLARO (por defecto)
 =================================== */
-[data-bs-theme="light"] #usersTable thead th {
-    background-color: #f8f9fa !important;
-    color: #212529 !important;
-}
+    [data-bs-theme="light"] #usersTable thead th {
+        background-color: #f8f9fa !important;
+        color: #212529 !important;
+    }
 
-[data-bs-theme="light"] #usersTable tbody tr:hover {
-    background-color: #f8f9fa !important;
-}
+    [data-bs-theme="light"] #usersTable tbody tr:hover {
+        background-color: #f8f9fa !important;
+    }
 
-/* ===================================
+    /* ===================================
    OTROS ESTILOS
 =================================== */
-.avatar-sm {
-    font-size: 0.9rem;
-}
+    .avatar-sm {
+        font-size: 0.9rem;
+    }
 
-.table-responsive {
-    min-height: 400px;
-}
+    .table-responsive {
+        min-height: 400px;
+    }
 
-.card {
-    transition: all 0.3s ease;
-}
+    .card {
+        transition: all 0.3s ease;
+    }
 
-/* Ajustar ancho de columnas de DataTable */
-#usersTable thead th:nth-child(1) {
-    width: 5%;
-}
+    /* Ajustar ancho de columnas de DataTable */
+    #usersTable thead th:nth-child(1) {
+        width: 5%;
+    }
 
-/* ID */
-#usersTable thead th:nth-child(2) {
-    width: 20%;
-}
+    /* ID */
+    #usersTable thead th:nth-child(2) {
+        width: 20%;
+    }
 
-/* Usuario */
-#usersTable thead th:nth-child(3) {
-    width: 25%;
-}
+    /* Usuario */
+    #usersTable thead th:nth-child(3) {
+        width: 25%;
+    }
 
-/* Email */
-#usersTable thead th:nth-child(4) {
-    width: 12%;
-}
+    /* Email */
+    #usersTable thead th:nth-child(4) {
+        width: 12%;
+    }
 
-/* Rol */
-#usersTable thead th:nth-child(5) {
-    width: 12%;
-}
+    /* Rol */
+    #usersTable thead th:nth-child(5) {
+        width: 12%;
+    }
 
-/* Estado */
-#usersTable thead th:nth-child(6) {
-    width: 12%;
-}
+    /* Estado */
+    #usersTable thead th:nth-child(6) {
+        width: 12%;
+    }
 
-/* Registro */
-#usersTable thead th:nth-child(7) {
-    width: 14%;
-}
+    /* Registro */
+    #usersTable thead th:nth-child(7) {
+        width: 14%;
+    }
 
-/* Acciones */
+    /* Acciones */
 
-/* ===================================
+    /* ===================================
    ESTILOS DE MODALES SWEETALERT2 - MODO OSCURO
 =================================== */
 
-/* Modal principal en modo oscuro */
-[data-bs-theme="dark"] .swal2-popup {
-    background-color: #1a1d29 !important;
-    color: #e9ecef !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
+    /* Modal principal en modo oscuro */
+    [data-bs-theme="dark"] .swal2-popup {
+        background-color: #1a1d29 !important;
+        color: #e9ecef !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
 
-/* Título del modal */
-[data-bs-theme="dark"] .swal2-title {
-    color: #ffffff !important;
-}
+    /* Título del modal */
+    [data-bs-theme="dark"] .swal2-title {
+        color: #ffffff !important;
+    }
 
-/* Contenido HTML del modal */
-[data-bs-theme="dark"] .swal2-html-container {
-    color: #e9ecef !important;
-}
+    /* Contenido HTML del modal */
+    [data-bs-theme="dark"] .swal2-html-container {
+        color: #e9ecef !important;
+    }
 
-/* Textos pequeños (labels) */
-[data-bs-theme="dark"] .swal2-html-container .text-muted {
-    color: #adb5bd !important;
-}
+    /* Textos pequeños (labels) */
+    [data-bs-theme="dark"] .swal2-html-container .text-muted {
+        color: #adb5bd !important;
+    }
 
-/* Textos con peso semibold */
-[data-bs-theme="dark"] .swal2-html-container .fw-semibold {
-    color: #f8f9fa !important;
-}
+    /* Textos con peso semibold */
+    [data-bs-theme="dark"] .swal2-html-container .fw-semibold {
+        color: #f8f9fa !important;
+    }
 
-/* Botones del modal */
-[data-bs-theme="dark"] .swal2-confirm,
-[data-bs-theme="dark"] .swal2-cancel {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
-}
+    /* Botones del modal */
+    [data-bs-theme="dark"] .swal2-confirm,
+    [data-bs-theme="dark"] .swal2-cancel {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
 
-/* Botón de confirmar (primary) */
-[data-bs-theme="dark"] .swal2-confirm {
-    background-color: #0d6efd !important;
-    border-color: #0d6efd !important;
-}
+    /* Botón de confirmar (primary) */
+    [data-bs-theme="dark"] .swal2-confirm {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
 
-[data-bs-theme="dark"] .swal2-confirm:hover {
-    background-color: #0b5ed7 !important;
-    border-color: #0a58ca !important;
-}
+    [data-bs-theme="dark"] .swal2-confirm:hover {
+        background-color: #0b5ed7 !important;
+        border-color: #0a58ca !important;
+    }
 
-/* Botón de cancelar */
-[data-bs-theme="dark"] .swal2-cancel {
-    background-color: #6c757d !important;
-    border-color: #6c757d !important;
-    color: #fff !important;
-}
+    /* Botón de cancelar */
+    [data-bs-theme="dark"] .swal2-cancel {
+        background-color: #6c757d !important;
+        border-color: #6c757d !important;
+        color: #fff !important;
+    }
 
-[data-bs-theme="dark"] .swal2-cancel:hover {
-    background-color: #5c636a !important;
-    border-color: #565e64 !important;
-}
+    [data-bs-theme="dark"] .swal2-cancel:hover {
+        background-color: #5c636a !important;
+        border-color: #565e64 !important;
+    }
 
-/* Botón de cerrar (X) */
-[data-bs-theme="dark"] .swal2-close {
-    color: #adb5bd !important;
-}
+    /* Botón de cerrar (X) */
+    [data-bs-theme="dark"] .swal2-close {
+        color: #adb5bd !important;
+    }
 
-[data-bs-theme="dark"] .swal2-close:hover {
-    color: #ffffff !important;
-}
+    [data-bs-theme="dark"] .swal2-close:hover {
+        color: #ffffff !important;
+    }
 
-/* Inputs del formulario en modal */
-[data-bs-theme="dark"] .swal2-input,
-[data-bs-theme="dark"] .swal2-textarea,
-[data-bs-theme="dark"] .swal2-select,
-[data-bs-theme="dark"] .swal2-html-container input,
-[data-bs-theme="dark"] .swal2-html-container textarea,
-[data-bs-theme="dark"] .swal2-html-container select {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    color: #f8f9fa !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-}
+    /* Inputs del formulario en modal */
+    [data-bs-theme="dark"] .swal2-input,
+    [data-bs-theme="dark"] .swal2-textarea,
+    [data-bs-theme="dark"] .swal2-select,
+    [data-bs-theme="dark"] .swal2-html-container input,
+    [data-bs-theme="dark"] .swal2-html-container textarea,
+    [data-bs-theme="dark"] .swal2-html-container select {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #f8f9fa !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
 
-[data-bs-theme="dark"] .swal2-input:focus,
-[data-bs-theme="dark"] .swal2-textarea:focus,
-[data-bs-theme="dark"] .swal2-select:focus,
-[data-bs-theme="dark"] .swal2-html-container input:focus,
-[data-bs-theme="dark"] .swal2-html-container textarea:focus,
-[data-bs-theme="dark"] .swal2-html-container select:focus {
-    border-color: #0d6efd !important;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
-}
+    [data-bs-theme="dark"] .swal2-input:focus,
+    [data-bs-theme="dark"] .swal2-textarea:focus,
+    [data-bs-theme="dark"] .swal2-select:focus,
+    [data-bs-theme="dark"] .swal2-html-container input:focus,
+    [data-bs-theme="dark"] .swal2-html-container textarea:focus,
+    [data-bs-theme="dark"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
 
-/* Labels de formulario */
-[data-bs-theme="dark"] .swal2-html-container label,
-[data-bs-theme="dark"] .swal2-html-container .form-label {
-    color: #adb5bd !important;
-}
+    /* Labels de formulario */
+    [data-bs-theme="dark"] .swal2-html-container label,
+    [data-bs-theme="dark"] .swal2-html-container .form-label {
+        color: #adb5bd !important;
+    }
 
-/* Placeholder de inputs */
-[data-bs-theme="dark"] .swal2-input::placeholder,
-[data-bs-theme="dark"] .swal2-textarea::placeholder,
-[data-bs-theme="dark"] .swal2-html-container input::placeholder,
-[data-bs-theme="dark"] .swal2-html-container textarea::placeholder {
-    color: #6c757d !important;
-}
+    /* Placeholder de inputs */
+    [data-bs-theme="dark"] .swal2-input::placeholder,
+    [data-bs-theme="dark"] .swal2-textarea::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container input::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container textarea::placeholder {
+        color: #6c757d !important;
+    }
 
-/* Badges en modal */
-[data-bs-theme="dark"] .swal2-html-container .badge {
-    font-weight: 500 !important;
-}
+    /* Badges en modal */
+    [data-bs-theme="dark"] .swal2-html-container .badge {
+        font-weight: 500 !important;
+    }
 
-/* Loader/Loading spinner */
-[data-bs-theme="dark"] .swal2-loader {
-    border-color: #0d6efd transparent #0d6efd transparent !important;
-}
+    /* Loader/Loading spinner */
+    [data-bs-theme="dark"] .swal2-loader {
+        border-color: #0d6efd transparent #0d6efd transparent !important;
+    }
 
-/* Modal de confirmación de loading */
-[data-bs-theme="dark"] .swal2-loading .swal2-styled {
-    background-color: transparent !important;
-    color: #f8f9fa !important;
-}
+    /* Modal de confirmación de loading */
+    [data-bs-theme="dark"] .swal2-loading .swal2-styled {
+        background-color: transparent !important;
+        color: #f8f9fa !important;
+    }
 
-/* Avatar circular del usuario */
-[data-bs-theme="dark"] .swal2-html-container .rounded-circle {
-    border: 3px solid rgba(255, 255, 255, 0.1) !important;
-}
+    /* Avatar circular del usuario */
+    [data-bs-theme="dark"] .swal2-html-container .rounded-circle {
+        border: 3px solid rgba(255, 255, 255, 0.1) !important;
+    }
 
-/* Dividers/Separadores */
-[data-bs-theme="dark"] .swal2-html-container hr {
-    border-color: rgba(255, 255, 255, 0.1) !important;
-}
+    /* Dividers/Separadores */
+    [data-bs-theme="dark"] .swal2-html-container hr {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
 
-/* Select options en modo oscuro */
-[data-bs-theme="dark"] .swal2-select option,
-[data-bs-theme="dark"] .swal2-html-container select option {
-    background-color: #1a1d29 !important;
-    color: #f8f9fa !important;
-}
+    /* Select options en modo oscuro */
+    [data-bs-theme="dark"] .swal2-select option,
+    [data-bs-theme="dark"] .swal2-html-container select option {
+        background-color: #1a1d29 !important;
+        color: #f8f9fa !important;
+    }
 
-/* Checkbox y radio buttons */
-[data-bs-theme="dark"] .swal2-html-container input[type="checkbox"],
-[data-bs-theme="dark"] .swal2-html-container input[type="radio"] {
-    border-color: rgba(255, 255, 255, 0.15) !important;
-}
+    /* Checkbox y radio buttons */
+    [data-bs-theme="dark"] .swal2-html-container input[type="checkbox"],
+    [data-bs-theme="dark"] .swal2-html-container input[type="radio"] {
+        border-color: rgba(255, 255, 255, 0.15) !important;
+    }
 
-/* Background del modal overlay */
-[data-bs-theme="dark"] .swal2-container.swal2-backdrop-show {
-    background: rgba(0, 0, 0, 0.7) !important;
-}
+    /* Background del modal overlay */
+    [data-bs-theme="dark"] .swal2-container.swal2-backdrop-show {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
 
-/* ===================================
+    /* ===================================
    ESTILOS DE MODALES SWEETALERT2 - MODO CLARO (mejoras)
 =================================== */
 
-/* Asegurar buen contraste en modo claro */
-[data-bs-theme="light"] .swal2-popup {
-    background-color: #ffffff !important;
-    color: #212529 !important;
-}
+    /* Asegurar buen contraste en modo claro */
+    [data-bs-theme="light"] .swal2-popup {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+    }
 
-[data-bs-theme="light"] .swal2-html-container .text-muted {
-    color: #6c757d !important;
-}
+    [data-bs-theme="light"] .swal2-html-container .text-muted {
+        color: #6c757d !important;
+    }
 
-[data-bs-theme="light"] .swal2-input,
-[data-bs-theme="light"] .swal2-textarea,
-[data-bs-theme="light"] .swal2-select,
-[data-bs-theme="light"] .swal2-html-container input,
-[data-bs-theme="light"] .swal2-html-container textarea,
-[data-bs-theme="light"] .swal2-html-container select {
-    background-color: #ffffff !important;
-    color: #212529 !important;
-    border: 1px solid #dee2e6 !important;
-}
+    [data-bs-theme="light"] .swal2-input,
+    [data-bs-theme="light"] .swal2-textarea,
+    [data-bs-theme="light"] .swal2-select,
+    [data-bs-theme="light"] .swal2-html-container input,
+    [data-bs-theme="light"] .swal2-html-container textarea,
+    [data-bs-theme="light"] .swal2-html-container select {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+        border: 1px solid #dee2e6 !important;
+    }
 
-[data-bs-theme="light"] .swal2-input:focus,
-[data-bs-theme="light"] .swal2-textarea:focus,
-[data-bs-theme="light"] .swal2-select:focus,
-[data-bs-theme="light"] .swal2-html-container input:focus,
-[data-bs-theme="light"] .swal2-html-container textarea:focus,
-[data-bs-theme="light"] .swal2-html-container select:focus {
-    border-color: #0d6efd !important;
-    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
-}
+    [data-bs-theme="light"] .swal2-input:focus,
+    [data-bs-theme="light"] .swal2-textarea:focus,
+    [data-bs-theme="light"] .swal2-select:focus,
+    [data-bs-theme="light"] .swal2-html-container input:focus,
+    [data-bs-theme="light"] .swal2-html-container textarea:focus,
+    [data-bs-theme="light"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
 </style>

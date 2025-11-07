@@ -84,6 +84,18 @@
     }
 
     // ===================================
+    // HELPER: OBTENER URL DEL BACKEND
+    // ===================================
+    function getBackendUrl() {
+        // Intentar obtener desde ENV_CONFIG
+        if (window.ENV_CONFIG && window.ENV_CONFIG.BACKEND_URL) {
+            return window.ENV_CONFIG.BACKEND_URL;
+        }
+        // Fallback a localhost:3000
+        return 'http://localhost:3000';
+    }
+
+    // ===================================
     // HELPERS PARA BADGES DE ROL Y ESTADO
     // ===================================
     function getRoleBadgeClass(roleId) {
@@ -250,8 +262,9 @@
                         width: '25%',
                         render: function (data, type, row) {
                             const initials = (row.first_name[0] + row.last_name[0]).toUpperCase();
+                            const backendUrl = getBackendUrl();
                             const profilePic = row.profile_picture && row.profile_picture !== '/assets/img/default-avatar.png'
-                                ? `<img src="${window.ENV_CONFIG.BACKEND_URL}${row.profile_picture}" class="rounded-circle" width="35" height="35" alt="${row.first_name}">`
+                                ? `<img src="${backendUrl}${row.profile_picture}" class="rounded-circle" width="35" height="35" alt="${row.first_name}">`
                                 : `<div class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px; font-size: 0.85rem;">${initials}</div>`;
 
                             return `
@@ -410,10 +423,11 @@
             currentUserData = user;
 
             // Construir HTML del modal
+            const backendUrl = getBackendUrl();
             const modalHtml = `
                 <div class="text-center mb-4">
                     ${user.profile_picture && user.profile_picture !== '/assets/img/default-avatar.png'
-                    ? `<img src="${window.ENV_CONFIG.BACKEND_URL}${user.profile_picture}" class="rounded-circle mb-3" width="120" height="120" alt="${user.first_name}">`
+                    ? `<img src="${backendUrl}${user.profile_picture}" class="rounded-circle mb-3" width="120" height="120" alt="${user.first_name}">`
                     : `<div class="avatar-lg bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 120px; height: 120px; font-size: 2.5rem;">${(user.first_name[0] + user.last_name[0]).toUpperCase()}</div>`
                 }
                     <h4 class="mb-1">${user.first_name} ${user.last_name}</h4>

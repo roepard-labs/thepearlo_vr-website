@@ -148,21 +148,39 @@ class WeatherService {
     }
 
     /**
+     * Obtener unidades de temperatura desde localStorage
+     * @private
+     * @returns {string} 'metric' (C), 'imperial' (F), o 'standard' (K)
+     */
+    getTempUnits() {
+        const savedUnit = localStorage.getItem('widget_prefs_temp_unit');
+        if (savedUnit === 'C') {
+            return 'metric';
+        } else if (savedUnit === 'F') {
+            return 'imperial';
+        } else if (savedUnit === 'K') {
+            return 'standard';
+        }
+        // Default: Celsius
+        return 'metric';
+    }
+
+    /**
      * Obtener clima actual de una ciudad
      * @param {object} options - Opciones de consulta
      * @param {string} options.city - Nombre de la ciudad
      * @param {string} options.country - Código de país (opcional)
-     * @param {string} options.units - Unidades (metric|imperial|standard)
+     * @param {string} options.units - Unidades (metric|imperial|standard) - si no se especifica, lee de localStorage
      * @param {string} options.lang - Idioma (es|en|fr|de|pt)
      * @param {boolean} options.useCache - Usar cache (default: true)
      * @returns {Promise<object>} Datos meteorológicos procesados
      */
     async getCurrentWeather(options = {}) {
-        // Valores por defecto
+        // Valores por defecto (unidades desde localStorage)
         const {
             city = this.config.DEFAULT_CITY,
             country = this.config.DEFAULT_COUNTRY,
-            units = 'metric',
+            units = this.getTempUnits(),  // Lee preferencias del usuario
             lang = 'es',
             useCache = true
         } = options;
