@@ -193,6 +193,14 @@
             const registerBtn = $('#registerBtn');
             const registerAlert = $('#registerAlert');
 
+            // Validar que el checkbox de términos esté marcado
+            const acceptTerms = $('#acceptTerms').is(':checked');
+            if (!acceptTerms) {
+                $('#registerAlertMessage').text('Debes aceptar los Términos y Condiciones para registrarte');
+                registerAlert.removeClass('d-none');
+                return false;
+            }
+
             // Separar nombre y apellido
             const nameParts = name.split(' ');
             const first_name = nameParts[0];
@@ -229,7 +237,8 @@
                     username: username,
                     email: email,
                     phone: phone,
-                    password: password
+                    password: password,
+                    acceptTerms: acceptTerms ? 'on' : ''
                 },
                 dataType: 'json',
                 success: function (response) {

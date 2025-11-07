@@ -76,12 +76,6 @@
 
                             <!-- Recordar / Olvidé -->
                             <div class="d-flex justify-content-between align-items-center mb-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                                    <label class="form-check-label" for="rememberMe">
-                                        Recordarme
-                                    </label>
-                                </div>
                                 <a href="#" class="text-decoration-none" id="forgotPasswordLink">
                                     <small>¿Olvidaste tu contraseña?</small>
                                 </a>
@@ -204,7 +198,7 @@
 
                             <!-- Términos -->
                             <div class="form-check mb-4">
-                                <input class="form-check-input" type="checkbox" id="acceptTerms" required>
+                                <input class="form-check-input" type="checkbox" id="acceptTerms" required checked>
                                 <label class="form-check-label" for="acceptTerms">
                                     Acepto los <a href="/terms" target="_blank">Términos y Condiciones</a> y la
                                     <a href="/privacy" target="_blank">Política de Privacidad</a>
