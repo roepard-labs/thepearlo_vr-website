@@ -88,14 +88,29 @@
                 </p>
             </div>
             <div class="col-md-4 text-center">
-                <!-- Backend Status Indicator -->
-                <div id="backendStatus" class="d-inline-flex align-items-center gap-2">
-                    <span class="text-white-50 small">Estado:</span>
-                    <span id="statusIndicator" class="d-inline-flex align-items-center gap-1">
-                        <span class="status-dot status-checking"></span>
-                        <span class="status-text small">Verificando...</span>
-                    </span>
-                </div>
+                <?php
+                // Evitar mostrar indicador de estado en páginas de error (30x/40x/50x)
+                $current_uri = $_SERVER['REQUEST_URI'] ?? '';
+                $error_paths = ['/40x.php', '/30x.php', '/50x.php'];
+                $is_error_page = false;
+                foreach ($error_paths as $p) {
+                    if (strpos($current_uri, $p) === 0) {
+                        $is_error_page = true;
+                        break;
+                    }
+                }
+
+                if (!$is_error_page):
+                    ?>
+                    <!-- Backend Status Indicator -->
+                    <div id="backendStatus" class="d-inline-flex align-items-center gap-2">
+                        <span class="text-white-50 small">Estado:</span>
+                        <span id="statusIndicator" class="d-inline-flex align-items-center gap-1">
+                            <span class="status-dot status-checking"></span>
+                            <span class="status-text small">Verificando...</span>
+                        </span>
+                    </div>
+                <?php endif; ?>
             </div>
             <div class="col-md-4 text-center text-md-end">
                 <p class="text-white-50 small mb-0">
@@ -201,53 +216,65 @@
         }
     }
 
-    // Escuchar cambios en el estado del backend
-    window.addEventListener('backendStatusChanged', function (event) {
-        console.log('📊 Estado del backend actualizado:', event.detail);
-        updateBackendStatusIndicator(event.detail);
-    });
-
-    // Inicializar el indicador
-    document.addEventListener('DOMContentLoaded', function () {
-        // Si BackendStatus ya existe, actualizar inmediatamente
-        if (window.BackendStatus) {
-            console.log('🔄 Actualizando indicador con estado actual:', window.BackendStatus);
-            updateBackendStatusIndicator(window.BackendStatus);
-        } else {
-            // Si no existe aún, mostrar estado de verificación
-            console.log('⏳ BackendStatus no disponible aún, mostrando estado inicial');
-            updateBackendStatusIndicator({
-                checking: true,
-                isConnected: false,
-                message: 'Verificando...',
-                lastCheck: null
-            });
+    // Evitar inicializar scripts del indicador de backend en páginas de error
+    (function () {
+        const currentUri = window.location.pathname || '';
+        const errorPrefixes = ['/40x.php', '/30x.php', '/50x.php'];
+        for (let i = 0; i < errorPrefixes.length; i++) {
+            if (currentUri.indexOf(errorPrefixes[i]) === 0) {
+                console.log('⏸️ SKIP_UI_INIT: Saltando indicador de backend en página de error');
+                return;
+            }
         }
 
-        // Click en el indicador para mostrar información
-        const backendStatus = document.getElementById('backendStatus');
-        if (backendStatus) {
-            backendStatus.addEventListener('click', function () {
-                if (!window.BackendStatus) return;
+        // Escuchar cambios en el estado del backend
+        window.addEventListener('backendStatusChanged', function (event) {
+            console.log('📊 Estado del backend actualizado:', event.detail);
+            updateBackendStatusIndicator(event.detail);
+        });
 
-                const status = window.BackendStatus;
-                const statusIcon = status.isConnected ? 'success' : 'error';
-                const statusColor = status.isConnected ? '#00ff88' : '#ff4444';
+        // Inicializar el indicador
+        document.addEventListener('DOMContentLoaded', function () {
+            // Si BackendStatus ya existe, actualizar inmediatamente
+            if (window.BackendStatus) {
+                console.log('🔄 Actualizando indicador con estado actual:', window.BackendStatus);
+                updateBackendStatusIndicator(window.BackendStatus);
+            } else {
+                // Si no existe aún, mostrar estado de verificación
+                console.log('⏳ BackendStatus no disponible aún, mostrando estado inicial');
+                updateBackendStatusIndicator({
+                    checking: true,
+                    isConnected: false,
+                    message: 'Verificando...',
+                    lastCheck: null
+                });
+            }
 
-                Swal.fire({
-                    title: status.isConnected ? '✅ Backend Conectado' : '❌ Backend Desconectado',
-                    html: `
+            // Click en el indicador para mostrar información
+            const backendStatus = document.getElementById('backendStatus');
+            if (backendStatus) {
+                backendStatus.addEventListener('click', function () {
+                    if (!window.BackendStatus) return;
+
+                    const status = window.BackendStatus;
+                    const statusIcon = status.isConnected ? 'success' : 'error';
+                    const statusColor = status.isConnected ? '#00ff88' : '#ff4444';
+
+                    Swal.fire({
+                        title: status.isConnected ? '✅ Backend Conectado' : '❌ Backend Desconectado',
+                        html: `
                     <div style="text-align: left;">
                         <p><strong>Estado:</strong> ${status.message}</p>
                         <p><strong>URL:</strong> ${AppRouter.baseURL}</p>
                         <p><strong>Última verificación:</strong> ${status.lastCheck ? new Date(status.lastCheck).toLocaleString('es-MX') : 'N/A'}</p>
                     </div>
                 `,
-                    icon: statusIcon,
-                    confirmButtonText: 'Entendido',
-                    confirmButtonColor: statusColor
+                        icon: statusIcon,
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: statusColor
+                    });
                 });
-            });
-        }
-    });
+            }
+        });
+    })();
 </script>

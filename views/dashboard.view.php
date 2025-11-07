@@ -98,6 +98,56 @@ ob_start();
 <!-- Layout con Sidebar -->
 <div class="dashboard-layout">
 
+    <!-- Guard: bloquear rutas protegidas a no-admins antes de cargar contenido pesado -->
+    <script>
+        (function () {
+            'use strict';
+            const protectedPaths = ['/dashboard/settings', '/dashboard/users'];
+            try {
+                const path = window.location.pathname;
+                if (!protectedPaths.some(p => path.startsWith(p))) return; // no es ruta protegida
+
+                async function guard() {
+                    // esperar RoleService
+                    let attempts = 0;
+                    while (!window.RoleService && attempts < 50) {
+                        await new Promise(r => setTimeout(r, 100));
+                        attempts++;
+                    }
+
+                    if (!window.RoleService) {
+                        console.warn('Guard: RoleService no disponible, bloqueando acceso por seguridad');
+                        window.location.href = '/40x.php?code=403';
+                        return;
+                    }
+
+                    try {
+                        const status = await window.RoleService.check();
+                        if (!status || status.isAdmin !== true) {
+                            console.warn('Guard: Usuario no admin — redirigiendo a 403');
+                            window.location.href = '/40x.php?code=403';
+                            return;
+                        }
+                        // si es admin, continuar
+                        console.log('Guard: Acceso autorizado (admin)');
+                    } catch (err) {
+                        console.error('Guard: Error verificando rol', err);
+                        window.location.href = '/40x.php?code=403';
+                    }
+                }
+
+                // Ejecutar al cargar DOM para evitar interferir con la carga del layout
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', guard);
+                } else {
+                    guard();
+                }
+            } catch (e) {
+                console.error('Guard: Excepción inesperada', e);
+            }
+        })();
+    </script>
+
     <!-- Sidebar -->
     <?php include __DIR__ . '/../ui/sidebar.ui.php'; ?>
 

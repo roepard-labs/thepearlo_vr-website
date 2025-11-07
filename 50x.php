@@ -155,76 +155,7 @@ ob_start();
                     </a>
                 </div>
 
-                <!-- Status Check Card -->
-                <div class="card border-0 shadow-sm mb-4" data-aos="fade-up" data-aos-delay="500"
-                    style="background: var(--bs-body-bg);">
-                    <div class="card-body p-4">
-                        <h5 class="card-title mb-3" style="color: var(--bs-heading-color);">
-                            <i class="bx bx-pulse me-2"></i>
-                            Estado del Sistema
-                        </h5>
-
-                        <div class="d-flex flex-column gap-3">
-                            <!-- Frontend Status -->
-                            <div class="d-flex align-items-center justify-content-between p-3 rounded"
-                                style="background: var(--bs-tertiary-bg);">
-                                <div class="d-flex align-items-center">
-                                    <i class="bx bx-desktop me-3"
-                                        style="font-size: 1.5rem; color: var(--color-success);"></i>
-                                    <div class="text-start">
-                                        <strong class="d-block">Frontend</strong>
-                                        <small class="text-muted">Sitio Web Principal</small>
-                                    </div>
-                                </div>
-                                <span class="badge bg-success">
-                                    <i class="bx bx-check-circle me-1"></i>
-                                    Operativo
-                                </span>
-                            </div>
-
-                            <!-- Backend Status -->
-                            <div class="d-flex align-items-center justify-content-between p-3 rounded"
-                                style="background: var(--bs-tertiary-bg);">
-                                <div class="d-flex align-items-center">
-                                    <i class="bx bx-server me-3"
-                                        style="font-size: 1.5rem; color: var(--color-<?php echo $error_info['color']; ?>);"></i>
-                                    <div class="text-start">
-                                        <strong class="d-block">Backend API</strong>
-                                        <small class="text-muted">api.roepard.online</small>
-                                    </div>
-                                </div>
-                                <span class="badge bg-<?php echo $error_info['color']; ?>" id="backend-status">
-                                    <i class="bx bx-error-circle me-1"></i>
-                                    Verificando...
-                                </span>
-                            </div>
-
-                            <!-- Database Status -->
-                            <div class="d-flex align-items-center justify-content-between p-3 rounded"
-                                style="background: var(--bs-tertiary-bg);">
-                                <div class="d-flex align-items-center">
-                                    <i class="bx bx-data me-3"
-                                        style="font-size: 1.5rem; color: var(--bs-secondary-color);"></i>
-                                    <div class="text-start">
-                                        <strong class="d-block">Base de Datos</strong>
-                                        <small class="text-muted">MySQL/MariaDB</small>
-                                    </div>
-                                </div>
-                                <span class="badge bg-secondary">
-                                    <i class="bx bx-question-mark me-1"></i>
-                                    Desconocido
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="mt-4 pt-3 border-top" style="border-color: var(--bs-border-color) !important;">
-                            <button onclick="checkBackendStatus()" class="btn btn-sm btn-outline-primary w-100">
-                                <i class="bx bx-refresh me-2"></i>
-                                Verificar Estado del Backend
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <!-- Status Check Card removed for simplified error page -->
 
                 <!-- Help Section -->
                 <div class="card border-0 shadow-sm" data-aos="fade-up" data-aos-delay="600"
@@ -318,49 +249,7 @@ ob_start();
     }
 </style>
 
-<script>
-    // Verificar estado del backend
-    async function checkBackendStatus() {
-        const statusBadge = document.getElementById('backend-status');
-        statusBadge.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i> Verificando...';
-        statusBadge.className = 'badge bg-secondary';
-
-        try {
-            // Intentar hacer ping al backend
-            const response = await fetch('<?php echo getenv("API_URL") ?: "http://localhost:3000"; ?>/api/health', {
-                method: 'GET',
-                timeout: 5000
-            });
-
-            if (response.ok) {
-                statusBadge.innerHTML = '<i class="bx bx-check-circle me-1"></i> Operativo';
-                statusBadge.className = 'badge bg-success';
-
-                // Mostrar notificación de éxito
-                if (typeof Notyf !== 'undefined') {
-                    const notyf = new Notyf();
-                    notyf.success('¡El backend está operativo! Puedes reintentar.');
-                }
-            } else {
-                throw new Error('Backend no responde');
-            }
-        } catch (error) {
-            statusBadge.innerHTML = '<i class="bx bx-error-circle me-1"></i> No Disponible';
-            statusBadge.className = 'badge bg-danger';
-
-            // Mostrar notificación de error
-            if (typeof Notyf !== 'undefined') {
-                const notyf = new Notyf();
-                notyf.error('El backend aún no está disponible');
-            }
-        }
-    }
-
-    // Auto-verificar estado al cargar
-    document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(checkBackendStatus, 1000);
-    });
-</script>
+<!-- Backend status script removed for simplified error page -->
 
 <?php
 $content = ob_get_clean();
@@ -437,8 +326,7 @@ $content = ob_get_clean();
     <!-- Notyf -->
     <script src="/node_modules/notyf/notyf.min.js"></script>
 
-    <!-- Color Mode Toggler -->
-    <script src="/js/color-mode-toggler.js"></script>
+    <!-- Color mode toggler intentionally omitted on error pages to avoid 404s/extra requests -->
 </body>
 
 </html>

@@ -132,21 +132,21 @@ ob_start();
 
                 <!-- Action Suggestions based on error type -->
                 <?php if ($error_code === '401'): ?>
-                    <div class="alert alert-warning mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
-                        <i class="bx bx-info-circle me-2"></i>
-                        <strong>Sugerencia:</strong> Intenta iniciar sesión para acceder a este contenido.
-                    </div>
+                <div class="alert alert-warning mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
+                    <i class="bx bx-info-circle me-2"></i>
+                    <strong>Sugerencia:</strong> Intenta iniciar sesión para acceder a este contenido.
+                </div>
                 <?php elseif ($error_code === '403'): ?>
-                    <div class="alert alert-danger mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
-                        <i class="bx bx-shield-x me-2"></i>
-                        <strong>Acceso Denegado:</strong> No tienes los permisos necesarios. Contacta al administrador si
-                        crees que deberías tener acceso.
-                    </div>
+                <div class="alert alert-danger mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
+                    <i class="bx bx-shield-x me-2"></i>
+                    <strong>Acceso Denegado:</strong> No tienes los permisos necesarios. Contacta al administrador si
+                    crees que deberías tener acceso.
+                </div>
                 <?php elseif ($error_code === '429'): ?>
-                    <div class="alert alert-warning mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
-                        <i class="bx bx-time me-2"></i>
-                        <strong>Límite de Solicitudes:</strong> Por favor, espera unos minutos antes de intentar nuevamente.
-                    </div>
+                <div class="alert alert-warning mb-4" role="alert" data-aos="fade-up" data-aos-delay="350">
+                    <i class="bx bx-time me-2"></i>
+                    <strong>Límite de Solicitudes:</strong> Por favor, espera unos minutos antes de intentar nuevamente.
+                </div>
                 <?php endif; ?>
 
                 <!-- Action Buttons -->
@@ -158,10 +158,10 @@ ob_start();
                     </a>
 
                     <?php if ($referer && strpos($referer, $_SERVER['HTTP_HOST']) !== false): ?>
-                        <button onclick="window.history.back()" class="btn btn-outline-primary btn-lg px-4">
-                            <i class="bx bx-arrow-back me-2"></i>
-                            Página Anterior
-                        </button>
+                    <button onclick="window.history.back()" class="btn btn-outline-primary btn-lg px-4">
+                        <i class="bx bx-arrow-back me-2"></i>
+                        Página Anterior
+                    </button>
                     <?php endif; ?>
                 </div>
 
@@ -243,35 +243,35 @@ ob_start();
 </section>
 
 <style>
-    .hover-card {
-        transition: all var(--transition-base);
-    }
+.hover-card {
+    transition: all var(--transition-base);
+}
 
-    .hover-card:hover {
-        background: var(--bs-tertiary-bg);
-        transform: translateX(5px);
-    }
+.hover-card:hover {
+    background: var(--bs-tertiary-bg);
+    transform: translateX(5px);
+}
 
-    .custom-alert {
-        display: flex;
-        align-items: flex-start;
-        padding: 1rem 1.5rem;
-        border-radius: var(--radius-md);
-        border-left: 4px solid var(--color-info);
-        background: rgba(23, 162, 184, 0.1);
-    }
+.custom-alert {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--color-info);
+    background: rgba(23, 162, 184, 0.1);
+}
 
-    .custom-alert i {
-        font-size: 1.5rem;
-        color: var(--color-info);
-    }
+.custom-alert i {
+    font-size: 1.5rem;
+    color: var(--color-info);
+}
 
-    code {
-        padding: 0.25rem 0.5rem;
-        background: var(--bs-tertiary-bg);
-        border-radius: var(--radius-sm);
-        font-size: 0.875rem;
-    }
+code {
+    padding: 0.25rem 0.5rem;
+    background: var(--bs-tertiary-bg);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+}
 </style>
 
 <?php
@@ -309,6 +309,14 @@ $content = ob_get_clean();
 
 <body class="error-page-body">
 
+    <!-- Indicador: evitar inicialización pesada de UI en páginas de error -->
+    <script>
+    // Evitar que los scripts del header y modales hagan bucles de reintento
+    // cuando estamos en una página de error (p.ej. 403). Los componentes
+    // consultan `window.SKIP_UI_INIT` antes de arrancar.
+    window.SKIP_UI_INIT = true;
+    </script>
+
     <?php
     // Incluir header
     if (file_exists(__DIR__ . '/ui/header.ui.php')) {
@@ -335,16 +343,16 @@ $content = ob_get_clean();
     <!-- AOS -->
     <script src="/node_modules/aos/dist/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out',
-            once: true,
-            mirror: false
-        });
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        mirror: false
+    });
     </script>
 
     <!-- Color Mode Toggler -->
-    <script src="/js/color-mode-toggler.js"></script>
+    <!-- Color mode toggler intentionally omitted on error pages to avoid 404s/extra requests -->
 </body>
 
 </html>

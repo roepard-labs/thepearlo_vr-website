@@ -9,6 +9,36 @@
 $isAuthenticated = isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true;
 $userName = $isAuthenticated ? ($_SESSION['user_name'] ?? 'Usuario') : '';
 $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
+
+// Detectar si estamos en una página de error (30x/40x/50x) y, en ese caso,
+// renderizar un header minimal (solo logo) y salir para evitar cargar scripts
+// y elementos que provocan reintentos en consola.
+$current_uri = $_SERVER['REQUEST_URI'] ?? '';
+$error_paths = ['/40x.php', '/30x.php', '/50x.php'];
+$is_error_page = false;
+foreach ($error_paths as $p) {
+    if (strpos($current_uri, $p) === 0) {
+        $is_error_page = true;
+        break;
+    }
+}
+
+if ($is_error_page) {
+    // Header minimal para páginas de error: solo logo y marca
+    ?>
+    <header class="navbar shadow-sm sticky-top" data-bs-theme="auto">
+        <div class="container py-2">
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+                <i class="bx bx-cube-alt text-primary fs-3 me-2"></i>
+                <span class="text-primary">HomeLab</span>
+                <span class="text-secondary">AR</span>
+            </a>
+        </div>
+    </header>
+    <?php
+    // Salir para no renderizar el header completo con scripts
+    return;
+}
 ?>
 
 <header class="navbar navbar-expand-lg shadow-sm sticky-top" data-bs-theme="auto">
@@ -228,6 +258,13 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
     (function () {
         'use strict';
 
+        // Si la página marcó SKIP_UI_INIT (por ejemplo páginas de error 40x),
+        // evitamos iniciar los scripts del header y sus bucles de reintento.
+        if (window.SKIP_UI_INIT) {
+            console.log('⏸️ SKIP_UI_INIT: Saltando inicialización del header (error page)');
+            return;
+        }
+
         console.log('🎬 Script de header cargado');
 
         // ==========================================
@@ -331,6 +368,12 @@ $userRole = $isAuthenticated ? ($_SESSION['role_id'] ?? 1) : 1;
     // ==========================================
     (function () {
         'use strict';
+
+        // Evitar inicialización adicional en páginas marcadas para omitir la UI
+        if (window.SKIP_UI_INIT) {
+            console.log('⏸️ SKIP_UI_INIT: Saltando Header UI (error page)');
+            return;
+        }
 
         console.log('🔐 Header UI: Inicializando');
 
