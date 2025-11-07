@@ -519,6 +519,185 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
     .admin-only a {
         pointer-events: none;
     }
+
+    /* ===================================
+       SweetAlert2 - Dark/Light overrides (copiado desde users.page.php)
+       Garantiza que los modales iniciados desde el sidebar respeten tema
+    =================================== */
+    [data-bs-theme="dark"] .swal2-popup {
+        background-color: #1a1d29 !important;
+        color: #e9ecef !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Título del modal */
+    [data-bs-theme="dark"] .swal2-title {
+        color: #ffffff !important;
+    }
+
+    /* Contenido HTML del modal */
+    [data-bs-theme="dark"] .swal2-html-container {
+        color: #e9ecef !important;
+    }
+
+    /* Textos pequeños (labels) */
+    [data-bs-theme="dark"] .swal2-html-container .text-muted {
+        color: #adb5bd !important;
+    }
+
+    /* Textos con peso semibold */
+    [data-bs-theme="dark"] .swal2-html-container .fw-semibold {
+        color: #f8f9fa !important;
+    }
+
+    /* Botones del modal */
+    [data-bs-theme="dark"] .swal2-confirm,
+    [data-bs-theme="dark"] .swal2-cancel {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    /* Botón de confirmar (primary) */
+    [data-bs-theme="dark"] .swal2-confirm {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-confirm:hover {
+        background-color: #0b5ed7 !important;
+        border-color: #0a58ca !important;
+    }
+
+    /* Botón de cancelar */
+    [data-bs-theme="dark"] .swal2-cancel {
+        background-color: #6c757d !important;
+        border-color: #6c757d !important;
+        color: #fff !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-cancel:hover {
+        background-color: #5c636a !important;
+        border-color: #565e64 !important;
+    }
+
+    /* Botón de cerrar (X) */
+    [data-bs-theme="dark"] .swal2-close {
+        color: #adb5bd !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-close:hover {
+        color: #ffffff !important;
+    }
+
+    /* Inputs del formulario en modal */
+    [data-bs-theme="dark"] .swal2-input,
+    [data-bs-theme="dark"] .swal2-textarea,
+    [data-bs-theme="dark"] .swal2-select,
+    [data-bs-theme="dark"] .swal2-html-container input,
+    [data-bs-theme="dark"] .swal2-html-container textarea,
+    [data-bs-theme="dark"] .swal2-html-container select {
+        background-color: rgba(255, 255, 255, 0.05) !important;
+        color: #f8f9fa !important;
+        border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    }
+
+    [data-bs-theme="dark"] .swal2-input:focus,
+    [data-bs-theme="dark"] .swal2-textarea:focus,
+    [data-bs-theme="dark"] .swal2-select:focus,
+    [data-bs-theme="dark"] .swal2-html-container input:focus,
+    [data-bs-theme="dark"] .swal2-html-container textarea:focus,
+    [data-bs-theme="dark"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
+
+    /* Labels de formulario */
+    [data-bs-theme="dark"] .swal2-html-container label,
+    [data-bs-theme="dark"] .swal2-html-container .form-label {
+        color: #adb5bd !important;
+    }
+
+    /* Placeholder de inputs */
+    [data-bs-theme="dark"] .swal2-input::placeholder,
+    [data-bs-theme="dark"] .swal2-textarea::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container input::placeholder,
+    [data-bs-theme="dark"] .swal2-html-container textarea::placeholder {
+        color: #6c757d !important;
+    }
+
+    /* Badges en modal */
+    [data-bs-theme="dark"] .swal2-html-container .badge {
+        font-weight: 500 !important;
+    }
+
+    /* Loader/Loading spinner */
+    [data-bs-theme="dark"] .swal2-loader {
+        border-color: #0d6efd transparent #0d6efd transparent !important;
+    }
+
+    /* Modal de confirmación de loading */
+    [data-bs-theme="dark"] .swal2-loading .swal2-styled {
+        background-color: transparent !important;
+        color: #f8f9fa !important;
+    }
+
+    /* Avatar circular del usuario */
+    [data-bs-theme="dark"] .swal2-html-container .rounded-circle {
+        border: 3px solid rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Dividers/Separadores */
+    [data-bs-theme="dark"] .swal2-html-container hr {
+        border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    /* Select options en modo oscuro */
+    [data-bs-theme="dark"] .swal2-select option,
+    [data-bs-theme="dark"] .swal2-html-container select option {
+        background-color: #1a1d29 !important;
+        color: #f8f9fa !important;
+    }
+
+    /* Checkbox y radio buttons */
+    [data-bs-theme="dark"] .swal2-html-container input[type="checkbox"],
+    [data-bs-theme="dark"] .swal2-html-container input[type="radio"] {
+        border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    /* Background del modal overlay */
+    [data-bs-theme="dark"] .swal2-container.swal2-backdrop-show {
+        background: rgba(0, 0, 0, 0.7) !important;
+    }
+
+    /* Modo claro: asegurar contraste */
+    [data-bs-theme="light"] .swal2-popup {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+    }
+
+    [data-bs-theme="light"] .swal2-html-container .text-muted {
+        color: #6c757d !important;
+    }
+
+    [data-bs-theme="light"] .swal2-input,
+    [data-bs-theme="light"] .swal2-textarea,
+    [data-bs-theme="light"] .swal2-select,
+    [data-bs-theme="light"] .swal2-html-container input,
+    [data-bs-theme="light"] .swal2-html-container textarea,
+    [data-bs-theme="light"] .swal2-html-container select {
+        background-color: #ffffff !important;
+        color: #212529 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    [data-bs-theme="light"] .swal2-input:focus,
+    [data-bs-theme="light"] .swal2-textarea:focus,
+    [data-bs-theme="light"] .swal2-select:focus,
+    [data-bs-theme="light"] .swal2-html-container input:focus,
+    [data-bs-theme="light"] .swal2-html-container textarea:focus,
+    [data-bs-theme="light"] .swal2-html-container select:focus {
+        border-color: #0d6efd !important;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
 </style>
 
 <script>
