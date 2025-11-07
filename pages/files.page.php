@@ -132,7 +132,7 @@
                         <li class="breadcrumb-item">
                             <a href="#" class="text-decoration-none" data-folder-id="root">
                                 <i class="bx bx-home-alt me-1"></i>
-                                Mis Archivos
+                                Archivos
                             </a>
                         </li>
                     </ol>
@@ -281,7 +281,7 @@
                     <div class="mb-3">
                         <label class="form-label">Carpeta Padre</label>
                         <select class="form-select" id="parentFolder">
-                            <option value="root">Raíz / Mis Archivos</option>
+                            <option value="root">Raíz / Archivos</option>
                             <!-- Folders will be loaded dynamically -->
                         </select>
                     </div>
@@ -332,7 +332,7 @@
                     <div class="mb-3">
                         <label class="form-label">Mover a Carpeta</label>
                         <select class="form-select" id="editFileFolder">
-                            <option value="root">Raíz / Mis Archivos</option>
+                            <option value="root">Raíz / Archivos</option>
                             <!-- Folders will be loaded dynamically -->
                         </select>
                     </div>
@@ -1032,6 +1032,24 @@
         }
 
         // ===================================
+        // HELPER: Obtener base URL del backend con fallbacks
+        // ===================================
+        function getBackendBase() {
+            try {
+                if (window.ENV_CONFIG) {
+                    // Preferir BACKEND_URL, si no existe, usar API_URL
+                    const base = window.ENV_CONFIG.BACKEND_URL || window.ENV_CONFIG.API_URL || '';
+                    if (base && typeof base === 'string') return base.replace(/\/$/, '');
+                }
+            } catch (e) {
+                console.warn('⚠️ getBackendBase error:', e);
+            }
+
+            console.warn('⚠️ ENV_CONFIG no tiene BACKEND_URL/API_URL. Usando rutas relativas.');
+            return '';
+        }
+
+        // ===================================
         // DATOS DE DEMOSTRACIÓN (DESHABILITADO)
         // ===================================
         /* FUNCIÓN ELIMINADA: Ya no se usan datos de demostración
@@ -1714,12 +1732,12 @@
                 return;
             }
 
-            // "Mis Archivos" siempre recarga la página para volver al inicio
+            // "Archivos" siempre recarga la página para volver al inicio
             let html = `
             <li class="breadcrumb-item">
                 <a href="/dashboard/files" class="text-decoration-none">
                     <i class="bx bx-home-alt me-1"></i>
-                    Mis Archivos
+                    Archivos
                 </a>
             </li>
         `;
@@ -1792,7 +1810,7 @@
         // CONSTRUIR RUTA DE CARPETAS - ELIMINADA
         // ===================================
         // Función eliminada porque ahora usamos un breadcrumb simplificado
-        // que solo muestra: "Mis Archivos" > "Carpeta Actual"
+        // que solo muestra: "Archivos" > "Carpeta Actual"
         // Esto evita problemas de caché y es más confiable
 
         // ===================================
@@ -2206,9 +2224,11 @@
 
             console.log('📥 Descargando archivo:', file.name);
 
-            // Descarga real desde backend
-            const downloadUrl =
-                `${window.ENV_CONFIG.BACKEND_URL}/routes/files/download_file.php?file_id=${fileId}&user_id=${currentUserId}`;
+            // Construir URL de descarga de forma segura usando helper
+            const backendBase = getBackendBase();
+            const downloadUrl = backendBase
+                ? `${backendBase}/routes/files/download_file.php?file_id=${encodeURIComponent(fileId)}&user_id=${encodeURIComponent(currentUserId)}`
+                : `/routes/files/download_file.php?file_id=${encodeURIComponent(fileId)}&user_id=${encodeURIComponent(currentUserId)}`;
 
             // Abrir en nueva pestaña para iniciar descarga
             window.open(downloadUrl, '_blank');
@@ -2259,9 +2279,12 @@
 
             title.innerHTML = `<i class="bx ${getFileIcon(file)} me-2"></i>${file.name}`;
 
-            // CRÍTICO: Construir URL real del archivo desde backend
-            const fileUrl =
-                `${window.ENV_CONFIG.BACKEND_URL}/routes/files/download_file.php?file_id=${file.id}&user_id=${currentUserId}&inline=1`;
+
+            // CRÍTICO: Construir URL real del archivo desde backend (con fallback)
+            const backendBasePreview = getBackendBase();
+            const fileUrl = backendBasePreview
+                ? `${backendBasePreview}/routes/files/download_file.php?file_id=${encodeURIComponent(file.id)}&user_id=${encodeURIComponent(currentUserId)}&inline=1`
+                : `/routes/files/download_file.php?file_id=${encodeURIComponent(file.id)}&user_id=${encodeURIComponent(currentUserId)}&inline=1`;
 
             console.log('🖼️ Preview URL:', fileUrl);
             console.log('📄 Tipo de archivo:', file.type);
