@@ -185,6 +185,7 @@ function isLoaded(name) {
     const checks = {
         axios: typeof axios !== 'undefined',
         jquery: typeof $ !== 'undefined',
+        anime: typeof anime !== 'undefined',
         bootstrap: typeof bootstrap !== 'undefined',
         sweetalert2: typeof Swal !== 'undefined',
         chart: typeof Chart !== 'undefined',

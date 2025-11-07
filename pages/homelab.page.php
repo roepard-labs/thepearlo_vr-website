@@ -96,8 +96,8 @@
                         <i class="bx bx-time"></i>
                     </div>
                     <div>
-                        <p class="text-muted mb-1 small">Uptime</p>
-                        <h5 class="mb-0 fw-bold" id="systemUptime">99.9%</h5>
+                        <p class="text-muted mb-1 small">Status</p>
+                        <h5 class="mb-0 fw-bold" id="systemUptime">Cargando...</h5>
                     </div>
                 </div>
             </div>
@@ -119,17 +119,10 @@
                 <div class="card-body p-4">
                     <div class="row g-4 align-items-center">
 
-                        <!-- User Profile Picture + Info -->
+                        <!-- Info  profile-->
                         <div class="col-12 col-lg-6">
                             <div class="d-flex gap-4 align-items-start">
-                                <!-- Profile Picture -->
-                                <div class="profile-picture-wrapper">
-                                    <div class="profile-picture" id="userProfilePicture">
-                                        <img src="/assets/icons/user-default.png" alt="Foto de perfil"
-                                            class="rounded-circle"
-                                            style="width: 100px; height: 100px; object-fit: cover; border: 3px solid var(--bs-primary); box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.3);">
-                                    </div>
-                                </div>
+
 
                                 <!-- User Info -->
                                 <div class="session-info flex-grow-1">
@@ -489,17 +482,41 @@
     // ===================================
     async function loadUserSession() {
         try {
-            const response = await window.AppRouter.get('/routes/user/check_session.php');
+            console.log('🔎 loadUserSession: iniciando petición a /routes/user/user_data.php');
+            // Usar endpoint más completo: /routes/user/user_data.php
+            const response = await window.AppRouter.get('/routes/user/user_data.php');
+            console.log('🔁 loadUserSession: response raw ->', response);
+            const payload = response && (response.data || response) || {};
+            console.log('🔁 loadUserSession: payload ->', payload);
+            const userData = payload.data || payload;
+            console.log('🔁 loadUserSession: userData ->', userData);
 
-            if (response.logged === true && response.user_data) {
-                const userData = response.user_data;
+            // Aceptar varias formas de respuesta del backend:
+            // 1) { status: 'success', data: { ... } }
+            // 2) respuesta directa con los datos del usuario (sin status)
+            const respStatus = (response && (response.status || (response.data && response.data.status))) ||
+                payload.status;
+            if (userData && (respStatus === 'success' || (userData && userData.user_id))) {
+                // Nombre completo preferido
+                const fullName = userData.full_name ||
+                    `${userData.first_name || ''} ${userData.last_name || ''}`.trim();
+                document.getElementById('sessionName').textContent = fullName || 'Usuario';
 
-                // Actualizar información de sesión
-                document.getElementById('sessionName').textContent =
-                    `${userData.first_name} ${userData.last_name}`;
-                document.getElementById('sessionUsername').textContent =
-                    `@${userData.username || userData.user_id}`;
-                document.getElementById('sessionEmail').textContent = userData.email;
+                // Mostrar identificador y usuario de forma agradable
+                const uid = userData.user_id || '';
+                const uname = userData.username || '';
+                const usernameEl = document.getElementById('sessionUsername');
+                if (usernameEl) {
+                    // Formato solicitado: (4@thisfeeling)
+                    // Si no hay username, mostrar solo el id entre paréntesis: (4)
+                    // Si no hay id pero hay username, mostrar (@username)
+                    const display = uid ? (uname ? `(${uid}@${uname})` : `(${uid})`) : (uname ? `(@${uname})` :
+                        '@usuario');
+                    usernameEl.innerHTML = `<span class="fw-bold text-primary">${display}</span>`;
+                }
+
+                // Email
+                document.getElementById('sessionEmail').textContent = userData.email || '';
 
                 // Actualizar foto de perfil
                 const profilePictureContainer = document.querySelector('#userProfilePicture img');
@@ -508,28 +525,23 @@
                     profilePictureContainer.src = `${backendUrl}${userData.profile_picture}`;
                     profilePictureContainer.onerror = function() {
                         // Si la imagen falla, usar avatar por defecto
-                        this.src = '/assets/icons/user-default.png';
+                        this.src = '/assets/img/default-avatar.png';
                     };
                     console.log('✅ Foto de perfil actualizada:', userData.profile_picture);
                 }
 
-                // Rol con badge
-                const roleNames = {
-                    1: 'Usuario',
-                    2: 'Administrador',
-                    3: 'Supervisor'
+                // Rol con badge (usar role_name si está disponible)
+                const roleName = userData.role_name || 'Usuario';
+                const roleColorMap = {
+                    user: 'primary',
+                    admin: 'danger',
+                    supervisor: 'warning'
                 };
-                const roleColors = {
-                    1: 'primary',
-                    2: 'danger',
-                    3: 'warning'
-                };
-                const roleName = roleNames[userData.role_id] || 'Usuario';
-                const roleColor = roleColors[userData.role_id] || 'primary';
+                const roleColor = roleColorMap[(userData.role_name || '').toLowerCase()] || 'primary';
                 document.getElementById('sessionRole').innerHTML =
                     `<span class="badge bg-${roleColor}">${roleName}</span>`;
 
-                console.log('✅ Datos de sesión cargados:', userData);
+                console.log('✅ Datos de sesión cargados y aplicados al DOM:', userData);
             }
         } catch (error) {
             console.error('❌ Error al cargar sesión:', error);
@@ -549,16 +561,53 @@
                 // Apps instaladas (ejemplo)
                 document.getElementById('totalApps').textContent = '24';
 
-                // Usuarios activos (podemos obtener de sesiones)
-                window.AppRouter.get('/routes/admin/get_dashboard_stats.php')
-                    .then(data => {
-                        if (data.status === 'success') {
-                            document.getElementById('activeUsers').textContent = data.stats
-                                ?.active_sessions || '0';
-                        }
+                // Usuarios activos (obtenidos desde /routes/dashboard/stats.php)
+                window.AppRouter.get('/routes/dashboard/stats.php')
+                    .then(response => {
+                        // La API responde: { status: 'success', data: { stats: { ... } } }
+                        const payload = response && (response.data || response);
+                        const stats = payload && (payload.stats || (payload.data && payload.data
+                            .stats)) || {};
+
+                        // Preferir sesiones activas si están disponibles, sino usuarios activos
+                        const activeFromSessions = stats.sessions && (stats.sessions.active ?? stats
+                            .sessions.user_sessions);
+                        const activeFromUsers = stats.users && (stats.users.active ?? stats.users
+                            .total);
+
+                        const active = (typeof activeFromSessions === 'number') ?
+                            activeFromSessions :
+                            (typeof activeFromUsers === 'number' ? activeFromUsers : null);
+
+                        document.getElementById('activeUsers').textContent = (active !== null) ?
+                            String(active) : '0';
+
+                        // Si el endpoint expone algún dato de apps en otro lugar, podríamos usarlo.
+                        // Por ahora dejar totalApps como estaba si no viene en stats.
+                        // Obtener estado del backend para el recuadro "Status"
+                        window.AppRouter.get('/routes/web/status.php')
+                            .then(statusResp => {
+                                const payload = statusResp && (statusResp.data || statusResp) ||
+                                {};
+                                // Mostrar solo "API Running" en caso de éxito (sin timestamp)
+                                if (payload.status === 'success') {
+                                    document.getElementById('systemUptime').innerHTML =
+                                        `<i class="bx bx-check-circle me-1 text-success"></i> API Running`;
+                                } else {
+                                    const msg = payload.message || payload.status ||
+                                        'Desconocido';
+                                    document.getElementById('systemUptime').innerHTML =
+                                        `<i class="bx bx-x-circle me-1 text-danger"></i> ${msg}`;
+                                }
+                            })
+                            .catch(() => {
+                                document.getElementById('systemUptime').innerHTML =
+                                    `<i class="bx bx-help-circle me-1 text-warning"></i> Desconectado`;
+                            });
                     })
-                    .catch(() => {
-                        document.getElementById('activeUsers').textContent = '1';
+                    .catch((err) => {
+                        console.warn('❌ Error cargando dashboard stats:', err);
+                        document.getElementById('activeUsers').textContent = '0';
                     });
 
                 console.log('✅ Estadísticas del sistema cargadas');
@@ -572,24 +621,61 @@
     }
 
     // ===================================
-    // ANIMACIÓN DEL ICONO HOMELAB
+    // ANIMACIÓN DEL ICONO HOMELAB - DESACTIVADA
+    // Mantener la librería anime.js cargada pero NO ejecutarla aquí
+    // para evitar errores si la versión cargada no expone la API esperada.
+    // Si en el futuro queremos usar animaciones avanzadas, crear una
+    // función segura que verifique la API de anime antes de llamar.
+    // Por ahora usamos solo efectos CSS y una navegación simple.
+
     // ===================================
-    function animateHomelabIcon() {
-        if (typeof anime === 'undefined') {
-            console.warn('⚠️ Anime.js no disponible');
-            return;
+    // LIMPIAR LOADERS GLOBALES (SAFE)
+    // Oculta overlays o loaders globales que puedan haberse quedado activos
+    // y cierra modales tipo Swal si están abiertos. Operación segura (no-op
+    // si los elementos no existen).
+    function clearGlobalLoaders() {
+        try {
+            // Cerrar SweetAlert si está visible
+            if (typeof Swal !== 'undefined' && Swal.close) {
+                try {
+                    Swal.close();
+                } catch (e) {
+                    /* ignore */
+                }
+            }
+
+            // Selectores comunes de loaders/overlays en el proyecto
+            const selectors = ['#app-loader', '#page-loader', '.loading-overlay', '.page-loading', '.app-loading',
+                '.preloader', '.site-loader'
+            ];
+            selectors.forEach(sel => {
+                document.querySelectorAll(sel).forEach(el => {
+                    try {
+                        el.style.display = 'none';
+                        el.classList.remove('show', 'visible', 'active');
+                    } catch (e) {
+                        /* ignore */
+                    }
+                });
+            });
+
+            // Asegurar que el main-content sea visible
+            const main = document.getElementById('main-content');
+            if (main) {
+                main.style.visibility = 'visible';
+                main.style.opacity = '1';
+            }
+
+            // Restaurar scroll si estaba deshabilitado
+            try {
+                document.body.style.overflow = 'auto';
+            } catch (e) {
+                /* ignore */
+            }
+            console.log('🔧 Limpieza de loaders globales ejecutada');
+        } catch (e) {
+            console.warn('🔧 clearGlobalLoaders falló:', e);
         }
-
-        const icon = document.getElementById('homelabIcon');
-
-        anime({
-            targets: icon,
-            scale: [1, 1.1, 1],
-            rotate: [0, 5, -5, 0],
-            duration: 3000,
-            easing: 'easeInOutQuad',
-            loop: true
-        });
     }
 
     // ===================================
@@ -644,17 +730,21 @@
     document.getElementById('enterHomelabBtn').addEventListener('click', function(e) {
         e.preventDefault();
 
-        // Animación antes de navegar
-        anime({
-            targets: '#homelabIcon',
-            scale: [1, 1.3, 1],
-            rotate: 360,
-            duration: 800,
-            easing: 'easeInOutQuad',
-            complete: function() {
-                window.location.href = '/homelab';
-            }
-        });
+        // Animación ligera con CSS/JS (no usamos anime.js para evitar errores)
+        const icon = document.getElementById('homelabIcon');
+        if (icon) {
+            icon.style.transition = 'transform 0.6s ease-in-out';
+            icon.style.transform = 'scale(1.25) rotate(20deg)';
+            // revertir después
+            setTimeout(() => {
+                icon.style.transform = '';
+            }, 600);
+        }
+
+        // Navegar tras pequeña pausa para que el usuario vea la respuesta
+        setTimeout(() => {
+            window.location.href = '/homelab';
+        }, 250);
     });
 
     // ===================================
@@ -663,13 +753,17 @@
     function initialize() {
         console.log('🚀 ThePearlOS: Iniciando...');
 
+        // Intentar limpiar loaders globales/overlays que puedan quedarse activos
+        // (safety: no-ops si no existen). Esto soluciona casos donde la UI queda
+        // bloqueada por un overlay/loader que no se cerró correctamente.
+        clearGlobalLoaders();
+
         loadUserSession();
         loadSystemStats();
 
-        // Esperar a que anime.js esté disponible
-        setTimeout(() => {
-            animateHomelabIcon();
-        }, 500);
+        // Nota: dejamos anime.js cargada pero NO la ejecutamos aquí.
+        // Evitamos la comprobación/reintentos para no generar errores si
+        // la librería expone una API distinta.
     }
 
     // Ejecutar cuando DOM esté listo

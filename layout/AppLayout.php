@@ -37,6 +37,7 @@ class AppLayout
         'popper',      // Requerido por Bootstrap tooltips
         'bootstrap',   // Framework JS principal
         'aos',         // Animate on Scroll
+        'anime',       // Animaciones avanzadas
         'sweetalert2', // Alertas bonitas
         'notyf',       // Notificaciones toast
         'tippy'        // Tooltips avanzados
@@ -141,40 +142,90 @@ class AppLayout
 
         // Renderizar directamente sin buffer
         ?>
-        <!DOCTYPE html>
-        <html lang="es" data-bs-theme="light">
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="light">
 
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <meta name="description" content="<?php echo htmlspecialchars($config['description']); ?>">
-            <title><?php echo htmlspecialchars($config['title']); ?></title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="<?php echo htmlspecialchars($config['description']); ?>">
+    <title><?php echo htmlspecialchars($config['title']); ?></title>
 
-            <!-- Favicon -->
-            <link rel="icon" type="image/png" href="/assets/favicon.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
 
-            <!-- CSS Base del Proyecto -->
-            <link rel="stylesheet" href="/css/variables.css">
-            <link rel="stylesheet" href="/css/base.css">
-            <link rel="stylesheet" href="/css/main.css">
+    <!-- CSS Base del Proyecto -->
+    <link rel="stylesheet" href="/css/variables.css">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/main.css">
 
-            <!-- CSS Dependencies -->
-            <?php self::renderCssLinks($allCss); ?>
+    <!-- CSS Dependencies -->
+    <?php self::renderCssLinks($allCss); ?>
 
-            <!-- CSS Específico de la Vista -->
-            <?php if (file_exists(__DIR__ . "/../css/{$view}.css")): ?>
-                <link rel="stylesheet" href="/css/<?php echo $view; ?>.css">
-            <?php endif; ?>
-        </head>
+    <!-- CSS Específico de la Vista -->
+    <?php if (file_exists(__DIR__ . "/../css/{$view}.css")): ?>
+    <link rel="stylesheet" href="/css/<?php echo $view; ?>.css">
+    <?php endif; ?>
+</head>
 
-        <body class="<?php echo htmlspecialchars($config['bodyClass']); ?>">
+<body class="<?php echo htmlspecialchars($config['bodyClass']); ?>">
 
-            <?php if ($config['includeHeader']): ?>
-                <?php self::includeComponent('ui/header.ui.php', $data); ?>
-            <?php endif; ?>
+    <?php if ($config['includeHeader']): ?>
+    <?php self::includeComponent('ui/header.ui.php', $data); ?>
+    <?php endif; ?>
 
-            <main id="main-content">
-                <?php
+    <!-- NPM Loader + Core scripts -->
+    <!-- CARGAR PRIMERO: npm-loader, librerías core y router/config para que las vistas inline puedan usarlas -->
+    <script src="/composables/npm-loader.js"></script>
+    <?php
+            // Separar JS core (siempre deben cargarse antes de los scripts inline de las vistas)
+            $coreJs = self::$jsCore;
+            // Otros JS: dependencias de la vista + adicionales de config
+            $otherJs = array_merge($viewDeps['js'] ?? [], $config['additionalJs'] ?? []);
+            // Eliminar duplicados que ya están en core, preservando orden
+            $otherJs = array_values(array_diff($otherJs, $coreJs));
+
+            // 1) Renderizar los scripts core (axios, jquery, anime, bootstrap, etc.)
+            self::renderJsScripts($coreJs);
+            ?>
+
+    <!-- Diagnostic: verificar que anime se exponga globalmente y mostrar ruta desde npm-loader -->
+    <script>
+    (function() {
+        try {
+            console.log('🔎 Core diagnostic: typeof anime =', typeof window.anime);
+            if (typeof window.getJSPath === 'function') {
+                console.log('🔎 NPM loader path for anime:', window.getJSPath('anime'));
+            }
+            if (typeof window.anime === 'undefined') {
+                console.warn('⚠️ anime no está definido aún en window');
+            }
+        } catch (e) {
+            console.error('Diagnostic error:', e);
+        }
+    })();
+    </script>
+    <?php
+            ?>
+
+    <!-- Config & Router (dependen de axios/jQuery cargados arriba) -->
+    <script src="/composables/config.js"></script>
+    <script src="/composables/router.js"></script>
+
+    <!-- Backend Status Check -->
+    <script src="/composables/statusCheck.js"></script>
+
+    <!-- Clock Service (Date & Time) -->
+    <script src="/composables/clockCheck.js"></script>
+
+    <!-- Session & Role Services (se cargan pero no necesariamente ejecutan antes del contenido) -->
+    <script src="/composables/sessionCheck.js"></script>
+    <script src="/composables/roleCheck.js"></script>
+    <script src="/composables/changesCheck.js"></script>
+    <script src="/services/logoutService.js"></script>
+
+    <main id="main-content">
+        <?php
                 // CRÍTICO: Prevenir bucles infinitos
                 // Si se proporciona contenido directamente, usarlo
                 // Si no hay contenido Y hay vista, intentar incluir el archivo de vista
@@ -184,55 +235,40 @@ class AppLayout
                     self::includeView($view, $data);
                 }
                 ?>
-            </main>
+    </main>
 
-            <?php if ($config['includeFooter']): ?>
-                <?php self::includeComponent('ui/footer.ui.php', $data); ?>
-            <?php endif; ?>
+    <?php if ($config['includeFooter']): ?>
+    <?php self::includeComponent('ui/footer.ui.php', $data); ?>
+    <?php endif; ?>
 
-            <!-- Auth Modal -->
-            <?php if ($config['includeAuthModal']): ?>
-                <?php self::includeComponent('modals/auth.modal.php', $data); ?>
-            <?php endif; ?>
+    <!-- Auth Modal -->
+    <?php if ($config['includeAuthModal']): ?>
+    <?php self::includeComponent('modals/auth.modal.php', $data); ?>
+    <?php endif; ?>
 
-            <!-- NPM Loader (SIEMPRE primero) -->
-            <script src="/composables/npm-loader.js"></script>
 
-            <!-- Config & Router -->
-            <script src="/composables/config.js"></script>
-            <script src="/composables/router.js"></script>
 
-            <!-- Backend Status Check -->
-            <script src="/composables/statusCheck.js"></script>
+    <?php
+            // 2) Ahora renderizar los JS específicos de la vista (si los hay)
+            self::renderJsScripts($otherJs);
+            ?>
 
-            <!-- Clock Service (Date & Time) -->
-            <script src="/composables/clockCheck.js"></script>
+    <!-- JavaScript Específico de la Vista -->
+    <?php if ($view !== null && file_exists(__DIR__ . "/../js/{$view}.js")): ?>
+    <script src="/js/<?php echo $view; ?>.js"></script>
+    <?php endif; ?>
 
-            <!-- Session & Role Services -->
-            <script src="/composables/sessionCheck.js"></script>
-            <script src="/composables/roleCheck.js"></script>
-            <script src="/composables/changesCheck.js"></script>
-            <script src="/services/logoutService.js"></script>
+    <!-- Main App JS -->
+    <script src="/js/main.js"></script>
 
-            <!-- JavaScript Dependencies -->
-            <?php self::renderJsScripts($allJs); ?>
+    <!-- Auth Modal Handler (después de jQuery) -->
+    <?php if ($config['includeAuthModal']): ?>
+    <script src="/js/auth-modal.js"></script>
+    <?php endif; ?>
+</body>
 
-            <!-- JavaScript Específico de la Vista -->
-            <?php if ($view !== null && file_exists(__DIR__ . "/../js/{$view}.js")): ?>
-                <script src="/js/<?php echo $view; ?>.js"></script>
-            <?php endif; ?>
-
-            <!-- Main App JS -->
-            <script src="/js/main.js"></script>
-
-            <!-- Auth Modal Handler (después de jQuery) -->
-            <?php if ($config['includeAuthModal']): ?>
-                <script src="/js/auth-modal.js"></script>
-            <?php endif; ?>
-        </body>
-
-        </html>
-        <?php
+</html>
+<?php
     }
 
     // ===================================
