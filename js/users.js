@@ -794,6 +794,207 @@
     }
 
     // ===================================
+    // CREAR USUARIO (MODAL)
+    // ===================================
+    async function openCreateUserModal() {
+        try {
+            console.log('➕ Abriendo modal de creación de usuario');
+
+            const formHtml = `
+                <form id="createUserForm" class="text-start">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Nombre</label>
+                            <input type="text" class="form-control" name="first_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Apellido</label>
+                            <input type="text" class="form-control" name="last_name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Username</label>
+                            <input type="text" class="form-control" name="username" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Teléfono</label>
+                            <input type="tel" class="form-control" name="phone">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" name="birthdate">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Contraseña</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Confirmar contraseña</label>
+                            <input type="password" class="form-control" name="confirm_password" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Género</label>
+                            <select class="form-select" name="gender_id">
+                                <option value="1">Prefiero no decirlo</option>
+                                <option value="2">Masculino</option>
+                                <option value="3">Femenino</option>
+                                <option value="4">Otro</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Rol</label>
+                            <select class="form-select" name="role_id">
+                                <option value="1" selected>Usuario</option>
+                                <option value="2">Administrador</option>
+                                <option value="3">Supervisor</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Biografía</label>
+                            <textarea class="form-control" name="bio" rows="3" maxlength="255"></textarea>
+                            <small class="text-muted">Máximo 255 caracteres</small>
+                        </div>
+                    </div>
+                </form>
+            `;
+
+            Swal.fire({
+                title: 'Crear nuevo usuario',
+                html: formHtml,
+                width: '700px',
+                showCloseButton: true,
+                showCancelButton: true,
+                confirmButtonText: '<i class="bx bx-save me-1"></i> Crear',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#0d6efd',
+                preConfirm: () => {
+                    const form = document.getElementById('createUserForm');
+                    if (!form.checkValidity()) {
+                        form.reportValidity();
+                        return false;
+                    }
+
+                    const fd = new FormData(form);
+                    const firstName = fd.get('first_name')?.trim();
+                    const lastName = fd.get('last_name')?.trim();
+                    const username = fd.get('username')?.trim();
+                    const email = fd.get('email')?.trim();
+                    const password = fd.get('password');
+                    const confirmPassword = fd.get('confirm_password');
+                    const bio = fd.get('bio')?.trim();
+
+                    // Validaciones críticas
+                    if (!firstName || firstName.length < 2) {
+                        Swal.showValidationMessage('El nombre es requerido y debe tener al menos 2 caracteres');
+                        return false;
+                    }
+                    if (!lastName || lastName.length < 2) {
+                        Swal.showValidationMessage('El apellido es requerido y debe tener al menos 2 caracteres');
+                        return false;
+                    }
+                    if (!username || username.length < 3) {
+                        Swal.showValidationMessage('El username es requerido y debe tener al menos 3 caracteres');
+                        return false;
+                    }
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!email || !emailRegex.test(email)) {
+                        Swal.showValidationMessage('El email es requerido y debe ser válido');
+                        return false;
+                    }
+                    if (!password || password.length < 8) {
+                        Swal.showValidationMessage('La contraseña es requerida y debe tener al menos 8 caracteres');
+                        return false;
+                    }
+                    if (password !== confirmPassword) {
+                        Swal.showValidationMessage('La confirmación de contraseña no coincide');
+                        return false;
+                    }
+                    if (bio && bio.length > 255) {
+                        Swal.showValidationMessage('La biografía no puede exceder 255 caracteres');
+                        return false;
+                    }
+
+                    // Construir payload
+                    const payload = {
+                        first_name: firstName,
+                        last_name: lastName,
+                        username: username,
+                        email: email,
+                        password: password
+                    };
+
+                    const phone = fd.get('phone')?.trim();
+                    if (phone) payload.phone = phone;
+                    const birth = fd.get('birthdate');
+                    if (birth) payload.birthdate = birth;
+                    const gender = fd.get('gender_id');
+                    if (gender) payload.gender_id = parseInt(gender);
+                    const role = fd.get('role_id');
+                    if (role) payload.role_id = parseInt(role);
+                    if (bio) payload.bio = bio;
+
+                    return payload;
+                }
+            }).then(async (result) => {
+                if (result.isConfirmed && result.value) {
+                    await createUser(result.value);
+                }
+            });
+
+        } catch (error) {
+            console.error('❌ Error al abrir modal de creación:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message || 'No se pudo abrir el formulario de creación',
+                confirmButtonColor: '#dc3545'
+            });
+        }
+    }
+
+    async function createUser(payload) {
+        try {
+            console.log('📤 Creando usuario:', payload);
+
+            Swal.fire({
+                title: 'Creando usuario...',
+                allowOutsideClick: false,
+                didOpen: () => Swal.showLoading()
+            });
+
+            const response = await window.AppRouter.post('/routes/admin/cr_user.php', payload);
+
+            Swal.close();
+
+            if (response.status === 'success') {
+                showNotification('success', 'Usuario creado exitosamente');
+
+                // Recargar tabla y estadísticas
+                const users = await loadUserStats();
+                if (users && Array.isArray(users)) {
+                    await initDataTable(users);
+                }
+
+                console.log('✅ Usuario creado:', response.data && response.data.user_id);
+            } else {
+                throw new Error(response.message || 'Error al crear usuario');
+            }
+
+        } catch (error) {
+            console.error('❌ Error al crear usuario:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al Crear',
+                text: error.message || 'No se pudo crear el usuario',
+                confirmButtonColor: '#dc3545'
+            });
+        }
+    }
+
+    // ===================================
     // ACTUALIZAR USUARIO
     // ===================================
     async function updateUser(userData) {
@@ -932,6 +1133,15 @@
 
                 // Configurar filtros
                 setupFilters();
+
+                // Botón Crear Usuario (si existe)
+                const createBtn = document.getElementById('createUserBtn');
+                if (createBtn) {
+                    createBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        openCreateUserModal();
+                    });
+                }
 
                 // Configurar observer de tema
                 setupThemeObserver();
