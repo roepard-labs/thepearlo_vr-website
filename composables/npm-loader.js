@@ -42,6 +42,10 @@ const NPM_CONFIG = {
         // ✨ HTTP Client (NUEVO - Principal)
         axios: '/axios/dist/axios.min.js',
 
+        // Feature detection (Modernizr build generated via npm or copied to public/vendor)
+        // If you generate a custom build, you can point this to '/vendor/modernizr.js'
+        modernizr: '/modernizr/dist/modernizr-build.js',
+
         // Core libraries
         popper: '/@popperjs/core/dist/umd/popper.min.js',
         bootstrap: '/bootstrap/dist/js/bootstrap.bundle.min.js',
@@ -157,10 +161,35 @@ function loadCSS(name) {
  */
 function loadJS(name) {
     return new Promise((resolve, reject) => {
+        // Backwards-compatible loader with option to target the <head>.
+        // Use: loadJS('modernizr', { target: 'head', async: false })
         const script = document.createElement('script');
         script.src = getJSPath(name);
+
+        // Default behaviour: append to body
         script.onload = () => resolve();
         script.onerror = () => reject(new Error(`Failed to load JS: ${name}`));
+
+        // If caller provided options as second argument, allow customizing target/async/defer
+        try {
+            const opts = arguments[1];
+            if (opts && typeof opts === 'object') {
+                const target = opts.target || 'body';
+                const setAsync = typeof opts.async !== 'undefined' ? opts.async : true;
+                const setDefer = !!opts.defer;
+
+                if (setAsync === false) script.async = false;
+                if (setDefer) script.defer = true;
+
+                if (target === 'head' && document.head) {
+                    document.head.appendChild(script);
+                    return;
+                }
+            }
+        } catch (e) {
+            // ignore and fall back to appending to body
+        }
+
         document.body.appendChild(script);
     });
 }
@@ -198,7 +227,8 @@ function isLoaded(name) {
         filepond: typeof FilePond !== 'undefined',
         videojs: typeof videojs !== 'undefined',
         aframe: typeof AFRAME !== 'undefined',
-        three: typeof THREE !== 'undefined'
+        three: typeof THREE !== 'undefined',
+        modernizr: typeof Modernizr !== 'undefined'
     };
 
     return checks[name] || false;
@@ -223,7 +253,8 @@ function reportLoadedDependencies() {
         FilePond: isLoaded('filepond'),
         'Video.js': isLoaded('videojs'),
         'A-Frame': isLoaded('aframe'),
-        'Three.js': isLoaded('three')
+        'Three.js': isLoaded('three'),
+        Modernizr: isLoaded('modernizr')
     };
 
     console.log('%c📦 Estado de Dependencias NPM', 'color: #00ff88; font-size: 16px; font-weight: bold;');

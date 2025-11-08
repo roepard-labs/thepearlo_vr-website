@@ -50,7 +50,8 @@ class AppLayout
     private static $viewDependencies = [
         'home' => [
             'css' => ['glightbox'],
-            'js' => ['glightbox', 'chart', 'anime']
+            // Modernizr se añade para permitir diagnósticos tempranos en la página Home
+            'js' => ['modernizr', 'glightbox', 'chart', 'anime']
         ],
         'homelab' => [
             'css' => [],
@@ -177,6 +178,25 @@ class AppLayout
     <!-- NPM Loader + Core scripts -->
     <!-- CARGAR PRIMERO: npm-loader, librerías core y router/config para que las vistas inline puedan usarlas -->
     <script src="/composables/npm-loader.js"></script>
+    <?php if (in_array('modernizr', $allJs)): ?>
+    <!-- Cargar Modernizr temprano en <head> mediante el npm-loader para que aplique clases en <html> -->
+    <script>
+    (function() {
+        try {
+            if (window.loadJS) {
+                window.loadJS('modernizr', {
+                    target: 'head',
+                    async: false
+                });
+            } else {
+                console.warn('NPM loader no disponible para inyectar Modernizr en <head>');
+            }
+        } catch (e) {
+            console.error('Error intentando cargar Modernizr en head', e);
+        }
+    })();
+    </script>
+    <?php endif; ?>
     <?php
             // Separar JS core (siempre deben cargarse antes de los scripts inline de las vistas)
             $coreJs = self::$jsCore;
@@ -298,6 +318,7 @@ class AppLayout
      */
     private static $jsMap = [
         'axios' => '/node_modules/axios/dist/axios.min.js',
+        'modernizr' => '/node_modules/modernizr/dist/modernizr-build.js',
         'jquery' => '/node_modules/jquery/dist/jquery.min.js',
         'popper' => '/node_modules/@popperjs/core/dist/umd/popper.min.js',
         'bootstrap' => '/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
