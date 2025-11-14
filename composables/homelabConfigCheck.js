@@ -2,6 +2,9 @@
 /* homelabConfigCheck.js
  * Cliente ligero para sincronizar la configuración Homelab con el backend
  * Usa `window.AppRouter` (Axios) expuesto por `composables/router.js`
+/* homelabConfigCheck.js
+ * Cliente ligero para sincronizar la configuración Homelab con el backend
+ * Usa `window.AppRouter` (Axios) expuesto por `composables/router.js`
  * - Obtiene config: GET /routes/homelab/list_config.php
  * - Actualiza config: POST /routes/homelab/up_config.php
  * Exports: window.HomelabConfig
@@ -31,16 +34,27 @@
 		try {
 			const router = await waitForRouter();
 			const res = await router.get('/routes/homelab/list_config.php');
-			if (res && res.data && res.data.status === 'success') {
-				state.config = res.data.data;
-				state.loaded = true;
-				state.error = null;
-				window.dispatchEvent(new CustomEvent('homelab:configLoaded', { detail: state.config }));
-				// If user hasn't seen modal, show it (if present)
-				tryShowModalIfNeeded();
-				return state.config;
+			// Router.get may return either a wrapper {status,data} or the raw config object.
+			const payload = (res && res.data) ? res.data : res;
+			console.debug('homelabConfigCheck: fetchConfig payload', payload);
+
+			if (payload && payload.status === 'success') {
+				state.config = payload.data;
+			} else if (payload && (payload.id || payload.user_id || payload.theme)) {
+				// Backend returned raw config object directly
+				state.config = payload;
 			}
-			throw new Error((res && res.data && res.data.message) || 'Respuesta inesperada');
+
+			if (!state.config) {
+				throw new Error((payload && payload.message) || 'Respuesta inesperada');
+			}
+
+			state.loaded = true;
+			state.error = null;
+			window.dispatchEvent(new CustomEvent('homelab:configLoaded', { detail: state.config }));
+			// If user hasn't seen modal, show it (if present)
+			tryShowModalIfNeeded();
+			return state.config;
 		} catch (err) {
 			state.error = err;
 			console.error('homelabConfigCheck: fetchConfig error', err);
@@ -53,17 +67,22 @@
 		try {
 			const router = await waitForRouter();
 			const res = await router.post('/routes/homelab/up_config.php', payload);
-			if (res && res.data) {
-				if (res.data.status === 'success') {
-					// update local state with returned data if present
-					state.config = res.data.data || state.config;
-					window.dispatchEvent(new CustomEvent('homelab:configUpdated', { detail: state.config }));
-					return state.config;
-				}
-				// backend returned error-like response
-				throw new Error(res.data.message || 'Error updating config');
+			const result = (res && res.data) ? res.data : res;
+			console.debug('homelabConfigCheck: updateConfig result', result);
+			if (result && result.status === 'success') {
+				// update local state with returned data if present
+				state.config = result.data || state.config;
+				window.dispatchEvent(new CustomEvent('homelab:configUpdated', { detail: state.config }));
+				return state.config;
 			}
-			throw new Error('Respuesta vacía del servidor');
+			// If backend returned raw config without wrapper, accept it
+			if (result && (result.id || result.user_id || result.theme)) {
+				state.config = result;
+				window.dispatchEvent(new CustomEvent('homelab:configUpdated', { detail: state.config }));
+				return state.config;
+			}
+			// backend returned error-like response
+			throw new Error((result && result.message) || 'Error updating config');
 		} catch (err) {
 			console.error('homelabConfigCheck: updateConfig error', err);
 			window.dispatchEvent(new CustomEvent('homelab:configUpdateError', { detail: err }));

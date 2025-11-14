@@ -43,6 +43,8 @@ function logoutUserVR() {
 
 <!-- Cargar userCheck.js ANTES de la inicialización global -->
 <script src="/composables/userCheck.js"></script>
+<!-- Cargar homelabConfigCheck para exponer window.HomelabConfig -->
+<script src="/composables/homelabConfigCheck.js"></script>
 
 <!-- Inicialización global: verifica sesión, rol y obtiene datos completos del usuario -->
 <script>
@@ -100,6 +102,49 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 </script>
+
+<!-- Integración con homelabConfigCheck: obtener y loguear la configuración -->
+<script>
+(function () {
+    'use strict';
+
+    function waitForHomelab(attempt) {
+        attempt = attempt || 0;
+        var MAX = 20;
+        var INTERVAL = 150;
+        return new Promise(function (resolve) {
+            if (window.HomelabConfig && typeof window.HomelabConfig.fetchConfig === 'function') return resolve(window.HomelabConfig);
+            if (attempt >= MAX) return resolve(null); // Resolve to null instead of rejecting
+            setTimeout(function () { resolve(waitForHomelab(attempt + 1)); }, INTERVAL);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        waitForHomelab().then(function (hc) {
+            if (!hc) {
+                console.warn('homelab.view: HomelabConfig no disponible after retries (continuing without it)');
+                return;
+            }
+            console.debug('homelab.view: HomelabConfig disponible', hc);
+            // fetch current config and log it
+            hc.fetchConfig().then(function (cfg) {
+                console.debug('homelab.view: config fetched', cfg);
+            }).catch(function (err) {
+                console.warn('homelab.view: fetchConfig error', err);
+            });
+
+            // Listen to updates
+            window.addEventListener('homelab:configUpdated', function (e) {
+                console.debug('homelab.view: homelab:configUpdated', e.detail);
+            });
+            window.addEventListener('homelab:configLoaded', function (e) {
+                console.debug('homelab.view: homelab:configLoaded', e.detail);
+            });
+        });
+    });
+
+})();
+</script>
 <section class="homelab-preview container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
@@ -125,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                     </div>
                 </div>
-                <div class="card-footer text-center bg-white">
+                <div class="card-footer text-center bg-dark">
                     <small class="text-muted">Esta es una vista preliminar. Personaliza la experiencia VR/AR aquí.</small>
                 </div>
             </div>
