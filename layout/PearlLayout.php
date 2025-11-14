@@ -30,17 +30,14 @@ class PearlLayout
         // Mapeo de rutas VR/AR reales (según npm-loader.js)
         $vrJs = [
             'aframe',
-            'arjs',
-            'three',
+            // 'arjs',
             'webvrPolyfill',
             'aframe-htmlembed-component',
             'aframe-super-keyboard',
             'aframe-extras',
-            'aframe-gui',
             'aframe-play-sound-on-event',
             'aframe-physics-system',
             'aframe-particle-system-component',
-            'aframe-animation-component',
             'aframe-canvas-text',
             'aframe-aabb-collider-component',
             'aframe-atlas-uvs-component',
@@ -62,17 +59,14 @@ class PearlLayout
 
         $vrJsMap = [
             'aframe' => '/node_modules/aframe/dist/aframe-master.min.js',
-            'arjs' => '/node_modules/ar.js/aframe/build/aframe-ar.min.js',
-            'three' => '/node_modules/three/build/three.module.js',
+            // 'arjs' => '/node_modules/ar.js/aframe/build/aframe-ar.min.js',
             'webvrPolyfill' => '/node_modules/webvr-polyfill/build/webvr-polyfill.min.js',
             'aframe-htmlembed-component' => '/node_modules/aframe-htmlembed-component/dist/build.js',
             'aframe-super-keyboard' => '/node_modules/aframe-super-keyboard/dist/aframe-super-keyboard.min.js',
             'aframe-extras' => '/node_modules/aframe-extras/dist/aframe-extras.min.js',
-            'aframe-gui' => '/node_modules/aframe-gui/dist/aframe-gui.min.js',
             'aframe-play-sound-on-event' => '/node_modules/aframe-play-sound-on-event/dist/aframe-play-sound-on-event.min.js',
             'aframe-physics-system' => '/node_modules/aframe-physics-system/dist/aframe-physics-system.min.js',
             'aframe-particle-system-component' => '/node_modules/aframe-particle-system-component/dist/aframe-particle-system-component.min.js',
-            'aframe-animation-component' => '/node_modules/aframe-animation-component/dist/aframe-animation-component.min.js',
             'aframe-canvas-text' => '/node_modules/aframe-canvas-text/dist/canvas-text.min.js',
             'aframe-aabb-collider-component' => '/node_modules/aframe-aabb-collider-component/dist/aframe-aabb-collider-component.min.js',
             'aframe-atlas-uvs-component' => '/node_modules/aframe-atlas-uvs-component/dist/aframe-atlas-uvs-component.min.js',
@@ -122,6 +116,7 @@ class PearlLayout
     <script src="/composables/npm-loader.js"></script>
     <script src="/node_modules/jquery/dist/jquery.min.js"></script>
     <script src="/node_modules/axios/dist/axios.min.js"></script>
+    <script src="/node_modules/@popperjs/core/dist/umd/popper.min.js"></script>
     <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/node_modules/aos/dist/aos.js"></script>
     <script src="/node_modules/animejs/dist/bundles/anime.umd.min.js"></script>
