@@ -74,6 +74,18 @@
     var modalEl = document.getElementById('homelabModal');
     if (!modalEl) return;
 
+    // Wait for HomelabConfig composable: resolves to instance or null after attempts
+    function waitForHomelabGlobal(attempt) {
+        attempt = attempt || 0;
+        var MAX = 20;
+        var INTERVAL = 150;
+        return new Promise(function (resolve) {
+            if (window.HomelabConfig && typeof window.HomelabConfig.updateConfig === 'function') return resolve(window.HomelabConfig);
+            if (attempt >= MAX) return resolve(null);
+            setTimeout(function () { resolve(waitForHomelabGlobal(attempt + 1)); }, INTERVAL);
+        });
+    }
+
     function initBindings(container) {
         var list = container.querySelector('.homelab-modal-list');
         var contBtn = container.querySelector('#continueHomelabBtn');
@@ -93,30 +105,86 @@
         // Initial check after a short delay so layout stabilizes
         setTimeout(checkScroll, 80);
 
-        // Theme buttons
+        // Theme buttons - update local pendingChanges; persist only on Continue
         var themeDark = container.querySelector('#themeDarkBtn');
         var themeLight = container.querySelector('#themeLightBtn');
-        if (themeDark) themeDark.addEventListener('click', function () { document.documentElement.setAttribute('data-bs-theme', 'dark'); });
-        if (themeLight) themeLight.addEventListener('click', function () { document.documentElement.setAttribute('data-bs-theme', 'light'); });
+        // pending changes collected locally until user confirms
+        var pendingChanges = {};
+
+        // Use the global waiter which resolves to the composable or null
+        function safeUpdateAndApply(payload) {
+            // backwards-compat helper: no-op here, we persist on Continue
+            try {
+                Object.keys(payload).forEach(function (k) { pendingChanges[k] = payload[k]; });
+            } catch (e) { /* ignore */ }
+        }
+
+        // helper para marcar visualmente el boton seleccionado
+        function setSelected(btn, others) {
+            try {
+                if (!btn) return;
+                btn.setAttribute('aria-pressed', 'true');
+                btn.classList.add('hm-selected');
+                if (Array.isArray(others)) {
+                    others.forEach(function (b) {
+                        if (!b) return;
+                        b.setAttribute('aria-pressed', 'false');
+                        b.classList.remove('hm-selected');
+                    });
+                }
+            } catch (e) { /* ignore */ }
+        }
+
+        if (themeDark) themeDark.addEventListener('click', function () { setSelected(themeDark, [themeLight]); pendingChanges.theme = 'dark'; });
+        if (themeLight) themeLight.addEventListener('click', function () { setSelected(themeLight, [themeDark]); pendingChanges.theme = 'light'; });
 
         // Clock format
         var c12 = container.querySelector('#clock12Btn');
         var c24 = container.querySelector('#clock24Btn');
-        if (c12) c12.addEventListener('click', function () { if (window.ClockService && window.ClockService.setHourFormat) window.ClockService.setHourFormat(12); });
-        if (c24) c24.addEventListener('click', function () { if (window.ClockService && window.ClockService.setHourFormat) window.ClockService.setHourFormat(24); });
+        if (c12) c12.addEventListener('click', function () { setSelected(c12, [c24]); pendingChanges.clock_format = 12; });
+        if (c24) c24.addEventListener('click', function () { setSelected(c24, [c12]); pendingChanges.clock_format = 24; });
 
         // Color accessibility
         var colDef = container.querySelector('#colorDefaultBtn');
         var colHigh = container.querySelector('#colorHighContrastBtn');
-        if (colDef) colDef.addEventListener('click', function () { document.body.classList.remove('high-contrast'); });
-        if (colHigh) colHigh.addEventListener('click', function () { document.body.classList.add('high-contrast'); });
+        if (colDef) colDef.addEventListener('click', function () { setSelected(colDef, [colHigh]); pendingChanges.color_accessibility = 'default'; });
+        if (colHigh) colHigh.addEventListener('click', function () { setSelected(colHigh, [colDef]); pendingChanges.color_accessibility = 'high_contrast'; });
 
         // Continue button
         contBtn.addEventListener('click', function (e) {
             e.preventDefault();
             contBtn.setAttribute('disabled', 'disabled');
             if (spinner) spinner.classList.remove('d-none');
-            setTimeout(function () { window.location.href = '/homelab'; }, 600);
+            // Persist pendingChanges + seen flag before redirecting
+            var toPersist = Object.assign({}, pendingChanges || {});
+            toPersist.seen_homelab_modal = 1;
+            console.debug('homelabModal: persisting', toPersist);
+
+            // small helper to wait for AppRouter if needed
+            function waitForRouter(attempt) {
+                attempt = attempt || 0;
+                var MAX = 20;
+                var INTERVAL = 150;
+                return new Promise(function (resolve, reject) {
+                    if (window.AppRouter && typeof window.AppRouter.post === 'function') return resolve(window.AppRouter);
+                    if (attempt >= MAX) return reject(new Error('AppRouter no disponible'));
+                    setTimeout(function () { resolve(waitForRouter(attempt + 1)); }, INTERVAL);
+                });
+            }
+
+            waitForHomelabGlobal().then(function (hc) {
+                if (hc && typeof hc.updateConfig === 'function') {
+                    console.debug('homelabModal: using HomelabConfig.updateConfig');
+                    return hc.updateConfig(toPersist).then(function (r) { console.debug('homelabModal: persisted via HomelabConfig', r); }).catch(function (err) { console.warn('homelabModal: error using HomelabConfig', err); });
+                }
+                // fallback to AppRouter.post directly
+                return waitForRouter().then(function (router) {
+                    console.debug('homelabModal: falling back to AppRouter.post');
+                    return router.post('/routes/homelab/up_config.php', toPersist).then(function (res) { console.debug('homelabModal: persisted via AppRouter', res); }).catch(function (err) { console.warn('homelabModal: AppRouter.post failed', err); });
+                }).catch(function (err) { console.warn('homelabModal: AppRouter not available', err); });
+            }).finally(function () {
+                setTimeout(function () { window.location.href = '/homelab'; }, 600);
+            });
         });
 
         // Close button fallback: explicitly hide modal via Bootstrap API if data-bs-dismiss doesn't work
@@ -152,6 +220,40 @@
         // focus first actionable element for accessibility
         var firstBtn = modalEl.querySelector('button:not([data-bs-dismiss])');
         if (firstBtn) firstBtn.focus();
+        // Try to sync UI with backend config (if HomelabConfig available)
+        try {
+            waitForHomelabGlobal().then(function (hc) {
+                if (!hc) return null;
+                var cfg = (hc && hc.state && hc.state.config) ? hc.state.config : null;
+                if (!cfg && hc && typeof hc.fetchConfig === 'function') {
+                    return hc.fetchConfig();
+                }
+                return cfg;
+            }).then(function (cfg) {
+                if (!cfg) return;
+                // theme
+                try {
+                    var tDark = modalEl.querySelector('#themeDarkBtn');
+                    var tLight = modalEl.querySelector('#themeLightBtn');
+                    if (cfg.theme === 'dark') { if (tDark) tDark.classList.add('hm-selected'); if (tLight) tLight.classList.remove('hm-selected'); }
+                    else { if (tLight) tLight.classList.add('hm-selected'); if (tDark) tDark.classList.remove('hm-selected'); }
+                } catch (e) { /* ignore */ }
+                // clock
+                try {
+                    var b12 = modalEl.querySelector('#clock12Btn');
+                    var b24 = modalEl.querySelector('#clock24Btn');
+                    if (parseInt(cfg.clock_format || 24, 10) === 12) { if (b12) b12.classList.add('hm-selected'); if (b24) b24.classList.remove('hm-selected'); }
+                    else { if (b24) b24.classList.add('hm-selected'); if (b12) b12.classList.remove('hm-selected'); }
+                } catch (e) { /* ignore */ }
+                // color accessibility
+                try {
+                    var colDef = modalEl.querySelector('#colorDefaultBtn');
+                    var colHigh = modalEl.querySelector('#colorHighContrastBtn');
+                    if (cfg.color_accessibility === 'high_contrast') { if (colHigh) colHigh.classList.add('hm-selected'); if (colDef) colDef.classList.remove('hm-selected'); }
+                    else { if (colDef) colDef.classList.add('hm-selected'); if (colHigh) colHigh.classList.remove('hm-selected'); }
+                } catch (e) { /* ignore */ }
+            }).catch(function () { /* ignore errors */ });
+        } catch (e) { /* ignore */ }
     });
 })();
 
@@ -162,6 +264,12 @@
     border-radius: 0.75rem;
     background: rgba(30,34,44,0.98);
     color: var(--bs-body-color);
+}
+
+/* Visual selection helper for modal buttons */
+.hm-selected {
+    box-shadow: 0 0 0 3px rgba(13,110,253,0.08) inset, 0 0 0 2px rgba(13,110,253,0.12);
+    transform: translateY(-1px);
 }
 
 #homelabModal .homelab-modal-list {
