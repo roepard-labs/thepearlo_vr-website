@@ -95,15 +95,38 @@ const NPM_CONFIG = {
         filepondPdfPreview: '/filepond-plugin-pdf-preview/dist/filepond-plugin-pdf-preview.min.js',
 
         // Video
-        videojs: '/video.js/dist/video.min.js'
-    },
+        videojs: '/video.js/dist/video.min.js',
 
-    // VR/AR Dependencies
-    vr: {
         aframe: '/aframe/dist/aframe-master.min.js',
         arjs: '/ar.js/aframe/build/aframe-ar.min.js',
         three: '/three/build/three.module.js',
-        webvrPolyfill: '/webvr-polyfill/build/webvr-polyfill.min.js'
+        webvrPolyfill: '/webvr-polyfill/build/webvr-polyfill.min.js',
+        "aframe-htmlembed-component": '/aframe-htmlembed-component/dist/build.js',
+        "aframe-super-keyboard": '/aframe-super-keyboard/dist/aframe-super-keyboard.min.js',
+        "aframe-extras": '/aframe-extras/dist/aframe-extras.min.js',
+        "aframe-gui": '/aframe-gui/dist/aframe-gui.min.js',
+        "aframe-play-sound-on-event": '/aframe-play-sound-on-event/dist/aframe-play-sound-on-event.min.js',
+        "aframe-physics-system": '/aframe-physics-system/dist/aframe-physics-system.min.js',
+        "aframe-particle-system-component": '/aframe-particle-system-component/dist/aframe-particle-system-component.min.js',
+        "aframe-animation-component": '/aframe-animation-component/dist/aframe-animation-component.min.js',
+        "aframe-canvas-text": '/aframe-canvas-text/dist/canvas-text.min.js',
+        "aframe-aabb-collider-component": '/aframe-aabb-collider-component/dist/aframe-aabb-collider-component.min.js',
+        "aframe-atlas-uvs-component": '/aframe-atlas-uvs-component/dist/aframe-atlas-uvs-component.min.js',
+        "aframe-audioanalyser-component": '/aframe-audioanalyser-component/dist/aframe-audioanalyser-component.min.js',
+        "aframe-event-decorators": '/aframe-event-decorators/dist/aframe-event-decorators.min.js',
+        "aframe-event-set-component": '/aframe-event-set-component/dist/aframe-event-set-component.min.js',
+        "aframe-geometry-merger-component": '/aframe-geometry-merger-component/dist/aframe-geometry-merger-component.min.js',
+        "aframe-log-component": '/aframe-log-component/dist/aframe-log-component.min.js',
+        "aframe-orbit-controls": '/aframe-orbit-controls/dist/aframe-orbit-controls.min.js',
+        "aframe-environment-component": '/aframe-environment-component/dist/aframe-environment-component.min.js',
+        "aframe-proxy-event-component": '/aframe-proxy-event-component/dist/aframe-proxy-event-component.min.js',
+        "aframe-slice9-component": '/aframe-slice9-component/dist/aframe-slice9-component.min.js',
+        "aframe-state-component": '/aframe-state-component/dist/aframe-state-component.min.js',
+        "aframe-look-at-component": '/aframe-look-at-component/dist/aframe-look-at-component.min.js',
+        "aframe-randomizer-components": '/aframe-randomizer-components/dist/aframe-randomizer-components.min.js',
+        "aframe-teleport-controls": '/aframe-teleport-controls/dist/aframe-teleport-controls.min.js',
+        "networked-aframe": '/networked-aframe/dist/networked-aframe.min.js'
+
     }
 };
 

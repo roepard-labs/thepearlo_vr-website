@@ -51,11 +51,7 @@ class AppLayout
         'home' => [
             'css' => ['glightbox'],
             // Modernizr se añade para permitir diagnósticos tempranos en la página Home
-            'js' => ['modernizr', 'glightbox', 'chart', 'anime']
-        ],
-        'homelab' => [
-            'css' => [],
-            'js' => [] // VR/AR dependencies loaded separately
+            'js' => ['modernizr', 'glightbox', 'chart', 'anime', 'dayjs']
         ],
         'dashboard' => [
             'css' => ['datatables', 'datatablesResponsive'], // Chart.js NO tiene CSS
@@ -340,7 +336,7 @@ class AppLayout
         'filepondImageCrop' => '/node_modules/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js',
         'filepondImageResize' => '/node_modules/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js',
         'filepondImageTransform' => '/node_modules/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js',
-        'filepondImageExif' => '/node_modules/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js'
+        'filepondImageExif' => '/node_modules/filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientation.min.js',
     ];
 
     /**

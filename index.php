@@ -60,8 +60,22 @@ if (isset($routes[$uri])) {
 
     // Verificar que el archivo existe
     if (file_exists($view_file)) {
-        require_once $view_file;
-        exit;
+        // Usar PearlLayout solo para /homelab
+        if ($uri === '/homelab') {
+            require_once __DIR__ . '/layout/PearlLayout.php';
+            // Bufferizar contenido de la vista
+            ob_start();
+            include $view_file;
+            $content = ob_get_clean();
+            PearlLayout::render('homelab', ['content' => $content], [
+                'title' => 'HomeLab VR/AR',
+                'description' => 'Experiencia inmersiva VR/AR para homelab'
+            ]);
+            exit;
+        } else {
+            require_once $view_file;
+            exit;
+        }
     }
 }
 
