@@ -161,11 +161,15 @@
                                 </div>
                                 <h5 class="mb-3 fw-bold">Experiencia VR</h5>
                                 <p class="text-muted mb-4">Accede al entorno de realidad virtual inmersivo</p>
-                                <a href="/homelab" class="btn btn-primary btn-lg px-4 py-3 enter-homelab-btn"
-                                    id="enterHomelabBtn">
+                                <button class="btn btn-primary btn-lg px-4 py-3 enter-homelab-btn"
+                                    id="enterHomelabBtn" data-bs-toggle="modal" data-bs-target="#homelabModal">
                                     <i class="bx bx-right-arrow-circle me-2"></i>
                                     Entrar a HomeLab
-                                </a>
+                                </button>
+                            </div>
+
+                            <!-- Modal de ingreso a HomeLab VR/AR -->
+                            <?php include __DIR__ . '/../modals/homelab.modal.php'; ?>
                             </div>
                         </div>
                     </div>
@@ -783,7 +787,7 @@
 
             // Navegar tras pequeña pausa para que el usuario vea la respuesta
             setTimeout(() => {
-                window.location.href = '/homelab';
+                // window.location.href = '/homelab';
             }, 250);
         });
 
