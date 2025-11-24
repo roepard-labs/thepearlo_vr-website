@@ -1003,8 +1003,8 @@
             deleteBtn?.classList.add('d-none'); // No mostrar botón eliminar para default
         } else if (profilePicture.startsWith('/uploads/')) {
             // Foto personalizada: Cargar desde BACKEND
-            const backendUrl = window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:3000';
-            imageUrl = backendUrl + profilePicture;
+            const backendUrl = window.ENV_CONFIG?.API_URL || 'http://localhost:3000';
+            imageUrl = backendUrl + profilePicture; 
             console.log('📸 Cargando foto personalizada desde backend:', imageUrl);
             deleteBtn?.classList.remove('d-none'); // Mostrar botón eliminar
         } else {
