@@ -82,7 +82,7 @@ class Router {
 
         this.axiosInstance = axios.create({
             baseURL: this.baseURL,
-            timeout: 30000, // 30 segundos
+            timeout: 120000, // 120 segundos (2 minutos)
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
