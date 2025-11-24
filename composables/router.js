@@ -30,7 +30,6 @@ if (typeof window.ENV_CONFIG === 'undefined') {
     // Fallback para desarrollo
     window.ENV_CONFIG = {
         API_URL: 'http://localhost:3000',
-        BACKEND_URL: 'http://localhost:3000',
         APP_NAME: 'Roepard Homelab (Fallback)'
     };
 }
@@ -45,7 +44,7 @@ if (typeof window.ENV_CONFIG === 'undefined') {
  */
 class Router {
     constructor() {
-        this.baseURL = window.ENV_CONFIG.API_URL || window.ENV_CONFIG.BACKEND_URL;
+        this.baseURL = window.ENV_CONFIG.API_URL;
         this.appName = window.ENV_CONFIG.APP_NAME;
         this.axiosInstance = null;
 

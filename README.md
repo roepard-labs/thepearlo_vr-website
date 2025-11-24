@@ -174,11 +174,9 @@ nano .env
 ```env
 # Backend API URLs
 API_URL=http://localhost:3000
-BACKEND_URL=http://localhost:3000
 
 # Production
 # API_URL=https://api.roepard.online
-# BACKEND_URL=https://api.roepard.online
 ```
 
 ### Backend Setup (thepearlo_vr-backend - Separate Repository)

@@ -1037,15 +1037,15 @@
         function getBackendBase() {
             try {
                 if (window.ENV_CONFIG) {
-                    // Preferir BACKEND_URL, si no existe, usar API_URL
-                    const base = window.ENV_CONFIG.BACKEND_URL || window.ENV_CONFIG.API_URL || '';
+                    // Preferir API_URL, si no existe, usar API_URL
+                    const base = window.ENV_CONFIG.API_URL;
                     if (base && typeof base === 'string') return base.replace(/\/$/, '');
                 }
             } catch (e) {
                 console.warn('⚠️ getBackendBase error:', e);
             }
 
-            console.warn('⚠️ ENV_CONFIG no tiene BACKEND_URL/API_URL. Usando rutas relativas.');
+            console.warn('⚠️ ENV_CONFIG no tiene API_URL. Usando rutas relativas.');
             return '';
         }
 

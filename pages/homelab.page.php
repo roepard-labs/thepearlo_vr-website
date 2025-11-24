@@ -515,7 +515,7 @@
                     // Actualizar foto de perfil
                     const profilePictureContainer = document.querySelector('#userProfilePicture img');
                     if (profilePictureContainer && userData.profile_picture) {
-                        const backendUrl = window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:3000';
+                        const backendUrl = window.ENV_CONFIG?.API_URL || 'http://localhost:3000';
                         profilePictureContainer.src = `${backendUrl}${userData.profile_picture}`;
                         profilePictureContainer.onerror = function () {
                             // Si la imagen falla, usar avatar por defecto
