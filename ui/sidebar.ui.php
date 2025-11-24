@@ -963,7 +963,7 @@ $navItems = [
             console.log('🖼️ Sidebar: Cargando imagen por defecto:', imageUrl);
         } else if (profilePicture.startsWith('/uploads/')) {
             // Foto personalizada: Cargar desde BACKEND
-            const backendUrl = window.ENV_CONFIG?.BACKEND_URL || 'http://localhost:3000';
+            const backendUrl = window.ENV_CONFIG?.API_URL || 'http://localhost:3000';
             imageUrl = backendUrl + profilePicture;
             console.log('📸 Sidebar: Cargando foto personalizada desde backend:', imageUrl);
         } else {

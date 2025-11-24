@@ -88,8 +88,8 @@
     // ===================================
     function getBackendUrl() {
         // Intentar obtener desde ENV_CONFIG
-        if (window.ENV_CONFIG && window.ENV_CONFIG.BACKEND_URL) {
-            return window.ENV_CONFIG.BACKEND_URL;
+        if (window.ENV_CONFIG && window.ENV_CONFIG.API_URL) {
+            return window.ENV_CONFIG.API_URL;
         }
         // Fallback a localhost:3000
         return 'http://localhost:3000';
