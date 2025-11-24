@@ -16,8 +16,8 @@
  * @constant
  */
 const WEATHER_CONFIG = {
-    // ⚠️ API Key - En producción, mover a .env y generar con build:config
-    API_KEY: '5f6eea57b7cbb427f5362ab9efe5bce3',
+    // TODO: ⚠️ API Key - En producción, mover a .env y generar con build:config
+    API_KEY: '55e21a46dfc1c5112bbd0573c1a982e6',
 
     // URL base de la API
     BASE_URL: 'https://api.openweathermap.org/data/2.5',
